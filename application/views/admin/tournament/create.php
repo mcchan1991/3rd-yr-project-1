@@ -1,6 +1,6 @@
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('admin/tournament/add')?>
+<?php echo form_open('admin/tournament/save')?>
 
 <?php
 	// form building
