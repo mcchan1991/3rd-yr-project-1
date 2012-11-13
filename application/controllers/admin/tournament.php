@@ -1,6 +1,9 @@
 <?php 
 class Tournament extends CI_Controller {
 
+	private $_startDate;
+	private $_endDate;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -17,7 +20,7 @@ class Tournament extends CI_Controller {
 	public function save()
 	{
 		$this->load->library('form_validation');
-		
+		$get = $this->input->get(NULL, TRUE); 
 		$this->form_validation->set_rules("name", "Tournament name", "required|min_length[5]|max_length[50]|xss_clean");
 		$this->form_validation->set_rules("end_date", "End Date", "required|callback_date_check|xss_clean");
 		$this->form_validation->set_rules("no_tickets", "No. tickets", "required|numeric|xss_clean");
@@ -26,7 +29,26 @@ class Tournament extends CI_Controller {
 		{
 			$this->load->view('admin/tournament/create');
 		}
-		$get = $this->input->get(NULL, TRUE); 
+		else
+		{
+			$this->load->helper('url');
+			// we need to convert the dates into MySQL compliant date time.
+
+			$this->_startDate->format('Y-m-d');
+			$this->_endDate->format('Y-m-d');
+			
+			
+			$postdata = array(
+				'name'	=> $this->input->post('name'),
+				'start' => $this->_startDate->format('Y-m-d'),
+				'end' => $this->_endDate->format('Y-m-d'),
+				'noTickets' => $this->input->post('no_tickets')
+			);
+			$this->Tournament_model->create($postdata);
+			
+			echo "Tournament added correctly. This is a placeholder. User should be redirected to list of tournaments.";
+		}
+
 	}
 	
 	public function add()
@@ -59,7 +81,7 @@ class Tournament extends CI_Controller {
 
 		// validate first date format
 		$dateFormat = "d/m/Y";
-		$start_date = DateTime::createFromFormat($dateFormat, $start_input);
+		$this->_startDate = DateTime::createFromFormat($dateFormat, $start_input);
 		
 		$date_errors = DateTime::getLastErrors();
 		$errors = array();
@@ -70,14 +92,14 @@ class Tournament extends CI_Controller {
 		// remember to reset date_errors otherwise they might be carried down
 		$date_errors = null;
 		// validate second date format
-		$end_date = DateTime::createFromFormat($dateFormat, $end_input);
+		$this->_endDate = DateTime::createFromFormat($dateFormat, $end_input);
 		$date_errors = DateTime::getLastErrors();
 		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
 		{
 			array_push($errors, "End date invalid");
 		}
 		// make sure the start_date is not later than end_date
-		if ( empty($errors) && $start_date > $end_date)
+		if ( empty($errors) && $this->_startDate > $this->_endDate)
 		{
 			array_push($errors, "End date must be after start date");
 		}
