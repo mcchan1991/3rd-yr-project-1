@@ -357,6 +357,26 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| XSS Filtering
+|--------------------------------------------------------------------------
+|
+| Enables global XSS filtering on inputs (post / cookie variables)
+|
+*/
+$config['global_xss_filtering'] = TRUE;
+
+/*
+|--------------------------------------------------------------------------
+| Cross-site request forgery (CSRF)
+|--------------------------------------------------------------------------
+|
+| Enables (CSRF) protetion
+|
+*/
+$config['csrf_protection'] = TRUE;
+
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
