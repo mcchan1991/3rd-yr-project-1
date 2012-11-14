@@ -21,9 +21,10 @@ class Tournament extends CI_Controller {
 	{
 		$this->load->library('form_validation');
 		$get = $this->input->get(NULL, TRUE); 
-		$this->form_validation->set_rules("name", "Tournament name", "required|min_length[5]|max_length[50]|xss_clean");
-		$this->form_validation->set_rules("end_date", "End Date", "required|callback_date_check|xss_clean");
-		$this->form_validation->set_rules("no_tickets", "No. tickets", "required|numeric|xss_clean");
+		$this->form_validation->set_rules("name", "Tournament name", "required|min_length[5]|max_length[50]");
+		$this->form_validation->set_rules("start_date", "End Date", "required");
+		$this->form_validation->set_rules("end_date", "End Date", "required|callback_date_check");
+		$this->form_validation->set_rules("no_tickets", "No. tickets", "required|numeric");
 		
 		if ($this->form_validation->run() == FALSE)
 		{
