@@ -7,6 +7,7 @@
 	$name = array(
 		'name'	=> 'name',
 		'id'	=> 'name',
+		'value' => set_value('name')
 	);
 	
 	echo form_input($name);
@@ -16,6 +17,7 @@
 	$startDate = array(
 		'name'	=> 'start_date',
 		'id'	=> 'start_date',
+		'value' => set_value('start_date')
 	);
 	
 	echo form_input($startDate);
@@ -25,6 +27,7 @@
 	$endDate = array(
 		'name'	=> 'end_date',
 		'id'	=> 'end_date',
+		'value' => set_value('end_date')
 	);
 	
 	echo form_input($endDate);
@@ -34,6 +37,7 @@
 	$noTickets = array(
 		'name'	=> 'no_tickets',
 		'id'	=> 'no_tickets',
+		'value' => set_value('no_tickets')
 	);
 	
 	echo form_input($noTickets);
