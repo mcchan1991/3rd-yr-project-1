@@ -44,9 +44,9 @@ class Tournament extends CI_Controller {
 				'end' => $this->_endDate->format('Y-m-d'),
 				'noTickets' => $this->input->post('no_tickets')
 			);
-			$this->Tournament_model->create($postdata);
+			$id = $this->Tournament_model->create($postdata);
 			
-			echo "Tournament added correctly. This is a placeholder. User should be redirected to list of tournaments.";
+			echo "Tournament id : {$id} added correctly. This is a placeholder. User should be redirected to list of tournaments.";
 		}
 
 	}
