@@ -4,66 +4,138 @@ class Tournament extends CI_Controller {
 	private $_startDate;
 	private $_endDate;
 	
+	/**
+  	 * Constructor of the controller. Needs to call the parrent, and also loads the model. 
+     */
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('admin/Tournament_model');
 	}
+	
 	/**
 	 * Index should probably be a list of all tournaments for admins, but make it later
 	 */
 	public function index()
 	{
 		//$this->load->view('welcome_message');
+		echo "index fucntion";
 	}
 	
-	public function save()
+	/**
+  	 * This method will show the specific tournament details
+	 * @param id	The id of the tournament that will be shown
+     */
+	public function view($id)
+	{
+		echo $id;
+	}
+	
+	/**
+  	 * Validates the input and saves a tournament if OK.
+     */
+	public function save($id = FALSE)
 	{
 		$this->load->library('form_validation');
-		$get = $this->input->get(NULL, TRUE); 
+		//validate the input
 		$this->form_validation->set_rules("name", "Tournament name", "required|min_length[5]|max_length[50]");
-		$this->form_validation->set_rules("start_date", "End Date", "required");
-		$this->form_validation->set_rules("end_date", "End Date", "required|callback_date_check");
-		$this->form_validation->set_rules("no_tickets", "No. tickets", "required|numeric");
-		
+		$this->form_validation->set_rules("startDate", "Start Date", "required");
+		$this->form_validation->set_rules("endDate", "End Date", "required|callback_dateCheck");
+		$this->form_validation->set_rules("noTickets", "No. tickets", "required|numeric");
+	
+		// if input is not valid, show the form again (and send the post-date to the view so it can be re-populated)
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('admin/tournament/create');
+			$data['name'] = $this->input->post('name');
+			$data['startDate'] = $this->_startDate->format('d/m/Y');
+			$data['endDate'] = $this->_endDate->format('d/m/Y');
+			$data['noTickets'] = $this->input->post('noTickets');
+			
+			$this->load->view('admin/tournament/create',$data);
 		}
+		// if everything is ok
 		else
 		{
-			$this->load->helper('url');
-			// we need to convert the dates into MySQL compliant date time.
+			$this->load->helper('url');			
+			// get the data
+			// use the create method in the controller
+			if ($id == FALSE)
+			{
+				$postdata = array(
+					'name'	=> $this->input->post('name'),
+					'start' => $this->_startDate->format('Y-m-d'),
+					'end' => $this->_endDate->format('Y-m-d'),
+					'noTickets' => $this->input->post('noTickets')
+				);
+				$id = $this->Tournament_model->create($postdata);
+			}
+			else
+			{
+				$postdata = array(
+					'tournamentId'	=> $id,
+					'name'	=> $this->input->post('name'),
+					'start' => $this->_startDate->format('Y-m-d'),
+					'end' => $this->_endDate->format('Y-m-d'),
+					'noTickets' => $this->input->post('noTickets')
+				);
+				$this->Tournament_model->update($postdata);
+			}
 
-			$this->_startDate->format('Y-m-d');
-			$this->_endDate->format('Y-m-d');
-			
-			
-			$postdata = array(
-				'name'	=> $this->input->post('name'),
-				'start' => $this->_startDate->format('Y-m-d'),
-				'end' => $this->_endDate->format('Y-m-d'),
-				'noTickets' => $this->input->post('no_tickets')
-			);
-			$id = $this->Tournament_model->create($postdata);
-			
-			echo "Tournament id : {$id} added correctly. This is a placeholder. User should be redirected to list of tournaments.";
+			// placeholder echo.
+			echo "Tournament id : {$id} added/edited correctly. This is a placeholder. User should be redirected to list of tournaments.";
 		}
 
 	}
 	
+	/**
+  	 * View for admins to create a new Tournament
+     */
 	public function add()
 	{
 		$this->load->helper('form');
-		$this->load->view('admin/tournament/create');
+		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
+		$data['name'] = "";
+		$data['startDate'] = "";
+		$data['endDate'] = "";
+		$data['noTickets'] = "";
+		$this->load->view('admin/tournament/create', $data);
 		
 		// load view
 		
 	}
 	
-	public function edit()
+	/**
+  	 * View so admin can edit a specific tournament.
+	 * @param id	the ID of the tournament to added.
+     */
+	public function edit($id)
 	{
+		// form validations used to set variables.
+		$this->load->library('form_validation');
 		
+		// get the id
+		$tournament = $this->Tournament_model->getTournament($id);
+		
+		$start_date = $tournament['start'];
+		$end_date = $tournament['end'];
+		
+		// format it correctly
+		$dateFormat = "Y-m-d";
+		$start_dateTime = DateTime::createFromFormat($dateFormat, $start_date);
+		$end_dateTime = DateTime::createFromFormat($dateFormat, $end_date);
+		
+		$data['name'] = $tournament['name'];
+		$data['startDate'] = $start_dateTime->format('d/m/Y');
+		$data['endDate'] =  $end_dateTime->format('d/m/Y');
+		$data['noTickets'] = $tournament['noTickets'];
+		$data['id'] = $id;
+		
+		if (empty($tournament))
+		{
+			echo "Invalid ID placeholder : {$id}";
+			exit;
+		}
+		$this->load->view('admin/tournament/create', $data);
 	}
 	
 	/**
@@ -75,10 +147,14 @@ class Tournament extends CI_Controller {
 		
 	}
 	
-	public function date_check($end_date_input)
+	/**
+  	 *  A custom validation function that makes sure the end date if after the start date.
+     */
+	public function dateCheck()
 	{
-		$start_input = $this->input->post('start_date');
-		$end_input = $this->input->post('end_date');
+		// get the inputs
+		$start_input = $this->input->post('startDate');
+		$end_input = $this->input->post('endDate');
 
 		// validate first date format
 		$dateFormat = "d/m/Y";
@@ -86,29 +162,36 @@ class Tournament extends CI_Controller {
 		
 		$date_errors = DateTime::getLastErrors();
 		$errors = array();
+		// push any errors to the errors array
 		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
 		{
 			array_push($errors, "Start date invalid");
 		}
+		
 		// remember to reset date_errors otherwise they might be carried down
 		$date_errors = null;
+		
 		// validate second date format
 		$this->_endDate = DateTime::createFromFormat($dateFormat, $end_input);
 		$date_errors = DateTime::getLastErrors();
+		// push any errors to the errors array
 		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
 		{
 			array_push($errors, "End date invalid");
 		}
-		// make sure the start_date is not later than end_date
+		
+		// make sure the start_date is not later than end_date, only run if the format of the dates are valid
 		if ( empty($errors) && $this->_startDate > $this->_endDate)
 		{
 			array_push($errors, "End date must be after start date");
 		}
 		
+		// return true if everything is ok
 		if (empty($errors))
 		{
 			return TRUE;
 		}
+		// otherwise return an error message containing all the errors in the error array
 		else
 		{
 			$error_output = "";
@@ -121,7 +204,7 @@ class Tournament extends CI_Controller {
 				$string = array_pop($errors);
 				$error_output.=$string;
 			}
-			$this->form_validation->set_message('date_check', $error_output);
+			$this->form_validation->set_message('dateCheck', $error_output);
 			return FALSE;
 		}
  	}

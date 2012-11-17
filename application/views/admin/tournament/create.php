@@ -1,13 +1,24 @@
 <?php echo validation_errors(); ?>
 
-<?php echo form_open('admin/tournament/save')?>
+<?php 
+if (empty($id))
+{
+	echo form_open('admin/tournament/save');
+}
+else
+{
+	echo form_open("admin/tournament/save/{$id}");
+}
+
+
+?>
 
 <?php
 	// form building
 	$name = array(
 		'name'	=> 'name',
 		'id'	=> 'name',
-		'value' => set_value('name')
+		'value' => $name
 	);
 	
 	echo form_input($name);
@@ -15,35 +26,35 @@
 	echo '<br />';
 	
 	$startDate = array(
-		'name'	=> 'start_date',
-		'id'	=> 'start_date',
-		'value' => set_value('start_date')
+		'name'	=> 'startDate',
+		'id'	=> 'startDate',
+		'value' => $startDate
 	);
 	
 	echo form_input($startDate);
-	echo form_label('Start date', 'start_date');
+	echo form_label('Start date', 'startDate');
 	echo '<br />';
 	
 	$endDate = array(
-		'name'	=> 'end_date',
-		'id'	=> 'end_date',
-		'value' => set_value('end_date')
+		'name'	=> 'endDate',
+		'id'	=> 'endDate',
+		'value' => $endDate
 	);
 	
 	echo form_input($endDate);
-	echo form_label('End date', 'end_date');
+	echo form_label('End date', 'endDate');
 	echo '<br />';
 	
-	$noTickets = array(
-		'name'	=> 'no_tickets',
-		'id'	=> 'no_tickets',
-		'value' => set_value('no_tickets')
+	$noTicketsField = array(
+		'name'	=> 'noTickets',
+		'id'	=> 'noTickets',
+		'value' => $noTickets
 	);
 	
-	echo form_input($noTickets);
-	echo form_label('Number of tickets/day', 'no_tickets');
+	echo form_input($noTicketsField);
+	echo form_label('Number of tickets/day', 'noTickets');
 	echo '<br />';
 	
-	echo form_submit('submit', 'Add Tournament');
+	echo form_submit('submit', 'Submit');
 	
 	echo form_close();
