@@ -5,13 +5,20 @@ class Tournament_model extends CI_Model {
 	{
 		$this->load->database();
 	}
-	
+	/**
+  	 * Creates a new tournament in the database
+	 * @param row	the row to be inserted
+     */
 	public function create($row)
 	{
 		$this->db->insert('tournaments', $row);
 		return $this->db->insert_id();
 	}
 	
+	/**
+  	 * Gets either a specific tournament or all of them depending on whether the $id param have been set.
+	 * @param id	the row to be inserted
+     */
 	public function getTournament($id = false)
 	{
 		if ($id === FALSE)
@@ -24,6 +31,10 @@ class Tournament_model extends CI_Model {
 		return $query->row_array();
 	}
 	
+	/**
+  	 * Updates a given tournament.
+	 * @param row	the row to be updated
+     */
 	public function update($row)
 	{
 		$this->db->where('tournamentId', $row['tournamentId']);
