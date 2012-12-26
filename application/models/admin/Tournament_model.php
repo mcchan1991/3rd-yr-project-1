@@ -51,19 +51,19 @@ class Tournament_model extends CI_Model {
 	
 	public function getTournamentListLimit($limit, $start)
 	{
-		return getTournament(false, $limit, $start);
+		return $this->getTournament(false, $limit, $start);
 	}
 	
 	public function getFutureTournaments($limit, $start)
 	{
 		$date = new DateTime();
-		return getTournament(false, $limit, $start, $date->format("Y-m-d"));
+		return $this->getTournament(false, $limit, $start, $date->format("Y-m-d"));
 	}
 	
 	public function getPastTournament($limit, $start)
 	{
 		$date = new DateTime();
-		return getTournament(false, $limit, $start, $date->format("Y-m-d"), true);
+		return $this->getTournament(false, $limit, $start, $date->format("Y-m-d"), true);
 	}
 	
 	/**
