@@ -16,10 +16,24 @@ class Tournament extends CI_Controller {
 	/**
 	 * Index should probably be a list of all tournaments for admins, but make it later
 	 */
-	public function index()
+	public function index($page = 1)
 	{
-		//$this->load->view('welcome_message');
-		echo "index fucntion";
+		$this->load->helper('url');
+		
+		// fetch all of the tournaments
+		//$tournaments = $this->Tournament_model->getTournament();
+		
+		$this->load->library('pagination');
+		
+		$config['base_url'] = base_url() . "index.php/admin/tournament/index";
+		$config['total_rows'] = $this->Tournament_model->tournamentCountFuture();
+		$config['per_page'] = 1; 
+		
+		$data['tournaments'] = $this->Tournament_model->getTournament(false, $config["per_page"], $page);
+
+		$this->pagination->initialize($config);
+		
+		echo $this->pagination->create_links();
 	}
 	
 	/**
@@ -114,7 +128,7 @@ class Tournament extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		// get the id
-		$tournament = $this->Tournament_model->getTournament($id);
+		$tournament = $this->Tournament_model->getTournamentId($id);
 		
 		$start_date = $tournament['start'];
 		$end_date = $tournament['end'];

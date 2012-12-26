@@ -15,14 +15,88 @@ class Tournament_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	public function tournamentCountFuture()
+	{
+		$date = new DateTime();
+		return $this->tournamentCount($date->format("Y-m-d"));
+	}
+	
+	public function tournamentCountPast()
+	{
+		$date = new DateTime();
+		return $this->tournamentCount($date->format("Y-m-d"), true);
+	}
+	
+	public function tournamentCount($date = false, $past = false)
+	{
+		if ($date != false)
+		{
+			if ($past == false)
+			{
+				$logic_operator = ">";
+			}
+			else
+			{
+				$logic_operator = "<";
+			}
+			$this->db->where("end {$logic_operator}", $date);
+		}
+		return $this->db->count_all_results("tournaments");
+	}
+
+	public function getTournamentId($id)
+	{
+		return $this->getTournament($id, $limit = false, $start = false);
+	}
+	
+	public function getTournamentListLimit($limit, $start)
+	{
+		return getTournament(false, $limit, $start);
+	}
+	
+	public function getFutureTournaments($limit, $start)
+	{
+		$date = new DateTime();
+		return getTournament(false, $limit, $start, $date->format("Y-m-d"));
+	}
+	
+	public function getPastTournament($limit, $start)
+	{
+		$date = new DateTime();
+		return getTournament(false, $limit, $start, $date->format("Y-m-d"), true);
+	}
+	
 	/**
   	 * Gets either a specific tournament or all of them depending on whether the $id param have been set.
-	 * @param id	the row to be inserted
+	 * Limits can be set for pageination support, date can be set as filter.
+	 *
+	 * @param id	The id to be fetched
+	 * @param limit	items per page
+	 * @param start	page number
+	 * @param date	gets only tournaments that ends before or after this date (depending on the next input)
+	 * @param past	if date is set, get tournaments which end date if BEFORE today (old tournaments)
      */
-	public function getTournament($id = false)
+	private function getTournament($id = false, $limit = false, $start = false, $date = false, $past = false)
 	{
 		if ($id === FALSE)
 		{
+			if ($date != false)
+			{
+				if ($past == false)
+				{
+					$logic_operator = ">";
+				}
+				else
+				{
+					$logic_operator = "<";
+				}
+				$this->db->where("end {$logic_operator}", $date);
+			}
+			
+			if ($limit != false && $start != false)
+			{
+				$this->db->limit($limit, $start);
+			}
 			$query = $this->db->get('tournaments');
 			return $query->result_array();
 		}
