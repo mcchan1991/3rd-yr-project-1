@@ -28,7 +28,7 @@ class Tournament extends CI_Controller {
 		$config['base_url'] = base_url() . "index.php/admin/tournament/index";
 		$config['total_rows'] = $this->Tournament_model->tournamentCountFuture();
 		$config['per_page'] = 1; 
-		$data['tournaments'] = $this->Tournament_model->getTournamentListLimit($config["per_page"], $page);
+		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
 
 		$this->pagination->initialize($config);
 		
