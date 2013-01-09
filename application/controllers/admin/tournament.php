@@ -20,28 +20,41 @@ class Tournament extends CI_Controller {
 	{
 		$this->load->helper('url');
 		
-		// fetch all of the tournaments
-		//$tournaments = $this->Tournament_model->getTournament();
-		
 		$this->load->library('pagination');
 		
-		$config['base_url'] = base_url() . "index.php/admin/tournament/index";
+		$config['base_url'] = base_url() . "index.php/admin/tournament/index/";
 		$config['total_rows'] = $this->Tournament_model->tournamentCountFuture();
-		$config['per_page'] = 1; 
-		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
-
+		$config['per_page'] = 2; 
+		$config['uri_segment'] = 4;
+		
 		$this->pagination->initialize($config);
 		
-		echo $this->pagination->create_links();
+		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
+		$data['links'] = $this->pagination->create_links();
+		
+		$this->load->view('admin/tournament/list', $data);
 	}
 	
 	/**
   	 * This method will show the specific tournament details
 	 * @param id	The id of the tournament that will be shown
      */
-	public function view($id)
+	public function view($id = null)
 	{
-		echo $id;
+		if ($id == null)
+		{
+			echo "Error! No id selected!";
+			exit();
+		}
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
+		if (empty($data['tournament']))
+		{
+			echo "No tournament with the specified ID exists. <br />";
+			exit();
+		}
+		$this->load->view('admin/tournament/view', $data);
+		/*echo print_r($data['tournament']);
+		echo $id;*/
 	}
 	
 	/**
@@ -95,7 +108,8 @@ class Tournament extends CI_Controller {
 			}
 
 			// placeholder echo.
-			echo "Tournament id : {$id} added/edited correctly. This is a placeholder. User should be redirected to list of tournaments.";
+			//echo "Tournament id : {$id} added/edited correctly. This is a placeholder. User should be redirected to list of tournaments.";
+			redirect( "/admin/tournament" );
 		}
 
 	}

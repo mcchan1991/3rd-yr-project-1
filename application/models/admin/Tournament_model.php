@@ -95,6 +95,10 @@ class Tournament_model extends CI_Model {
 			
 			if ($limit != false && $start != false)
 			{
+				if ($start == 1)
+				{
+					$start = 0;
+				}
 				$this->db->limit($limit, $start);
 			}
 			$query = $this->db->get('tournaments');
