@@ -2,13 +2,18 @@
 
 class Team extends CI_Controller {
 
-
+	function __construct()
+	{
+		parent::__construct();
+		//$this->load->model('team/Team_model');
+	}
+	
 	public function index()
 	{
 		$this->load->view('team/TeamLogin');
 	}
 	
-		public function team_validation()
+	public function team_validation()
 	{
 		$this->load->library('form_validation');
 		
@@ -34,42 +39,17 @@ class Team extends CI_Controller {
 		}
 		else
 		{
-			echo "please enter correct details";
+			//echo "please enter correct details";
 			$this->load->view('Team/NewTeam');
 		}
 	}
 	
-	public function teamlogin_validation()
+	public function check_team_login()
 	{
-		$this->load->library('form_validation');
-		
-		
-		$this->form_validation->set_rules('email', 'email', 'required|trim|valid_email');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim');
-		
-		if($this->form_validation->run())
-		{
-			$this->db->where('email', $this->input->post('email'));
-			$this->db->where('password', sha1($this->input->post('password')));
-			$query =$this->db->get('test2');
-			
-			if($query->num_rows() ==1)
-			{
-				$this->load->view('team/Logout');
-				
-			}
-			else
-			{
-				echo "please enter correct details";
-				$this->load->view('team/TeamLogin');
-			}
-		}
-		else
-		{
-			echo "please enter all correct the detail";
-			$this->load->view('team/TeamLogin');
-		}
-		
+	$this->load->model('team/Team_model');
+	
+	$this->Team_model->teamlogin_validation();
+	
 	}
 	
 	public function team_register()
@@ -80,4 +60,3 @@ class Team extends CI_Controller {
 	
 
 }
-
