@@ -6,7 +6,7 @@ class VerifyLogin extends CI_Controller {
 	{
 		session_start();
 		parent::__construct();
-		$this->load->model('admin/Staff');
+		$this->load->model('admin/Staff_model');
 	}
 
 	function index()
@@ -38,7 +38,7 @@ class VerifyLogin extends CI_Controller {
 		$username = $this->input->post('username');
 
 		//query the database
-		$result = $this->Staff->login($username, $password);
+		$result = $this->Staff_model->login($username, $password);
 
 		if($result)
 		{

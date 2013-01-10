@@ -1,5 +1,5 @@
 <?php
-class Staff extends CI_Model
+class Staff_model extends CI_Model
 {
 	function login($username, $password)
 	{
