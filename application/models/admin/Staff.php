@@ -20,4 +20,37 @@ class Staff extends CI_Model
 			return false;
 		}
 	}
+	
+	function get_records()
+	{
+		$query = $this->db->get('staff');
+		return $query->result();
+	}
+	
+	function get_record($id)
+	{
+		$this->db->where('staffid', $id);
+		$query = $this->db->get('staff');
+		return $query->result();
+	}
+	
+	function add_record($data) 
+	{
+		$this->db->insert('staff', $data);
+		return;
+	}
+	
+	function update_record($id,$data) 
+	{
+		$this->db->where('staffid', 12);
+		$this->db->update('staff', $data);
+	}
+	
+	function delete_row($id)
+	{
+		$this->db->where('staffid', $id);
+		$this->db->delete('data');
+	}
+	
+	
 }
