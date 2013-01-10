@@ -22,7 +22,7 @@
 		'value' => $password
 	);
 	
-	echo form_input($password);
+	echo form_password($password);
 	echo form_label('Password', 'password');
 	echo '<br />';
 	
