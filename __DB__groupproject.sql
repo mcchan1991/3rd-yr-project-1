@@ -246,6 +246,16 @@ CREATE TABLE `sports` (
 -- --------------------------------------------------------
 
 --
+-- Dumping data for table `sports`
+--
+
+INSERT INTO `sports` (`sportId`, `sportName`) VALUES
+(1, 'Wattball'),
+(2, 'Hurdling');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `staff`
 --
 -- Creation: Nov 13, 2012 at 05:18 PM
