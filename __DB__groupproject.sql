@@ -355,7 +355,7 @@ CREATE TABLE `tournaments` (
 --
 
 CREATE TABLE `umpires` (
-  `umpireId` int(5) NOT NULL,
+  `umpireId` int(5) NOT NULL AUTO_INCREMENT,
   `firstName` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `DOB` date NOT NULL,
