@@ -269,9 +269,7 @@ CREATE TABLE `staff` (
   `password` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `manager` tinyint(1) NOT NULL,
-  `managerID` int(100) NOT NULL,
-  PRIMARY KEY (`staffId`),
-  KEY `manages` (`managerID`)
+  PRIMARY KEY (`staffId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -427,12 +425,6 @@ ALTER TABLE `raceDetails`
 ALTER TABLE `sportAtLocations`
   ADD CONSTRAINT `sportAtLocations_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`),
   ADD CONSTRAINT `sportAtLocations_ibfk_1` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`);
-
---
--- Constraints for table `staff`
---
-ALTER TABLE `staff`
-  ADD CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`managerID`) REFERENCES `staff` (`staffId`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tickets`
