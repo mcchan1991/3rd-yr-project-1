@@ -1,62 +1,81 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-   <title>Template</title>
-   <?= $_scripts ?>
-   <?= $_styles ?>
-   <style type="text/css">
-      body {
-      background-color: #fff;
-      margin:           40px;
-      font-family:      Lucida Grande, Verdana, Sans-serif;
-      font-size:        12px;
-      color:            #000;
-      }
-      
-      #content  {
-      border:           #999 1px solid;
-      background-color: #fff;
-      padding:       20px 20px 12px 20px;
-      }
-      
-      h1 {
-      font-weight:      normal;
-      font-size:        14px;
-      color:            #990000;
-      margin:        0 0 4px 0;
-      }
-      
-      a {
-         color: #069;
-         text-decoration: underline;
-      }
-      a:hover {
-         color: #900;
-      }
-      
-      p {
-         line-height: 1.55;
-      }
-   </style>
-</head>
-<body>
-   
-   <div id="content">
-      <h1>Template Library</h1>
-      <p>The Template library, written for the <a href="http://www.codeigniter.com">CodeIgniter PHP
-         framework</a>, is a wrapper for CI's View 
-         implementation. Template is a reaction to the numerous questions from the CI community 
-         regarding how one would display multiple views for one controller, and how to embed "views 
-         within views" in a standardized fashion.</p>
-      <p>In addition, Template provides extra Views loading 
-         capabilities and shortcuts for including CSS, JavaScript, and other common elements in your 
-         final rendered HTML.</p>
-      <p><a href="http://www.williamsconcepts.com/ci/libraries/template/index.html">Read Template 
-         Library Documentation Online</a></p>
-      <?php print $content ?>
-   </div>
-   
-   
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><?= $title ?></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="<?= $meta_description ?>">
+		<meta name="author" content="<?= $meta_author ?>">
+
+		<!-- Le styles -->
+		<link href="/assets/css/bootstrap.css" rel="stylesheet">
+		<link href="/assets/css/custom.css" rel="stylesheet">
+
+		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+		<style> div { border:0px solid; } </style>
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+	</head>
+	<body>
+		<div class="container-fluid">
+			
+			<div class="row-fluid" style="margin-bottom:10px; margin-top:5px">
+				
+				<div class="span10 offset1">
+					<img src="/assets/img/logo.png" width="125px" height="125px" />
+					<img src="/assets/img/wattball.jpg" />
+				</div>	
+			</div>
+
+			<div class="row-fluid">
+				<div class="span10 offset1">
+					<div class="navbar">
+						<div class="navbar-inner">
+						<?php print $nav_top ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="row-fluid">
+				<div class="span2 offset1 " style="height:100%;">
+					<ul class="nav nav-tabs nav-stacked">
+					      <?php print $nav_side ?>
+					</ul>
+				</div>
+				<div class="span8 well" style="">
+				<?php print $content ?>
+ 				</div>
+			</div>
+		<div class="row-fluid">
+				<div class="span10 offset1">
+					<hr>
+		      		<footer>
+		        		<p>Copyright &copy; 2013-2014 Riccarton Sports Centre</p>
+		      		</footer>
+					</div>
+			</div>
+		</div>
+
+	    <!-- Le javascript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="/assets/js/jquery.js"></script>
+	    <script src="/assets/js/bootstrap-transition.js"></script>
+	    <script src="/assets/js/bootstrap-alert.js"></script>
+	    <script src="/assets/js/bootstrap-modal.js"></script>
+	    <script src="/assets/js/bootstrap-dropdown.js"></script>
+	    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+	    <script src="/assets/js/bootstrap-tab.js"></script>
+	    <script src="/assets/js/bootstrap-tooltip.js"></script>
+	    <script src="/assets/js/bootstrap-popover.js"></script>
+	    <script src="/assets/js/bootstrap-button.js"></script>
+	    <script src="/assets/js/bootstrap-collapse.js"></script>
+	    <script src="/assets/js/bootstrap-carousel.js"></script>
+	    <script src="/assets/js/bootstrap-typeahead.js"></script>
+	</body>
 </html>

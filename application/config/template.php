@@ -58,13 +58,18 @@ $template['active_template'] = 'default';
 
 $template['default']['template'] = 'template';
 $template['default']['regions'] = array(
-   'header',
    'content',
-   'footer',
+   'nav_top',
+   'nav_side'
+   
 );
 $template['default']['parser'] = 'parser';
 $template['default']['parser_method'] = 'parse';
 $template['default']['parse_template'] = FALSE;
+
+
+$template['default']['regions']['meta_description'] = array('content' => array('Software Sport Solutions')); //probably change this later
+$template['default']['regions']['meta_author'] = array('content' => array('Software Sport Solutions'));
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */
