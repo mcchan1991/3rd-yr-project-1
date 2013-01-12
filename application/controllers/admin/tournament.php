@@ -1,4 +1,10 @@
 <?php 
+/**
+ * Controller for tournament administration
+ *
+ * Created: 01/11/2012
+ * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
+ */
 class Tournament extends CI_Controller {
 
 	private $_startDate;
@@ -24,7 +30,7 @@ class Tournament extends CI_Controller {
 		
 		$config['base_url'] = base_url() . "index.php/admin/tournament/index/";
 		$config['total_rows'] = $this->Tournament_model->tournamentCountFuture();
-		$config['per_page'] = 2; 
+		$config['per_page'] = 10; 
 		$config['uri_segment'] = 4;
 		
 		$this->pagination->initialize($config);

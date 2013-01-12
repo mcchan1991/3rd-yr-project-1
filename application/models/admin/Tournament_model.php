@@ -1,8 +1,8 @@
 <?php
 /**
- * Model for Umpire administration
+ * Model for tournament administration
  *
- * Created: 01/11/2013
+ * Created: 01/11/2012
  * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
  */
 class Tournament_model extends CI_Model {
@@ -162,7 +162,12 @@ class Tournament_model extends CI_Model {
 		return $query->row_array();
 	}
 	
- 
+ 	
+	/**
+  	 * Updates a given tournament
+	 *
+	 * @param row	the row to be updated
+     */
 	public function update($row)
 	{
 		$this->db->where('tournamentId', $row['tournamentId']);

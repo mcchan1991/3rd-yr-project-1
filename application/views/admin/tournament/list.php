@@ -1,12 +1,15 @@
 <table>
-<tr>
-<th>Name</th>
-<th>Start date</th>
-<th>End Date</th>
-<th>No. tickets/day</th>
-<th>No. events</th>
-<th>Participents registered</th>
-</tr> 
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Start date</th>
+			<th>End Date</th>
+			<th>No. tickets/day</th>
+			<th>No. events</th>
+			<th>Participents registered</th>
+		</tr> 
+	</thead>
+	<tbody>
 <?php
 foreach($tournaments as $current )
 {
@@ -22,9 +25,12 @@ foreach($tournaments as $current )
 	
 }
 ?>
-<tr>
-<td colspan="6">
-<?php echo $links; ?>
-</td>
-</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+			<?php echo $links; ?>
+			</td>
+		</tr>
+	</tfoot>
 </table>
