@@ -40,10 +40,10 @@
 					</div>
 				</div>
 			</div>
-		
+			
 			<div class="row-fluid">
-				<div class="span2 offset1 " style="height:100%;">
-					<ul class="nav nav-tabs nav-stacked">
+				<div class="span2 offset1 well" style="padding: 8px 0;">
+					<ul class="nav nav-list">
 					      <?php print $nav_side ?>
 					</ul>
 				</div>

@@ -80,7 +80,11 @@ class Tournament extends My_Admin_Controller {
 			echo "No tournament with the specified ID exists. <br />";
 			exit();
 		}
+		// empty the nav_side region as we need to overwrite it:
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','admin/tournament/view',$data);
+		
 		$this->template->render();
 		/*echo print_r($data['tournament']);
 		echo $id;*/
@@ -194,6 +198,9 @@ class Tournament extends My_Admin_Controller {
 			echo "Invalid ID placeholder : {$id}";
 			exit;
 		}
+		$sideData['tournament'] = $tournament;
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData);
 		$this->template->write_view('content','admin/tournament/create',$data);
 		$this->template->render();
 	}

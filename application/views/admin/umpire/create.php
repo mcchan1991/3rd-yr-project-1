@@ -1,4 +1,11 @@
 <?php 
+$attributes = array('class' => 'form-horizontal');
+$labelAttributes = array(
+    'class' => 'control-label',
+);
+$btnAttributes = array(
+    'class' => 'btn',
+);
 if (empty($id))
 {
 	?>
@@ -17,7 +24,7 @@ if (empty($id))
 	echo validation_errors();
 	echo "</div>";
 	}
-	echo form_open('admin/umpire/save');
+	echo form_open('admin/umpire/save', $attributes);
 }
 else
 {
@@ -36,7 +43,7 @@ else
 	echo validation_errors();
 	echo "</div>";
 	}
-	echo form_open("admin/umpire/save/{$id}");
+	echo form_open("admin/umpire/save/{$id}", $attributes);
 }
 
 // form building
@@ -46,9 +53,12 @@ $firstNameForm = array(
 	'value' => $firstName
 );
 
+echo "<div class=\"control-group\">";
+echo form_label('First Name', 'firstName', $labelAttributes);
+echo "<div class=\"controls\">";
 echo form_input($firstNameForm);
-echo form_label('First Name', 'firstName');
-echo '<br />';
+echo '</div>';
+echo '</div>';
 
 $surnameForm = array(
 	'name'	=> 'surname',
@@ -56,9 +66,13 @@ $surnameForm = array(
 	'value' => $surname
 );
 
+echo "<div class=\"control-group\">";
+echo form_label('Surname', 'surname', $labelAttributes);
+echo "<div class=\"controls\">";
 echo form_input($surnameForm);
-echo form_label('Surname', 'surname');
 echo '<br />';
+echo '</div>';
+echo '</div>';
 
 $dobForm = array(
 	'name'	=> 'dob',
@@ -66,9 +80,13 @@ $dobForm = array(
 	'value' => $DOB
 );
 
+echo "<div class=\"control-group\">";
+echo form_label('Date Of Birth', 'dob', $labelAttributes);
+echo "<div class=\"controls\">";
 echo form_input($dobForm);
-echo form_label('Date Of Birth', 'dob');
 echo '<br />';
+echo '</div>';
+echo '</div>';
 
 $emailForm = array(
 	'name'	=> 'email',
@@ -76,9 +94,13 @@ $emailForm = array(
 	'value' => $email
 );
 
+echo "<div class=\"control-group\">";
+echo form_label('E-mail', 'email', $labelAttributes);
+echo "<div class=\"controls\">";
 echo form_input($emailForm);
-echo form_label('E-mail', 'email');
 echo '<br />';
+echo '</div>';
+echo '</div>';
 
 $sportOptions = array();
 foreach ($sports as $sportValue)
@@ -86,9 +108,13 @@ foreach ($sports as $sportValue)
 	$sportOptions[$sportValue['sportId']] = $sportValue['sportName'];
 }
 
+echo "<div class=\"control-group\">";
+echo form_label('Sport', 'sport', $labelAttributes);
+echo "<div class=\"controls\">";
 echo form_dropdown('sport', $sportOptions);
-echo form_label('Sport', 'sport');
 echo "<br /> <br />";
-echo form_submit('submit', 'Submit');
+echo form_submit($btnAttributes,'submit', 'Submit');
+echo '</div>';
+echo '</div>';
 
 echo form_close();

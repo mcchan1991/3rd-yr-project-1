@@ -33,7 +33,7 @@
 			echo "<td>" . $umpire['surname'] . "</td>";
 			echo "<td>" . $umpire['DOB'] . "</td>";
 			echo "<td>" . $umpire['email'] . "</td>";
-			echo "<td>" . $sports[$umpire['sport']]['sportName'] . "</td>";
+			echo "<td>" . $sports[$umpire['sport']-1]['sportName'] . "</td>";
 			$url = base_url() . "index.php/admin/umpire/edit/".$umpire['umpireId']."/";
 			echo "<td><a href=\"{$url}\">Edit</a></td>";
 			echo "</tr>";

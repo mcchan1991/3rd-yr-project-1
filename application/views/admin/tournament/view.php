@@ -3,6 +3,8 @@
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
   <li class="active"><?php echo $tournament['name']; ?></li>
 </ul>
+
+<h3><?php echo $tournament['name']; ?></h3>
 <table class="table">
 <tr>
 	<th>Name</th>
@@ -29,5 +31,3 @@
 	<td><?php echo $tournament['name']; ?></td>
 </tr>
 </table>
-<br />
-<div>Add new event link shold go here with some URL including the tournament id</div>

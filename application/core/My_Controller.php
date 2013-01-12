@@ -20,5 +20,11 @@ class My_Admin_Controller extends CI_Controller {
 			$data['segment'] = "home";
 		}
 		$this->template->write_view('nav_top','admin/topnav', $data);
+		
+		// if not overwritten loads default a list of active tournaments
+		$this->load->model('admin/Tournament_model');
+		$sideData['tournaments'] = $this->Tournament_model->getFutureTournaments(5, 1);
+		$this->template->write_view('nav_side','admin/navside_standard',$sideData);
+		
 	}
 }

@@ -34,7 +34,8 @@ else
 	  <li class="active">Edit tournament: <?php echo $name; ?></li>
 	</ul>
 	<?php
-	echo "<h3>Edit tournament: {$name}</h3>";
+	$url = base_url() . "index.php/admin/tournament/view/{$id}/";
+	echo "<h3>Edit tournament: <a href=\"{$url}\">{$name}</a></h3>";
 	$errors = validation_errors();
 	if (!empty($errors))
 	{
