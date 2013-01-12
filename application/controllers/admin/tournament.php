@@ -6,7 +6,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Created: 01/11/2012
  * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
  */
-class Tournament extends CI_Controller {
+class Tournament extends My_Admin_Controller {
 
 	private $_startDate;
 	private $_endDate;
@@ -17,9 +17,6 @@ class Tournament extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		if(!$this->session->userdata('logged_in')){
-			redirect( "/admin/login" );
-		}
 		$this->load->model('admin/Tournament_model');
 	}
 	

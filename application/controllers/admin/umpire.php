@@ -6,7 +6,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Created: 11/01/2013
  * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
  */
-class Umpire extends CI_Controller 
+class Umpire extends My_Admin_Controller 
 {
 	/**
   	 * Constructor of the controller. Needs to call the parrent, and also loads the model. 
@@ -14,10 +14,6 @@ class Umpire extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
-		if(!$this->session->userdata('logged_in')){
-			redirect( "/admin/login" );
-		}
 		
 		$this->load->model('admin/Umpire_model');
 		$this->load->model('admin/Sport_model');
@@ -228,4 +224,3 @@ class Umpire extends CI_Controller
 		return $result;
 	}
 }	
-?>
