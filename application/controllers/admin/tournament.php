@@ -38,7 +38,8 @@ class Tournament extends CI_Controller {
 		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
 		$data['links'] = $this->pagination->create_links();
 		
-		$this->load->view('admin/tournament/list', $data);
+		$this->template->write_view('content','admin/tournament/list',$data);
+		$this->template->render();
 	}
 	
 	/**
@@ -58,7 +59,8 @@ class Tournament extends CI_Controller {
 			echo "No tournament with the specified ID exists. <br />";
 			exit();
 		}
-		$this->load->view('admin/tournament/view', $data);
+		$this->template->write_view('content','admin/tournament/view',$data);
+		$this->template->render();
 		/*echo print_r($data['tournament']);
 		echo $id;*/
 	}
@@ -83,7 +85,9 @@ class Tournament extends CI_Controller {
 			$data['endDate'] = $this->input->post('endDate');
 			$data['noTickets'] = $this->input->post('noTickets');
 			
-			$this->load->view('admin/tournament/create',$data);
+			$this->template->write_view('content','admin/tournament/create',$data);
+			$this->template->render();
+			
 		}
 		// if everything is ok
 		else
@@ -131,7 +135,8 @@ class Tournament extends CI_Controller {
 		$data['startDate'] = "";
 		$data['endDate'] = "";
 		$data['noTickets'] = "";
-		$this->load->view('admin/tournament/create', $data);
+		$this->template->write_view('content','admin/tournament/create',$data);
+		$this->template->render();
 		
 		// load view
 		
@@ -168,7 +173,8 @@ class Tournament extends CI_Controller {
 			echo "Invalid ID placeholder : {$id}";
 			exit;
 		}
-		$this->load->view('admin/tournament/create', $data);
+		$this->template->write_view('content','admin/tournament/create',$data);
+		$this->template->render();
 	}
 	
 	/**
