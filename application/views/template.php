@@ -8,10 +8,10 @@
 		<meta name="author" content="<?= $meta_author ?>">
 
 		<!-- Le styles -->
-		<link href="/assets/css/bootstrap.css" rel="stylesheet">
-		<link href="/assets/css/custom.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>/assets/css/bootstrap.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>/assets/css/custom.css" rel="stylesheet">
 
-		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 		<style> div { border:0px solid; } </style>
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -26,8 +26,8 @@
 			<div class="row-fluid" style="margin-bottom:10px; margin-top:5px">
 				
 				<div class="span10 offset1">
-					<img src="/assets/img/logo.png" width="125px" height="125px" />
-					<img src="/assets/img/wattball.jpg" />
+					<img src="<?php echo base_url(); ?>/assets/img/logo.png" width="125px" height="125px" />
+					<img src="<?php echo base_url(); ?>/assets/img/wattball.jpg" />
 				</div>	
 			</div>
 
@@ -64,18 +64,18 @@
 	    <!-- Le javascript
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
-	    <script src="/assets/js/jquery.js"></script>
-	    <script src="/assets/js/bootstrap-transition.js"></script>
-	    <script src="/assets/js/bootstrap-alert.js"></script>
-	    <script src="/assets/js/bootstrap-modal.js"></script>
-	    <script src="/assets/js/bootstrap-dropdown.js"></script>
-	    <script src="/assets/js/bootstrap-scrollspy.js"></script>
-	    <script src="/assets/js/bootstrap-tab.js"></script>
-	    <script src="/assets/js/bootstrap-tooltip.js"></script>
-	    <script src="/assets/js/bootstrap-popover.js"></script>
-	    <script src="/assets/js/bootstrap-button.js"></script>
-	    <script src="/assets/js/bootstrap-collapse.js"></script>
-	    <script src="/assets/js/bootstrap-carousel.js"></script>
-	    <script src="/assets/js/bootstrap-typeahead.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-transition.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-alert.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-modal.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-dropdown.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-scrollspy.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-tab.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-tooltip.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-popover.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-button.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-collapse.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-carousel.js"></script>
+	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-typeahead.js"></script>
 	</body>
 </html>
