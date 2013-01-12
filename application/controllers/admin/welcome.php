@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Welcome extends CI_Controller {
+
+class Welcome extends My_Admin_Controller  {
 
 	function __construct()
 	{
@@ -8,10 +9,8 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		if(!$this->session->userdata('logged_in')){
-			redirect( "/admin/login" );
-		}
-		$this->load->view('admin/welcome');
+		$this->template->write_view('content','admin/welcome');
+		$this->template->render();
 	}
 	
 	public function logout()
