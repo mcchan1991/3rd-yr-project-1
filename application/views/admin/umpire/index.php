@@ -41,6 +41,8 @@
 		echo "</tbody>";
 		
 	?>
-	
+	<tfoot>
+		<tr>
+		<td colspan="6"><a href="<?php echo base_url() . "index.php/admin/umpire/add"; ?>">Add new umpire</a></td>
 </table>
 <?php echo $links; ?>
