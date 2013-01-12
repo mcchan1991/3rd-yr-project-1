@@ -6,14 +6,14 @@
 
 <?php
 	// form building
-	$username = array(
-		'name'	=> 'username',
-		'id'	=> 'username',
-		'value' => $username
+	$email = array(
+		'name'	=> 'email',
+		'id'	=> 'email',
+		'value' => $email
 	);
 	
-	echo form_input($username);
-	echo form_label('Username', 'username');
+	echo form_input($email);
+	echo form_label('Email', 'email');
 	echo '<br />';
 	
 	$password = array(

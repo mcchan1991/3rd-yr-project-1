@@ -5,7 +5,7 @@ class Athlete_model extends CI_Model
 	{
 		$this -> db -> select('athleteid, email, password');
 		$this -> db -> from('athletes');
-		$this -> db -> where('username = ' . "'" . $username . "'");
+		$this -> db -> where('email = ' . "'" . $username . "'");
 		$this -> db -> where('password = ' . "'" . sha1($password) . "'");
 		$this -> db -> limit(1);
 

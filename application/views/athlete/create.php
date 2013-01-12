@@ -55,7 +55,7 @@
 	echo form_label('Date of birth', 'dob');
 	echo '<br />';
 	
-	form_hidden('gender', $gender);
+	echo form_hidden('gender', $gender);
 	
 	echo form_submit('submit', 'Submit');
 	
