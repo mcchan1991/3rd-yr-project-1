@@ -1,10 +1,10 @@
 <?php
-class Staff_model extends CI_Model
+class Athlete_model extends CI_Model
 {
 	function login($username, $password)
 	{
-		$this -> db -> select('staffid, username, password,manager');
-		$this -> db -> from('staff');
+		$this -> db -> select('athleteid, email, password');
+		$this -> db -> from('athletes');
 		$this -> db -> where('username = ' . "'" . $username . "'");
 		$this -> db -> where('password = ' . "'" . sha1($password) . "'");
 		$this -> db -> limit(1);
@@ -23,33 +23,33 @@ class Staff_model extends CI_Model
 	
 	function get_records()
 	{
-		$query = $this->db->get('staff');
+		$query = $this->db->get('athletes');
 		return $query->result();
 	}
 	
 	function get_record($id)
 	{
-		$this->db->where('staffid', $id);
-		$query = $this->db->get('staff');
+		$this->db->where('athleteid', $id);
+		$query = $this->db->get('athletes');
 		return $query->result();
 	}
 	
 	function add_record($data) 
 	{
-		$this->db->insert('staff', $data);
+		$this->db->insert('athletes', $data);
 		return;
 	}
 	
 	function update_record($id,$data) 
 	{
-		$this->db->where('staffid', $id);
-		$this->db->update('staff', $data);
+		$this->db->where('athleteid', $id);
+		$this->db->update('athletes', $data);
 	}
 	
 	function delete_row($id)
 	{
-		$this->db->where('staffid', $id);
-		$this->db->delete('staff');
+		$this->db->where('athleteid', $id);
+		$this->db->delete('athletes');
 	}
 	
 	

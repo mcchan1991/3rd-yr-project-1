@@ -70,6 +70,7 @@ $template['default']['parse_template'] = FALSE;
 
 $template['default']['regions']['meta_description'] = array('content' => array('Software Sport Solutions')); //probably change this later
 $template['default']['regions']['meta_author'] = array('content' => array('Software Sport Solutions'));
+$template['default']['regions']['title'] = array('content' => array('Software Sport Solutions'));
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */
