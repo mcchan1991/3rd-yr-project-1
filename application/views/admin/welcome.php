@@ -5,6 +5,6 @@
  </head>
  <body>
    <h1>Home</h1>
-   <a href="/index.php/admin/logout">Logout</a>
+   <a href="<?php echo base_url(); ?>index.php/admin/logout">Logout</a>
  </body>
 </html>
