@@ -1,4 +1,8 @@
-<table>
+<ul class="breadcrumb">
+  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+  <li class="active">Tournaments</li>
+</ul>
+<table class="table">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -26,11 +30,5 @@ foreach($tournaments as $current )
 }
 ?>
 	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="6">
-			<?php echo $links; ?>
-			</td>
-		</tr>
-	</tfoot>
 </table>
+<?php echo $links; ?>

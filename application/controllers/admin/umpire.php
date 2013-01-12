@@ -35,6 +35,25 @@ class Umpire extends CI_Controller
 		$config['total_rows'] = $this->Umpire_model->countUmpires();
 		$config['per_page'] = 10; 
 		$config['uri_segment'] = 4;
+		// for styling with bootstrap: http://www.smipple.net/snippet/Rufhausen/Twitter%20Bootstrap%2BCodeigniter%20Pagination
+	    $config['full_tag_open'] = '<div class="pagination"><ul>';
+	    $config['full_tag_close'] = '</ul></div>';
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '&larr; Previous';
+	    $config['prev_tag_open'] = '<li class="prev">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &rarr;';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] =  '<li class="active"><a href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
 		
 		$this->pagination->initialize($config);
 		
@@ -42,7 +61,9 @@ class Umpire extends CI_Controller
 		$data['links'] = $this->pagination->create_links();
 		$data['sports'] = $this->Sport_model->getAll();
 		
-		$this->load->view('admin/umpire/index', $data);
+		//$this->load->view('admin/umpire/index', $data);
+		$this->template->write_view('content','admin/umpire/index',$data);
+		$this->template->render();
 	}
 	
 	public function save($id = false)
@@ -123,7 +144,8 @@ class Umpire extends CI_Controller
 		$data['sport'] ="";
 		$data['sports'] = $this->Sport_model->getAll();
 		
-		$this->load->view('admin/umpire/create', $data);
+		$this->template->write_view('content','admin/umpire/create',$data);
+		$this->template->render();
 	}
 	
 	/**
@@ -150,7 +172,8 @@ class Umpire extends CI_Controller
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['id'] = $id;
 		
-		$this->load->view('admin/umpire/create', $data);
+		$this->template->write_view('content','admin/umpire/create',$data);
+		$this->template->render();
 	}
 	
 	public function dateCheck()

@@ -21,6 +21,11 @@ class Staff_model extends CI_Model
 		}
 	}
 	
+	function logout()
+	{
+		$this->session->sess_destroy();
+	}
+	
 	function get_records()
 	{
 		$query = $this->db->get('staff');

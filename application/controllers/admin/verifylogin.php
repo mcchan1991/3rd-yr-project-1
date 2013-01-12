@@ -7,6 +7,7 @@ class VerifyLogin extends CI_Controller {
 		session_start();
 		parent::__construct();
 		$this->load->model('admin/Staff_model');
+		$this->template->set_template('adminLogin');
 	}
 
 	function index()
@@ -22,7 +23,8 @@ class VerifyLogin extends CI_Controller {
 			//Field validation failed.  User redirected to login page
 			$data['username'] = "";
 			$data['password'] = "";
-			$this->load->view('admin/login', $data);
+			$this->template->write_view('content','admin/login', $data);
+			$this->template->render();
 		}
 		else
 		{

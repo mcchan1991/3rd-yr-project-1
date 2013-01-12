@@ -16,6 +16,9 @@ class Tournament extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		if(!$this->session->userdata('logged_in')){
+			redirect( "/admin/login" );
+		}
 		$this->load->model('admin/Tournament_model');
 	}
 	
@@ -32,6 +35,26 @@ class Tournament extends CI_Controller {
 		$config['total_rows'] = $this->Tournament_model->tournamentCountFuture();
 		$config['per_page'] = 10; 
 		$config['uri_segment'] = 4;
+		
+		// for styling with bootstrap: http://www.smipple.net/snippet/Rufhausen/Twitter%20Bootstrap%2BCodeigniter%20Pagination
+	    $config['full_tag_open'] = '<div class="pagination"><ul>';
+	    $config['full_tag_close'] = '</ul></div>';
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '&larr; Previous';
+	    $config['prev_tag_open'] = '<li class="prev">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &rarr;';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] =  '<li class="active"><a href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
 		
 		$this->pagination->initialize($config);
 		

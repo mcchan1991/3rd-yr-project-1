@@ -1,11 +1,41 @@
-<?php echo validation_errors(); ?>
 <?php 
 if (empty($id))
 {
+	?>
+	<ul class="breadcrumb">
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/umpire">Umpires</a> <span class="divider">/</span></li>
+	  <li class="active">Add new umpire</li>
+	</ul>
+	<?php
+	echo "<h3>Add new umpire</h3>";
+	
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
 	echo form_open('admin/umpire/save');
 }
 else
 {
+	?>
+	<ul class="breadcrumb">
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/umpire">Umpires</a> <span class="divider">/</span></li>
+	  <li class="active">Edit umpire: <?php echo $firstName . " " . $surname; ?></li>
+	</ul>
+	<?php
+	echo "<h3>Edit umpire: {$firstName} {$surname}</h3>";
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
 	echo form_open("admin/umpire/save/{$id}");
 }
 

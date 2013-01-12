@@ -11,6 +11,7 @@ class Login extends CI_Controller {
 		if($this->session->userdata('logged_in')){
 			redirect( "/admin" );
 		}
+		$this->template->set_template('adminLogin');
 	}
 	
 	/**
@@ -18,7 +19,6 @@ class Login extends CI_Controller {
 	 */
 	public function index()
 	{
-
 		$this->load->helper('form');
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
 		$data['username'] = "";

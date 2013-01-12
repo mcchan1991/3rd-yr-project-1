@@ -72,5 +72,18 @@ $template['default']['regions']['meta_description'] = array('content' => array('
 $template['default']['regions']['meta_author'] = array('content' => array('Software Sport Solutions'));
 $template['default']['regions']['title'] = array('content' => array('Software Sport Solutions'));
 
+// admin login template:
+$template['adminLogin']['template'] = 'admin/loginTemplate';
+$template['adminLogin']['regions'] = array(
+   'content',
+);
+$template['adminLogin']['parser'] = 'parser';
+$template['adminLogin']['parser_method'] = 'parse';
+$template['adminLogin']['parse_template'] = FALSE;
+
+$template['adminLogin']['regions']['meta_description'] = array('content' => array('Software Sport Solutions')); //probably change this later
+$template['adminLogin']['regions']['meta_author'] = array('content' => array('Software Sport Solutions'));
+$template['adminLogin']['regions']['title'] = array('content' => array('Software Sport Solutions'));
+
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */

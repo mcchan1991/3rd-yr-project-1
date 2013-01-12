@@ -7,7 +7,12 @@
  */
 
 ?>
-<table>
+<ul class="breadcrumb">
+  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+  <li class="active">Umpires</li>
+</ul>
+<h3>Umpires</h3>
+<table class="table">
 	<thead>
 		<tr>
 			<th>First Name</th>
@@ -34,12 +39,8 @@
 			echo "</tr>";
 		}
 		echo "</tbody>";
-		echo "<tfoot>";
-		echo "<tr>";
-		echo "<td colspan=\"6\">{$links}</td>";
-		echo "</tr>";
-		echo "</tfoot>";
 		
 	?>
 	
 </table>
+<?php echo $links; ?>

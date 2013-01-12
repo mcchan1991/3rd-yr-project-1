@@ -1,15 +1,49 @@
-<?php echo validation_errors(); ?>
-
 <?php 
+$attributes = array('class' => 'form-horizontal');
+$labelAttributes = array(
+    'class' => 'control-label',
+);
+$btnAttributes = array(
+    'class' => 'btn',
+);
 if (empty($id))
 {
-	echo form_open('admin/tournament/save');
+	?>
+	<ul class="breadcrumb">
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
+	  <li class="active">Add new tournament</li>
+	</ul>
+	<?php
+	echo "<h3>Add new tournament</h3>";
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
+	echo form_open('admin/tournament/save', $attributes);
 }
 else
 {
-	echo form_open("admin/tournament/save/{$id}");
+	?>
+	<ul class="breadcrumb">
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
+	  <li class="active">Edit tournament: <?php echo $name; ?></li>
+	</ul>
+	<?php
+	echo "<h3>Edit tournament: {$name}</h3>";
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
+	echo form_open("admin/tournament/save/{$id}", $attributes);
 }
-
 
 ?>
 
@@ -20,10 +54,12 @@ else
 		'id'	=> 'name',
 		'value' => $name
 	);
-	
+	echo "<div class=\"control-group\">";
+	echo form_label('Tournament name', 'name', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($name);
-	echo form_label('Tournament name', 'name');
-	echo '<br />';
+	echo '</div>';
+	echo '</div>';
 	
 	$startDate = array(
 		'name'	=> 'startDate',
@@ -31,9 +67,12 @@ else
 		'value' => $startDate
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('Start date', 'startDate', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($startDate);
-	echo form_label('Start date', 'startDate');
-	echo '<br />';
+	echo '</div>';
+	echo '</div>';	
 	
 	$endDate = array(
 		'name'	=> 'endDate',
@@ -41,9 +80,12 @@ else
 		'value' => $endDate
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('End date', 'endDate', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($endDate);
-	echo form_label('End date', 'endDate');
-	echo '<br />';
+	echo '</div>';
+	echo '</div>';
 	
 	$noTicketsField = array(
 		'name'	=> 'noTickets',
@@ -51,10 +93,17 @@ else
 		'value' => $noTickets
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('Number of tickets/day', 'noTickets', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($noTicketsField);
-	echo form_label('Number of tickets/day', 'noTickets');
-	echo '<br />';
+	echo '</div>';
+	echo '</div>';
 	
-	echo form_submit('submit', 'Submit');
+	echo "<div class=\"control-group\">";
+	echo "<div class=\"controls\">";
+	echo form_submit($btnAttributes, 'Submit', 'submit');
+	echo '</div>';
+	echo '</div>';
 	
 	echo form_close();
