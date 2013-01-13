@@ -1,0 +1,41 @@
+<ul class="breadcrumb">
+  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+  <li class="active">Tournaments</li>
+</ul>
+<h3>Events</h3>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Sport</th>
+			<th>Start date</th>
+			<th>End date</th>
+			<th>Reg. Start</th>
+			<th>Reg. End</th>
+			<th>Max Entries</th>
+			<th>Min Entries</th>
+			<th>Participents registered</th>
+		</tr> 
+	</thead>
+	<tbody>
+	<?php
+	foreach($events as $current )
+	{
+		echo "<tr>";
+		//$url = base_url() . "index.php/admin/tournament/view/".$current['tournamentId']."/";
+		echo "<td><a href=#>{$current['name']}</a></td>";
+		echo "<td>" . $sports[$current['sportId']-1]['sportName'] . "</td>";
+		echo "<td>{$current['start']}</td>";
+		echo "<td>{$current['end']}</td>";
+		echo "<td>{$current['regStart']}</td>";
+		echo "<td>{$current['regEnd']}</td>";
+		echo "<td>{$current['maxEntries']}</td>";
+		echo "<td>{$current['minEntries']}</td>";
+		echo "<td>Coming soon</td>";
+		echo "</tr>";
+		
+	}
+	?>
+	</tbody>
+</table>
+<?php echo $links; ?>

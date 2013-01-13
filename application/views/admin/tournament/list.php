@@ -31,9 +31,10 @@ foreach($tournaments as $current )
 	echo "<td>{$current['start']}</td>";
 	echo "<td>{$current['end']}</td>";
 	echo "<td>{$current['noTickets']}</td>";
-	echo "<td>To come...</td>";
+	echo "<td>{$eventCount[$current['tournamentId']]}</td>";
 	echo "<td>To come...</td>";	
 	echo "</tr>";
+	
 	
 }
 ?>

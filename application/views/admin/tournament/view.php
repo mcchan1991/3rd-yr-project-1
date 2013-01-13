@@ -24,7 +24,7 @@
 </tr>
 <tr>
 	<th>No. events</th>
-	<td>Number here and a list of events below?</td>
+	<td><?php echo $noEvents; ?></td>
 </tr>
 <tr>
 	<th>Participents registered</th>

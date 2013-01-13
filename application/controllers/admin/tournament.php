@@ -19,7 +19,9 @@ class Tournament extends My_Admin_Controller {
 	{
 		parent::__construct();
 		$this->load->model('admin/Tournament_model');
+		$this->load->model('admin/Event_model');
 		$this->load->helper('form');
+		$this->load->model('admin/Sport_model');
 	}
 	
 	/**
@@ -59,6 +61,13 @@ class Tournament extends My_Admin_Controller {
 		$this->pagination->initialize($config);
 		
 		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
+		$data['eventCount'] = array();
+		foreach($data['tournaments'] as $tournament )
+		{
+			$data['eventCount'][$tournament['tournamentId']] = $this->Event_model->countEventsByTournamentId($tournament['tournamentId']);
+		}
+		
+	
 		$data['links'] = $this->pagination->create_links();
 		
 		$this->template->write_view('content','admin/tournament/list',$data);
@@ -82,6 +91,7 @@ class Tournament extends My_Admin_Controller {
 			echo "No tournament with the specified ID exists. <br />";
 			exit();
 		}
+		$data['noEvents'] = $this->Event_model->countEventsByTournamentId($id);
 		// empty the nav_side region as we need to overwrite it:
 		$this->template->empty_region('nav_side');
 		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
@@ -213,6 +223,50 @@ class Tournament extends My_Admin_Controller {
 	{
 		
 	}
+	
+	
+	public function viewEvents($id,$page=1)
+	{
+		$this->load->helper('url');
+		
+		$this->load->library('pagination');
+		
+		$config['base_url'] = base_url() . "index.php/admin/tournament/viewEvents/";
+		$config['total_rows'] = $this->Event_model->countEventsByTournamentId($id);
+		$config['per_page'] = 10; 
+		$config['uri_segment'] = 5;
+		
+		// for styling with bootstrap: http://www.smipple.net/snippet/Rufhausen/Twitter%20Bootstrap%2BCodeigniter%20Pagination
+	    $config['full_tag_open'] = '<div class="pagination"><ul>';
+	    $config['full_tag_close'] = '</ul></div>';
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '&larr; Previous';
+	    $config['prev_tag_open'] = '<li class="prev">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &rarr;';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] =  '<li class="active"><a href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		
+		$this->pagination->initialize($config);
+		
+		$data['events'] = $this->Event_model->getPaginationByTournamentId($id,$config["per_page"], $page);
+		$data['links'] = $this->pagination->create_links();
+		$data['sports'] = $this->Sport_model->getAll();
+		
+		$this->template->write_view('content','admin/tournament/event_list',$data);
+		$this->template->render();
+		
+	}
+	
 	
 	/**
 	 * Function that allows the user to add a umpire to a tournament
