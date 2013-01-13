@@ -364,8 +364,25 @@ CREATE TABLE `umpires` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
+-- Table structure for table `umpireAvailability`
 --
+
+CREATE TABLE `umpireAvailability` (
+  `umpireId` int(9) NOT NULL,
+  `tournamentId` int(9) NOT NULL,
+  `date` date NOT NULL,
+  `availableFrom` datetime NOT NULL,
+  `availableTo` datetime NOT NULL,
+  PRIMARY KEY (`umpireId`,`tournamentId`,`date`),
+  KEY `tournamentId` (`tournamentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for table `umpireAvailability`
+--
+ALTER TABLE `umpireAvailability`
+  ADD CONSTRAINT `umpireAvailability_ibfk_2` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`),
+  ADD CONSTRAINT `umpireAvailability_ibfk_1` FOREIGN KEY (`umpireId`) REFERENCES `umpires` (`umpireId`);
 
 --
 -- Constraints for table `athleteInRace`
