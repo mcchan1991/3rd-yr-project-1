@@ -10,6 +10,7 @@ class Tournament extends My_Admin_Controller {
 
 	private $_startDate;
 	private $_endDate;
+	private $_tournamentId;
 	
 	/**
   	 * Constructor of the controller. Needs to call the parrent, and also loads the model. 
@@ -199,8 +200,7 @@ class Tournament extends My_Admin_Controller {
 			exit;
 		}
 		$sideData['tournament'] = $tournament;
-		$this->template->empty_region('nav_side');
-		$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData);
+		$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData, true);
 		$this->template->write_view('content','admin/tournament/create',$data);
 		$this->template->render();
 	}
@@ -212,6 +212,285 @@ class Tournament extends My_Admin_Controller {
 	public function delete()
 	{
 		
+	}
+	
+	/**
+	 * Function that allows the user to add a umpire to a tournament
+	 * 
+	 * @param id		the id of the tournament the umpire should be added to.
+	 */
+	public function addUmpire($id)
+	{
+		$this->load->library('form_validation');
+		$this->load->model('admin/Umpire_model');
+		$this->load->model('admin/Sport_model');
+		
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
+		$data['umpires']  = $this->Umpire_model->getAll();
+		$data['sports'] = $this->Sport_model->getAll();
+		
+		$data['id'] = "";
+		$data['date'] = "";
+		$data['availableFrom'] = "";
+		$data['availableTo'] = "";
+		$data['checked'] = false;
+		
+		$sideData['tournament'] = $data['tournament'];
+		$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData, true);
+		$this->template->write_view('content','admin/tournament/add_umpire',$data);
+		$this->template->render();
+	}
+	
+	/**
+	 *	Function used to validate input and save an umpire.
+	 *  @param tournamentId		the tournament the umpire is being saved to
+	 *  @param umpireId			the umpireId is set if editing
+	 */ 
+	public function saveUmpire($tournamentId, $umpireId = false)
+	{
+		$this->load->library('form_validation');
+		$this->load->model('admin/Umpire_model');
+		$this->load->model('admin/Sport_model');
+		
+		//validate the input
+		$this->form_validation->set_rules("umpire", "Umpire", "required");
+		$this->form_validation->set_rules("date", "Date", "required|callback_umpireDateCheck");
+		$this->form_validation->set_rules("from", "Available From", "callback_umpireRequiredFields|callback_umpireTimeCheck");
+		$this->_tournamentId = $tournamentId;
+		
+		$umpire = $this->input->post('umpire');
+		$date = $this->input->post('date');
+		$to = $this->input->post('to');
+		$from = $this->input->post('from');
+		$allDay = $this->input->post('allDay');
+						
+		if ($this->form_validation->run() == FALSE)
+		{
+			if ($umpireId == false)
+			{
+				$data['id'] = "";
+			}
+			else
+			{
+				$data['id'] = $umpireId;
+				
+			}
+			$data['date'] = $date;
+			$data['availableFrom'] = $from;
+			$data['availableTo'] = $to;
+			if ($allDay == 1)
+			{
+				$data['checked'] = true;			
+			}
+			else
+			{
+				$data['checked'] = false;
+			}
+			
+			$data['tournament'] = $this->Tournament_model->getTournamentId($tournamentId);
+			$data['umpires']  = $this->Umpire_model->getAll();
+			$data['sports'] = $this->Sport_model->getAll();
+			
+			$sideData['tournament'] = $data['tournament'];
+			$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData, true);
+			$this->template->write_view('content','admin/tournament/add_umpire',$data);
+			$this->template->render();
+		}
+		else
+		{
+			if ($umpireId == false)
+			{
+				$dateFormat = "d/m/Y";
+				$dateObject = DateTime::createFromFormat($dateFormat, $date);
+				
+				if ($allDay == 1)
+				{
+					$from = "00:00";
+					$to = "23:59";
+				}
+				$dateFormat = "H:i";
+				$fromObject = DateTime::createFromFormat($dateFormat, $from);
+				$toObject = DateTime::createFromFormat($dateFormat, $to);
+				
+				$dateFormat = "Y-m-d H:i:s";
+								
+				$postdata = array(
+					'umpireId' => $umpire,
+					'tournamentId' => $tournamentId,
+					'date' => $dateObject->format('Y-m-d'),
+					'availableFrom' => $fromObject->format($dateFormat),
+					'availableTo' => $toObject->format($dateFormat),
+				);
+				$this->Umpire_model->createUmpireAvailability($postdata);
+			}
+
+			
+			redirect( "/admin/tournament/umpireList/{$tournamentId}" );
+		}
+	}
+	
+	/**
+	 * Callback function to check that all fields are entered as required
+	 * either all day needs to be checked OR availableFrom AND availableTo needs to be entered
+	 * 
+	 */
+	public function umpireRequiredFields()
+	{
+		$to = $this->input->post('to');
+		$from = $this->input->post('from');
+		$allDay = $this->input->post('allDay');
+		
+		if ($allDay == 1)
+		{
+			return true;
+		}
+		else if (!empty($from) && !empty($to))
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('umpireRequiredFields', "You must fields \"Available From\" AND \"Available To\" OR \"All day\"");
+			return false;
+		}
+
+	}
+	/**
+	 * Callback function to check that the entered date is valid 
+	 * and whether the it is within the tournament dates
+	 * 
+	 * @return		true or false
+	 */ 
+	public function umpireDateCheck()
+	{
+		$date = $this->input->post('date');
+		$dateFormat = "d/m/Y";
+		$dateObject = DateTime::createFromFormat($dateFormat, $date);
+		
+		$date_errors = DateTime::getLastErrors();
+		$errors = array();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			array_push($errors, "Invalid date");
+		}
+		
+		// check date os within the tournament date:
+		$tournament = $this->Tournament_model->getTournamentId($this->_tournamentId);
+		$start = $tournament['start'];
+		$end = $tournament['end'];
+		
+		$dateFormat = "Y-m-d";
+		$startObject = DateTime::createFromFormat($dateFormat, $start);
+		$endObject = DateTime::createFromFormat($dateFormat, $end);
+		
+		//echo "start: " . $startObject->format($dateFormat) . " end: " . $endObject->format($dateFormat) . " date: " . $dateObject->format($dateFormat);
+				
+		if ($dateObject < $startObject || $dateObject > $endObject)
+		{
+			array_push($errors, "The date must be within the tournament start and end dates.");
+		}
+		
+		// return true if everything is ok
+		if (empty($errors))
+		{
+			return TRUE;
+		}
+		// otherwise return an error message containing all the errors in the error array
+		else
+		{
+			$error_output = "";
+			for ($i = 0; $i<=count($errors); $i++)
+			{
+				if ($i != 0)
+				{
+					$error_output.="</p><p>";
+				}
+				$string = array_pop($errors);
+				$error_output.=$string;
+			}
+			$this->form_validation->set_message('umpireDateCheck', $error_output);
+			return FALSE;
+		}
+	}
+	/**
+	 * 	callback function used to check whether the from time is before the to time.
+	 * 
+	 * @return	true if from time is less than to time.
+	 */ 
+	public function umpireTimeCheck()
+	{
+		$to = $this->input->post('to');
+		$from = $this->input->post('from');
+		
+		$dateFormat = "H:i";
+		$fromObject = DateTime::createFromFormat($dateFormat, $from);
+		$toObject = DateTime::createFromFormat($dateFormat, $to);
+		
+		if ($fromObject > $toObject)
+		{
+			$this->form_validation->set_message('umpireTimeCheck', '"Available from" must be less than "Available to"');
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	/**
+	 * Shows a list of umpires registered for a given tournament.
+	 * 
+	 * @param id	id of the tournament
+	 * @param page	the page number of the pagination
+	 */
+	public function umpireList($id, $page = 1)
+	{
+		$this->load->model('admin/Umpire_model');
+		$this->load->model('admin/Sport_model');
+		
+		$this->load->helper('url');
+		
+		$this->load->library('pagination');
+		
+		$config['base_url'] = base_url() . "index.php/admin/tournament/umpireList/{$id}/";
+		$config['total_rows'] = $this->Umpire_model->countUmpireAtTournament($id);
+		$config['per_page'] = 10; 
+		$config['uri_segment'] = 5;
+		
+		// for styling with bootstrap: http://www.smipple.net/snippet/Rufhausen/Twitter%20Bootstrap%2BCodeigniter%20Pagination
+	    $config['full_tag_open'] = '<div class="pagination"><ul>';
+	    $config['full_tag_close'] = '</ul></div>';
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '&larr; Previous';
+	    $config['prev_tag_open'] = '<li class="prev">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &rarr;';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] =  '<li class="active"><a href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		
+		//echo print_r($umpires);
+		
+		$this->pagination->initialize($config);
+		
+		$data['umpires'] = $this->Umpire_model->getUmpireAtTournament($id, $config["per_page"], $page);
+		$data['links'] = $this->pagination->create_links();
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
+		$data['sports'] = $this->Sport_model->getAll();
+		
+		$sideData['tournament'] = $data['tournament'];
+ 		$this->template->write_view('nav_side','admin/tournament/navbar_side',$sideData, true);
+		$this->template->write_view('content','admin/tournament/umpire_list',$data);
+		$this->template->render();
 	}
 	
 	/**

@@ -28,6 +28,6 @@
 </tr>
 <tr>
 	<th>Participents registered</th>
-	<td><?php echo $tournament['name']; ?></td>
+	<td>Coming soon...</td>
 </tr>
 </table>

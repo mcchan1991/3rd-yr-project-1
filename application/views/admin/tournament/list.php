@@ -14,6 +14,13 @@
 			<th>Participents registered</th>
 		</tr> 
 	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+			<a href="<?php echo base_url(); ?>index.php/admin/tournament/add">Add new tournament</a>
+			</td>
+		</tr>
+	</tfoot>
 	<tbody>
 <?php
 foreach($tournaments as $current )
