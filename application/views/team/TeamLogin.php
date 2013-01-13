@@ -1,7 +1,7 @@
 <html>
 	<?php
 	
-	echo form_open('team/Team/teamlogin_validation');
+	echo form_open('team/Team/check_team_login');
 	
 	echo validation_errors();
 	
