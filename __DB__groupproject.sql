@@ -50,6 +50,7 @@ CREATE TABLE `athletes` (
   `firstName` varchar(100) NOT NULL,
   `surname` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,  
   `dob` date NOT NULL,
   `gender` varchar(6) NOT NULL,
   `fastest` time DEFAULT NULL,
