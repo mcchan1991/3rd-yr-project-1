@@ -28,3 +28,24 @@ class My_Admin_Controller extends CI_Controller {
 		
 	}
 }
+
+class My_Public_Controller extends CI_Controller {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->load->helper('url');
+		$data['segment'] = $this->uri->segment(1);
+		if (empty($data['segment']))
+		{
+			$data['segment'] = "home";
+		}
+		$this->template->write_view('nav_top','topnav', $data);
+		
+		// if not overwritten loads default a list of active tournaments
+		$this->load->model('admin/Tournament_model');
+		$sideData['tournaments'] = $this->Tournament_model->getFutureTournaments(5, 1);
+		//$this->template->write_view('nav_side','admin/navside_standard',$sideData);
+		
+	}
+}

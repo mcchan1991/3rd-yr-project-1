@@ -19,6 +19,7 @@ class Tournament extends My_Admin_Controller {
 	{
 		parent::__construct();
 		$this->load->model('admin/Tournament_model');
+		$this->load->helper('form');
 	}
 	
 	/**
@@ -155,7 +156,6 @@ class Tournament extends My_Admin_Controller {
      */
 	public function add()
 	{
-		$this->load->helper('form');
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
 		$data['name'] = "";
 		$data['startDate'] = "";

@@ -7,6 +7,8 @@ class Team extends CI_Controller {
 		session_start();
 		parent::__construct();
 		//$this->load->model('team/Team_model');
+		$this->load->helper('form');
+		
 	}
 	
 	public function index()

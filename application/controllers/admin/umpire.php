@@ -17,6 +17,7 @@ class Umpire extends My_Admin_Controller
 		
 		$this->load->model('admin/Umpire_model');
 		$this->load->model('admin/Sport_model');
+		$this->load->helper('form');
 		
 	}
 	
@@ -131,7 +132,6 @@ class Umpire extends My_Admin_Controller
 	
 	public function add()
 	{
-		$this->load->helper('form');
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
 		$data['firstName'] = "";
 		$data['surname'] = "";
