@@ -261,7 +261,7 @@ class Tournament extends My_Admin_Controller {
 		$data['events'] = $this->Event_model->getPaginationByTournamentId($id,$config["per_page"], $page);
 		$data['links'] = $this->pagination->create_links();
 		$data['sports'] = $this->Sport_model->getAll();
-		$data['tournament'] = $id;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
 		
 		$this->template->write_view('content','admin/tournament/event_list',$data);
 		$this->template->render();

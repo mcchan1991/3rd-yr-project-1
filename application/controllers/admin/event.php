@@ -17,6 +17,7 @@ class Event extends My_Admin_Controller
 		
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Sport_model');
+		$this->load->model('admin/Tournament_model');
 		$this->load->helper('form');
 		
 	}
@@ -45,7 +46,7 @@ class Event extends My_Admin_Controller
 			$data['end'] =$this->input->post('end');
 			$data['sport'] =$this->input->post('sport');
 			$data['sports'] = $this->Sport_model->getAll();
-			$data['tournament'] = $this->input->post('tournament');
+			$data['tournament'] = $this->Tournament_model->getTournamentId($this->input->post('tournament'));
 			if (!empty($id))
 			{
 				$data['id'] = $id;
@@ -108,7 +109,7 @@ class Event extends My_Admin_Controller
 		$data['end'] = "";
 		$data['sport'] ="";
 		$data['sports'] = $this->Sport_model->getAll();
-		$data['tournament'] = $tournament;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($tournament);
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -135,7 +136,7 @@ class Event extends My_Admin_Controller
 		$data['end'] = DateTime::createFromFormat($dateFormat,$event['end'])->format('d/m/Y');
 		$data['sport'] =$event['sportId'];
 		$data['sports'] = $this->Sport_model->getAll();
-		$data['tournament'] = $event['tournamentId'];
+		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['id'] = $id;
 		
 		$this->template->write_view('content','admin/event/create',$data);

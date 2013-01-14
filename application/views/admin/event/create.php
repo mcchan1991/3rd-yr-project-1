@@ -31,6 +31,7 @@ else
 	<ul class="breadcrumb">
 	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
 	  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
+	  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
 	  <li class="active">Edit Event: <?php echo $name; ?></li>
 	</ul>
 	<?php
@@ -158,7 +159,7 @@ else
 	echo form_dropdown('sport', $sportOptions);
 	echo "<br /> <br />";
 	
-	echo form_hidden('tournament', $tournament);
+	echo form_hidden('tournament', $tournament['tournamentId']);
 	
 	echo form_submit($btnAttributes,'submit', 'Submit');
 	echo '</div>';

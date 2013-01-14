@@ -1,6 +1,7 @@
 <ul class="breadcrumb">
   <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
-  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/view/<?php echo $tournament ?>">Tournament <?php echo $tournament ?></a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
   <li class="active">Events</li>
 </ul>
 <h3>Events</h3>
@@ -43,7 +44,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
-		<td colspan="10"><a href="<?php echo base_url() . "index.php/admin/event/add/". $tournament; ?>">Add new event</a></td>
+		<td colspan="10"><a href="<?php echo base_url() . "index.php/admin/event/add/". $tournament['tournamentId']; ?>">Add new event</a></td>
 	</tfoot>
 </table>
 <?php echo $links; ?>
