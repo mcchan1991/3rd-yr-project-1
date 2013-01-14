@@ -43,7 +43,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
-		<td colspan="10"><a href="<?php echo base_url() . "index.php/admin/event/add"; ?>">Add new event</a></td>
+		<td colspan="10"><a href="<?php echo base_url() . "index.php/admin/event/add/". $tournament; ?>">Add new event</a></td>
 	</tfoot>
 </table>
 <?php echo $links; ?>
