@@ -198,7 +198,7 @@ class Tournament_model extends CI_Model {
 		}
 		
 		$this->db->select('tournaments.*, COUNT(events.eventId)');
-		$this->db->limit($limit, $start);
+		$this->db->limit($per_page, $offset);
 		$this->db->where("tournaments.tournamentId = events.tournamentId");
 		$this->db->group_by("tournaments.tournamentId"); 
 		$query = $this->db->get('tournaments, events');
@@ -216,7 +216,7 @@ class Tournament_model extends CI_Model {
 	public function getFutureTournamentsWithEvents($per_page, $offset)
 	{
 		$date = new DateTime();
-		return $this->getTournamentsWithEvents($per_page, $offset, $date);
+		return $this->getTournamentsWithEvents($per_page, $offset, $date->format("Y-m-d"));
 	}
 	
 	/**
@@ -229,7 +229,7 @@ class Tournament_model extends CI_Model {
 	public function getPastTournamentsWithEvents($per_page, $offset)
 	{
 		$date = new DateTime();
-		return $this->getTournamentsWithEvents($per_page, $offset, $date, true);
+		return $this->getTournamentsWithEvents($per_page, $offset, $date->format("Y-m-d"), true);
 	}
 	
 	/**
@@ -242,10 +242,8 @@ class Tournament_model extends CI_Model {
 	private function countAllTournamentsWithEvents($date = false, $past = false)
 	{
 		$this->db->select('tournaments.*, COUNT(events.eventId)');
-		$this->db->limit($limit, $start);
 		$this->db->where("tournaments.tournamentId = events.tournamentId");
 		$this->db->group_by("tournaments.tournamentId"); 
-		
 		if ($date != false)
 		{
 			if ($past == false)
@@ -272,7 +270,7 @@ class Tournament_model extends CI_Model {
 	public function countAllFutureTournamentsWithEvents()
 	{
 		$date = new DateTime();
-		return $this->countAllTournamentsWithEvents($date);
+		return $this->countAllTournamentsWithEvents($date->format("Y-m-d"));
 	}
 	
 	/**
@@ -283,7 +281,7 @@ class Tournament_model extends CI_Model {
 	public function countAllPastTournamentsWithEvents()
 	{
 		$date = new DateTime();
-		return $this->countAllTournamentsWithEvents($date, true);
+		return $this->countAllTournamentsWithEvents($date->format("Y-m-d"), true);
 	}
 	
  	

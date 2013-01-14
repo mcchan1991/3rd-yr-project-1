@@ -8,10 +8,12 @@
 		<meta name="author" content="<?= $meta_author ?>">
 
 		<!-- Le styles -->
-		<link href="<?php echo base_url(); ?>/assets/css/bootstrap.css" rel="stylesheet">
-		<link href="<?php echo base_url(); ?>/assets/css/custom.css" rel="stylesheet">
-
-		<link href="<?php echo base_url(); ?>/assets/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>assets/css/bootstrap.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>assets/css/custom.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>assets/css/bootstrap-responsive.css" rel="stylesheet">
+		
+		<link href="<?php echo base_url(); ?>assets/css/jasny-bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>assets/css/jasny-bootstrap.min.css" rel="stylesheet">
 
 		<style> div { border:0px solid; } </style>
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -64,18 +66,8 @@
 	    <!-- Le javascript
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
-	    <script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-transition.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-alert.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-modal.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-dropdown.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-scrollspy.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-tab.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-tooltip.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-popover.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-button.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-collapse.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-carousel.js"></script>
-	    <script src="<?php echo base_url(); ?>/assets/js/bootstrap-typeahead.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/bootstrap-rowlink.js"></script>
 	</body>
 </html>
