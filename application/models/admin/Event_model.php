@@ -28,7 +28,7 @@ class Event_model extends CI_Model
      */
 	public function countEventsByTournamentId($id)
 	{
-		return $this->db->count_all_results($this->table_name,array('eventId'=>$id));
+		return $this->db->count_all_results($this->table_name,array('tournamentId'=>$id));
 	}
 	
 	/**
@@ -46,7 +46,7 @@ class Event_model extends CI_Model
 			$offset = 0;
 		}
 		$this->db->limit($per_page, $offset);
-		$query = $this->db->get($this->table_name);
+		$query = $this->db->get_where($this->table_name,array('tournamentId'=> $id));
 		return $query->result_array();
 	}
 	
