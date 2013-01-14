@@ -107,6 +107,7 @@ CREATE TABLE `eventRegs` (
 CREATE TABLE `events` (
   `eventId` int(5) NOT NULL AUTO_INCREMENT,
   `tournamentId` int(5) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `sportId` int(5) NOT NULL,
   `type` int(5) NOT NULL,
   `regStart` date NOT NULL,
