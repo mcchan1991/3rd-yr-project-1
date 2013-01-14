@@ -26,7 +26,7 @@ class Event extends My_Admin_Controller
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules("name", "Event name", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("regStart", "Registration start", "required|max_length[10]");
+		$this->form_validation->set_rules("regStart", "Registration start", "required|callback_dateCheckRegStart|max_length[10]");
 		$this->form_validation->set_rules("regEnd", "Registration end", "required|max_length[10]");
 		$this->form_validation->set_rules("maxEntries", "Maximum No. of entries", "required|numeric|max_length[5]");
 		$this->form_validation->set_rules("minEntries", "Minimum No. of entries", "required|numeric|max_length[5]");
@@ -118,33 +118,31 @@ class Event extends My_Admin_Controller
 	{
 		// form validations used to set variables.
 		$this->load->library('form_validation');
-		
-		// get the id
-		$umpire = $this->Umpire_model->getUmpire($id);
-		
 		$dateFormat = "Y-m-d";
-		$dob = $umpire['DOB'];
-		$dobObject = DateTime::createFromFormat($dateFormat, $dob);
+		// get the id
+		$event = $this->Event_model->getEvent($id);
 		
-		$data['firstName'] = $umpire['firstName'];
-		$data['surname'] = $umpire['surname'];
-		$data['DOB'] = $dobObject->format('d/m/Y');
-		$data['email'] = $umpire['email'];
-		$data['sport'] =$umpire['sport'];
+		$data['name'] = $event['name'];
+		$data['regStart'] = DateTime::createFromFormat($dateFormat,$event['regStart'])->format('d/m/Y');
+		$data['regEnd'] = DateTime::createFromFormat($dateFormat,$event['regEnd'])->format('d/m/Y');
+		$data['maxEntries'] = $event['maxEntries'];
+		$data['minEntries'] = $event['minEntries'];
+		$data['start'] = DateTime::createFromFormat($dateFormat,$event['start'])->format('d/m/Y');
+		$data['end'] = DateTime::createFromFormat($dateFormat,$event['end'])->format('d/m/Y');
+		$data['sport'] =$event['sportId'];
 		$data['sports'] = $this->Sport_model->getAll();
+		$data['tournament'] = $event['tournamentId'];
 		$data['id'] = $id;
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
 	}
 	
-	public function dateCheck()
+	public function dateCheck($date)
 	{
-		$dobInput = $this->input->post('dob');
-
 		// validate first date format
 		$dateFormat = "d/m/Y";
-		$this->_startDate = DateTime::createFromFormat($dateFormat, $dobInput);
+		$this->_startDate = DateTime::createFromFormat($dateFormat, $date);
 		
 		$date_errors = DateTime::getLastErrors();
 		$errors = array();
@@ -159,20 +157,9 @@ class Event extends My_Admin_Controller
 		{
 			return TRUE;
 		}
-		// otherwise return an error message containing all the errors in the error array
+		// otherwise return false
 		else
 		{
-			$error_output = "";
-			for ($i = 0; $i<=count($errors); $i++)
-			{
-				if ($i != 0)
-				{
-					$error_output.="</p><p>";
-				}
-				$string = array_pop($errors);
-				$error_output.=$string;
-			}
-			$this->form_validation->set_message('dateCheck', $error_output);
 			return FALSE;
 		}
 	}

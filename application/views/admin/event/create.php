@@ -31,11 +31,10 @@ else
 	<ul class="breadcrumb">
 	  <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
 	  <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
-	  <li class="active">Edit tournament: <?php echo $name; ?></li>
+	  <li class="active">Edit Event: <?php echo $name; ?></li>
 	</ul>
 	<?php
-	$url = base_url() . "index.php/admin/tournament/view/{$id}/";
-	echo "<h3>Edit tournament: <a href=\"{$url}\">{$name}</a></h3>";
+	echo "<h3>Edit Event: {$name}</h3>";
 	$errors = validation_errors();
 	if (!empty($errors))
 	{
@@ -43,7 +42,7 @@ else
 	echo validation_errors();
 	echo "</div>";
 	}
-	echo form_open("admin/tournament/save/", $attributes);
+	echo form_open("admin/event/save/".$id, $attributes);
 }
 
 ?>
