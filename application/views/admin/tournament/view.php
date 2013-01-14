@@ -24,7 +24,8 @@
 </tr>
 <tr>
 	<th>No. events</th>
-	<td><?php echo $noEvents; ?></td>
+	<?php $url = base_url() . "index.php/admin/tournament/viewEvents/".$tournament['tournamentId']."/"; ?>
+	<td><a href="<?php echo $url ?>"><?php echo $noEvents; ?></a></td>
 </tr>
 <tr>
 	<th>Participents registered</th>
