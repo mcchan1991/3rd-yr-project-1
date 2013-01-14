@@ -26,12 +26,12 @@ class Event extends My_Admin_Controller
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules("name", "Event name", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("regStart", "Registration start", "required|callback_dateCheckRegStart|max_length[10]");
-		$this->form_validation->set_rules("regEnd", "Registration end", "required|max_length[10]");
+		$this->form_validation->set_rules("regStart", "Registration start", "required");
+		$this->form_validation->set_rules("regEnd", "Registration end", "required");
 		$this->form_validation->set_rules("maxEntries", "Maximum No. of entries", "required|numeric|max_length[5]");
 		$this->form_validation->set_rules("minEntries", "Minimum No. of entries", "required|numeric|max_length[5]");
-		$this->form_validation->set_rules("start", "Start date", "required|max_length[10]");
-		$this->form_validation->set_rules("end", "End date", "required|max_length[10]");
+		$this->form_validation->set_rules("start", "Start date", "required");
+		$this->form_validation->set_rules("end", "End date", "required|callback_dateCheck");
 
 		// if input is not valid, show the form again (and send the post-date to the view so it can be re-populated)
 		if ($this->form_validation->run() == FALSE)
@@ -46,6 +46,10 @@ class Event extends My_Admin_Controller
 			$data['sport'] =$this->input->post('sport');
 			$data['sports'] = $this->Sport_model->getAll();
 			$data['tournament'] = $this->input->post('tournament');
+			if (!empty($id))
+			{
+				$data['id'] = $id;
+			}
 			
 			$this->template->write_view('content','admin/event/create',$data);
 			$this->template->render();
@@ -138,18 +142,78 @@ class Event extends My_Admin_Controller
 		$this->template->render();
 	}
 	
-	public function dateCheck($date)
+	public function dateCheck()
 	{
+		// get the inputs
+		$start_input = $this->input->post('start');
+		$end_input = $this->input->post('end');
+		
+		$regStart_input = $this->input->post('regStart');
+		$regEnd_input = $this->input->post('regEnd');
+
+
 		// validate first date format
 		$dateFormat = "d/m/Y";
-		$this->_startDate = DateTime::createFromFormat($dateFormat, $date);
+		$this->_startDate = DateTime::createFromFormat($dateFormat, $start_input);
 		
 		$date_errors = DateTime::getLastErrors();
 		$errors = array();
 		// push any errors to the errors array
 		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
 		{
-			array_push($errors, "Date Of Birth invalid");
+			array_push($errors, "Start date invalid");
+		}
+		
+		// remember to reset date_errors otherwise they might be carried down
+		$date_errors = null;
+		
+		// validate second date format
+		$this->_endDate = DateTime::createFromFormat($dateFormat, $end_input);
+		$date_errors = DateTime::getLastErrors();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			array_push($errors, "End date invalid");
+		}
+		// remember to reset date_errors otherwise they might be carried down
+		$date_errors = null;
+		
+		// validate third date format
+		$this->_regStartDate = DateTime::createFromFormat($dateFormat, $regStart_input);
+		$date_errors = DateTime::getLastErrors();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			array_push($errors, "Registration start date invalid");
+		}
+		// remember to reset date_errors otherwise they might be carried down
+		$date_errors = null;
+		
+		// validate third date format
+		$this->_regEndDate = DateTime::createFromFormat($dateFormat, $regEnd_input);
+		$date_errors = DateTime::getLastErrors();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			array_push($errors, "Registration end date invalid");
+		}
+		
+		// make sure the start_date is not later than end_date, only run if the format of the dates are valid
+		if ( empty($errors) && $this->_startDate > $this->_endDate)
+		{
+			array_push($errors, "End date must be after start date");
+		}
+		
+		// make sure the start_date is not later than end_date, only run if the format of the dates are valid
+		if ( empty($errors) && $this->_regStartDate > $this->_regEndDate)
+		{
+			array_push($errors, "Registration end date must be after registration start date");
+		}
+		
+		// make sure the registration end date is before
+		if ( empty($errors) && $this->_startDate < $this->_regEndDate)
+		{
+			array_push($errors, "Registration end date must be before start date");
 		}
 		
 		// return true if everything is ok
@@ -157,10 +221,21 @@ class Event extends My_Admin_Controller
 		{
 			return TRUE;
 		}
-		// otherwise return false
+		// otherwise return an error message containing all the errors in the error array
 		else
 		{
+			$error_output = "";
+			for ($i = 0; $i<=count($errors); $i++)
+			{
+				if ($i != 0)
+				{
+					$error_output.="</p><p>";
+				}
+				$string = array_pop($errors);
+				$error_output.=$string;
+			}
+			$this->form_validation->set_message('dateCheck', $error_output);
 			return FALSE;
 		}
-	}
+ 	}
 }	
