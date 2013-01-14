@@ -161,6 +161,130 @@ class Tournament_model extends CI_Model {
 		$query = $this->db->get_where('tournaments', array('tournamentId' => $id));
 		return $query->row_array();
 	}
+	/**
+	 * Get a list of tournament that have events assosiated with them. 
+	 * These can either be future or past tournaments (use convience function)
+	 * @param per_page		number of items to show per page (pagination)
+	 * @param offset		the current page number
+	 * @param date			which date to use for filtering
+	 * @param past			should be set to true if getting past tournaments
+	 * @return 				A list of tournament with events 
+	 */ 
+	private function getTournamentsWithEvents($per_page, $offset, $date = false, $past = false)
+	{
+		/**
+		 * SELECT tournaments.*, COUNT(events.eventId)
+		 * FROM tournaments, 
+		 * events WHERE tournaments.tournamentId = events.tournamentId AND tournaments.tournamentId = 2
+		 *GROUP BY tournaments.tournamentId
+		*/
+		
+		if ($offset == 1)
+		{
+			$offset = 0;
+		}
+		
+		if ($date != false)
+		{
+			if ($past == false)
+			{
+				$logic_operator = ">=";
+			}
+			else
+			{
+				$logic_operator = "<";
+			}
+			$this->db->where("tournaments.end {$logic_operator}", $date);
+		}
+		
+		$this->db->select('tournaments.*, COUNT(events.eventId)');
+		$this->db->limit($limit, $start);
+		$this->db->where("tournaments.tournamentId = events.tournamentId");
+		$this->db->group_by("tournaments.tournamentId"); 
+		$query = $this->db->get('tournaments, events');
+		
+		return $query->result_array();
+	}
+	
+	/**
+	 * Convience fucntion for get all future tournaments that have any number of events assosiated to it
+	 * 
+	 * @param per_page		number of items to show per page (pagination)
+	 * @param offset		the current page number
+	 * @return 				A list of tournament with events 
+	 */
+	public function getFutureTournamentsWithEvents($per_page, $offset)
+	{
+		$date = new DateTime();
+		return $this->getTournamentsWithEvents($per_page, $offset, $date);
+	}
+	
+	/**
+	 * Convience fucntion for get all past tournaments that have any number of events assosiated to it
+	 * 
+	 * @param per_page		number of items to show per page (pagination)
+	 * @param offset		the current page number
+	 * @return 				A list of tournament with events 
+	 */
+	public function getPastTournamentsWithEvents($per_page, $offset)
+	{
+		$date = new DateTime();
+		return $this->getTournamentsWithEvents($per_page, $offset, $date, true);
+	}
+	
+	/**
+	 * Get the count of tournament with events (optional future or past, otherwise all)
+	 * 
+	 * @param date			The date to use for filtering, count all if not set
+	 * @param past 			Will count past tournaments if set to true
+	 * @return 				A count of tournament with events.
+	 */
+	private function countAllTournamentsWithEvents($date = false, $past = false)
+	{
+		$this->db->select('tournaments.*, COUNT(events.eventId)');
+		$this->db->limit($limit, $start);
+		$this->db->where("tournaments.tournamentId = events.tournamentId");
+		$this->db->group_by("tournaments.tournamentId"); 
+		
+		if ($date != false)
+		{
+			if ($past == false)
+			{
+				$logic_operator = ">=";
+			}
+			else
+			{
+				$logic_operator = "<";
+			}
+			$this->db->where("tournaments.end {$logic_operator}", $date);
+		}
+		
+		$query = $this->db->get('tournaments, events');
+		
+		return $this->db->count_all_results();
+	}
+	
+	/**
+	 *	Convience function for getting a list of all future tournaments that have one or more events assosiated.
+	 *
+	 * @return 				A count of future tournament with events.
+	 */
+	public function countAllFutureTournamentsWithEvents()
+	{
+		$date = new DateTime();
+		return $this->countAllTournamentsWithEvents($date);
+	}
+	
+	/**
+	 *	Convience function for getting a list of all past tournaments that have one or more events assosiated.
+	 *
+	 * @return 				A count of past tournament with events.
+	 */
+	public function countAllPastTournamentsWithEvents()
+	{
+		$date = new DateTime();
+		return $this->countAllTournamentsWithEvents($date, true);
+	}
 	
  	
 	/**
