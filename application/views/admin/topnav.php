@@ -11,7 +11,14 @@
   <li <?php if ($segment == "home") { echo "class=\"active\""; } ?> ><a href="<?php echo base_url(); ?>index.php/admin/">Home</a></li>
   <li <?php if ($segment == "tournament") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a></li>
   <li <?php if ($segment == "umpire") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/admin/umpire">Umpires</a></li>
+  <?php 
+	$loggedin = $this->session->userdata('logged_in');
+	if ($loggedin['manager'] == 1):
+  ?>
   <li <?php if ($segment == "staff") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/admin/staff">Staff</a></li>
+  <?php
+	endif;
+  ?>
   <li <?php if ($segment == "location") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/admin/location">Locations</a></li>
   <li><a href="<?php echo base_url(); ?>index.php/admin/logout">Logout</a></li>
 </ul>

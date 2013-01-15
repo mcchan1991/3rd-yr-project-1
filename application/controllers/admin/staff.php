@@ -14,8 +14,19 @@ class Staff extends My_Admin_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
-		$this->load->model('admin/Staff_model');
+		$loggedin = $this->session->userdata('logged_in');
+		$this->load->model('admin/Staff_model');	
+		// small hack to ensure that users that are already signed in as amangers get logged out
+		$staff = $this->Staff_model->getStaff($loggedin['staffId']);
+		if ($staff['manager'] != 1)
+		{
+			if ($loggedin['manager'] == 1)
+			{
+				$loggedin['manager'] = 0;
+				$this->session->set_userdata('logged_in', $loggedin);
+			}
+			redirect( "/admin/" );
+		}
 	}
 	
 	// should be a list of all the staff with pagination etc
