@@ -33,6 +33,7 @@ class Event extends My_Admin_Controller
 		$this->form_validation->set_rules("minEntries", "Minimum No. of entries", "required|numeric|max_length[5]");
 		$this->form_validation->set_rules("start", "Start date", "required");
 		$this->form_validation->set_rules("end", "End date", "required|callback_dateCheck");
+		$this->form_validation->set_rules("description", "Description", "required");
 
 		// if input is not valid, show the form again (and send the post-date to the view so it can be re-populated)
 		if ($this->form_validation->run() == FALSE)
@@ -47,6 +48,7 @@ class Event extends My_Admin_Controller
 			$data['sport'] =$this->input->post('sport');
 			$data['sports'] = $this->Sport_model->getAll();
 			$data['tournament'] = $this->Tournament_model->getTournamentId($this->input->post('tournament'));
+			$data['description'] = $this->input->post('description');
 			if (!empty($id))
 			{
 				$data['id'] = $id;
@@ -64,6 +66,7 @@ class Event extends My_Admin_Controller
 				$postdata = array(
 					'tournamentId' => $this->input->post('tournament'),
 					'name'	=> $this->input->post('name'),
+					'description' => $this->input->post('description'),
 					'regStart' => DateTime::createFromFormat($dateFormat, $this->input->post('regStart'))->format('Y-m-d'),
 					'regEnd' => DateTime::createFromFormat($dateFormat, $this->input->post('regEnd'))->format('Y-m-d'),
 					'maxEntries' => $this->input->post('maxEntries'),
@@ -81,6 +84,7 @@ class Event extends My_Admin_Controller
 				$postdata = array(
 					'eventId'	=> $id,
 					'tournamentId' => $this->input->post('tournament'),
+					'description' => $this->input->post('description'),
 					'name'	=> $this->input->post('name'),
 					'regStart' => DateTime::createFromFormat($dateFormat, $this->input->post('regStart'))->format('Y-m-d'),
 					'regEnd' => DateTime::createFromFormat($dateFormat, $this->input->post('regEnd'))->format('Y-m-d'),
@@ -110,6 +114,7 @@ class Event extends My_Admin_Controller
 		$data['sport'] ="";
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($tournament);
+		$data['description'] = "";
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -138,6 +143,7 @@ class Event extends My_Admin_Controller
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['id'] = $id;
+		$data['description'] = $this->input->post('description');
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();

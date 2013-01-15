@@ -157,11 +157,26 @@ else
 	echo form_label('Sport', 'sport', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_dropdown('sport', $sportOptions);
-	echo "<br /> <br />";
+	echo "</div> </div>";
+	
+	$descriptionField = array(
+		'name'	=> 'description',
+		'id'	=> 'description',
+		'value' => $description
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('Description', 'description', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_textarea($descriptionField);
+	echo '</div>';
+	echo '</div>';
 	
 	echo form_hidden('tournament', $tournament['tournamentId']);
 	
-	echo form_submit($btnAttributes,'submit', 'Submit');
+	echo "<div class=\"control-group\">";
+	echo "<div class=\"controls\">";
+	echo form_submit($btnAttributes, 'Submit', 'submit');
 	echo '</div>';
 	echo '</div>';
 	

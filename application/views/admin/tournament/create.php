@@ -101,6 +101,20 @@ else
 	echo '</div>';
 	echo '</div>';
 	
+	$descriptionField = array(
+		'name'	=> 'description',
+		'id'	=> 'description',
+		'value' => $description
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('Description', 'description', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_textarea($descriptionField);
+	echo '</div>';
+	echo '</div>';
+	
+	
 	echo "<div class=\"control-group\">";
 	echo "<div class=\"controls\">";
 	echo form_submit($btnAttributes, 'Submit', 'submit');

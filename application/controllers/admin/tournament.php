@@ -113,6 +113,7 @@ class Tournament extends My_Admin_Controller {
 		$this->form_validation->set_rules("startDate", "Start Date", "required");
 		$this->form_validation->set_rules("endDate", "End Date", "required|callback_dateCheck");
 		$this->form_validation->set_rules("noTickets", "No. tickets", "required|numeric");
+		$this->form_validation->set_rules("description", "Description", "required");
 	
 		// if input is not valid, show the form again (and send the post-date to the view so it can be re-populated)
 		if ($this->form_validation->run() == FALSE)
@@ -121,6 +122,7 @@ class Tournament extends My_Admin_Controller {
 			$data['startDate'] = $this->input->post('startDate');
 			$data['endDate'] = $this->input->post('endDate');
 			$data['noTickets'] = $this->input->post('noTickets');
+			$data['description'] = $this->input->post('description');
 			
 			$this->template->write_view('content','admin/tournament/create',$data);
 			$this->template->render();
@@ -136,6 +138,7 @@ class Tournament extends My_Admin_Controller {
 			{
 				$postdata = array(
 					'name'	=> $this->input->post('name'),
+					'description' => $this->input->post('description'),
 					'start' => $this->_startDate->format('Y-m-d'),
 					'end' => $this->_endDate->format('Y-m-d'),
 					'noTickets' => $this->input->post('noTickets')
@@ -147,6 +150,7 @@ class Tournament extends My_Admin_Controller {
 				$postdata = array(
 					'tournamentId'	=> $id,
 					'name'	=> $this->input->post('name'),
+					'description' => $this->input->post('description'),
 					'start' => $this->_startDate->format('Y-m-d'),
 					'end' => $this->_endDate->format('Y-m-d'),
 					'noTickets' => $this->input->post('noTickets')
@@ -171,6 +175,7 @@ class Tournament extends My_Admin_Controller {
 		$data['startDate'] = "";
 		$data['endDate'] = "";
 		$data['noTickets'] = "";
+		$data['description'] = "";
 		$this->template->write_view('content','admin/tournament/create',$data);
 		$this->template->render();
 		
@@ -199,6 +204,7 @@ class Tournament extends My_Admin_Controller {
 		$end_dateTime = DateTime::createFromFormat($dateFormat, $end_date);
 		
 		$data['name'] = $tournament['name'];
+		$data['description'] = $tournament['description'];
 		$data['startDate'] = $start_dateTime->format('d/m/Y');
 		$data['endDate'] =  $end_dateTime->format('d/m/Y');
 		$data['noTickets'] = $tournament['noTickets'];
