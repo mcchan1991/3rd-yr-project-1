@@ -270,6 +270,13 @@ class Tournament extends My_Admin_Controller {
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
 		$data['noEvents'] = $this->Event_model->countEventsByTournamentId($id);
+		
+		$data['noParticipents'] = array();
+		foreach($data['events'] as $event)
+		{
+			$data['noParticipents'][$event['eventId']] = $this->Event_model->getEventRegistrationsCount($event['eventId']);
+		}
+		
 		// empty the nav_side region as we need to overwrite it:
 		$this->template->empty_region('nav_side');
 		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);

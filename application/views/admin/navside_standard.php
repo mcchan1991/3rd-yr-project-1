@@ -19,8 +19,13 @@ foreach ($tournaments as $tournament)
 ?>
 <li><a href="<?php echo base_url() . "index.php/admin/tournament/view/{$tournament['tournamentId']}";?>"><?php echo $tournament['name']; ?></a></li>
 <ul class="nav nav-list">
-<li><a href="#">Event 1</a></li>
-<li><a href="#">Event 2</a></li>
+<?php 
+	foreach($events[$tournament['tournamentId']] as $event)
+	{
+		$url = base_url() . "index.php/admin/event/view/{$event['eventId']}";
+		echo "<li><a href=\"{$url}\">{$event['name']}</a>";
+	}
+?>
 </ul>	
 <?php }
 ?>

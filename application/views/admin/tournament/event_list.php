@@ -35,7 +35,7 @@
 		echo "<td>{$current['regEnd']}</td>";
 		echo "<td>{$current['maxEntries']}</td>";
 		echo "<td>{$current['minEntries']}</td>";
-		echo "<td>Coming soon</td>";
+		echo "<td>{$noParticipents[$current['eventId']]}</td>";
 		$url = base_url() . "index.php/admin/event/edit/".$current['eventId']."/";
 		echo "<td><a href=\"{$editUrl}\">Edit</a></td>";
 		echo "</tr>";

@@ -13,7 +13,7 @@
 </tr>
 <tr>
 	<th>Sport</th>
-	<td><?php echo $sports[$event['sportId']]['sportName']; ?></td>
+	<td><?php echo $sports[$event['sportId']-1]['sportName']; ?></td>
 </tr>
 <tr>
 	<th>Start date</th>
@@ -41,7 +41,7 @@
 </tr>
 <tr>
 	<th>Participents registered</th>
-	<td>Coming soon...</td>
+	<td><?php echo $noParticipents; ?></td>
 </tr>
 <tr>
 	<th colspan="2">Description</th>

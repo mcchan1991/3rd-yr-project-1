@@ -23,7 +23,14 @@ class My_Admin_Controller extends CI_Controller {
 		
 		// if not overwritten loads default a list of active tournaments
 		$this->load->model('admin/Tournament_model');
+		$this->load->model('admin/Event_model');
 		$sideData['tournaments'] = $this->Tournament_model->getFutureTournaments(5, 1);
+		$sideData['events'] = array();
+		foreach($sideData['tournaments'] as $tournament)
+		{
+			$sideData['events'][$tournament['tournamentId']] = $this->Event_model->getPaginationByTournamentId($tournament['tournamentId'],10, 1);
+		}
+		//getPaginationByTournamentId($id,$per_page, $offset)
 		$this->template->write_view('nav_side','admin/navside_standard',$sideData);
 		
 	}
