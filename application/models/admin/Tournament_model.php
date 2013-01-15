@@ -284,6 +284,31 @@ class Tournament_model extends CI_Model {
 		return $this->countAllTournamentsWithEvents($date->format("Y-m-d"), true);
 	}
 	
+	/**
+	 * 	Get count of how many teams/atheletes have registered
+	 *  for a specific tournament
+	 * 
+	 * @param id	Id of the event
+	 * @return		the count of event registrations
+	 */ 
+	public function getTournamentRegistrationsCount($id)
+	{
+		/**
+		 * SELECT eventRegs.* FROM eventRegs, tournaments, events 
+		 * WHERE tournaments.tournamentId = events.tournamentId AND 
+		 * events.eventId = eventRegs.eventId 
+		 * AND tournaments.tournamentId = 5
+		*/
+		$this->db->select('COUNT(eventRegs.eventId)');
+		$this->db->from("eventRegs, tournaments, events");
+		$this->db->where('tournaments.tournamentId = events.tournamentId AND 
+		 				  events.eventId = eventRegs.eventId AND tournaments.tournamentId=' . $id);
+		/*$this->db->where("tournaments.tournamentId", "events.tournamentId");
+		$this->db->where("events.eventId", "eventRegs.eventId");
+		$this->db->where("tournaments.tournamentId={$id}");*/
+		$query = $this->db->get();
+		return $query->row_array()['COUNT(eventRegs.eventId)'];
+	}
  	
 	/**
   	 * Updates a given tournament

@@ -69,5 +69,7 @@
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap-rowlink.js"></script>
+		<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+		<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
 	</body>
 </html>

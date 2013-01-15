@@ -149,6 +149,19 @@ class Event extends My_Admin_Controller
 		$this->template->render();
 	}
 	
+	public function view($id)
+	{
+		$event = $this->Event_model->getEvent($id);
+		$data['event'] = $event;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
+		$data['sports'] = $this->Sport_model->getAll();
+		
+		
+		$this->template->write_view('nav_side','admin/event/navside',$data, true);
+		$this->template->write_view('content','admin/event/view',$data);
+		$this->template->render();
+	}
+	
 	public function dateCheck()
 	{
 		// get the inputs

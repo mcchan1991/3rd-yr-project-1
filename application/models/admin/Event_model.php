@@ -75,4 +75,37 @@ class Event_model extends CI_Model
 		return $this->db->update($this->table_name, $row);
 	}
 	
+	/**
+	 * 	Get count of how many teams/atheletes have registered
+	 *  for a specific event.
+	 * 
+	 * @param id	Id of the event
+	 * @return		the count of event registrations
+	 */ 
+	public function getEventRegistrationsCount($id)
+	{
+		$this->db->where('eventId', $id);
+		return $this->db->count_all_results("eventRegs");
+	}
+	
+	/**
+	 * 	Get a list of event registrations.
+	 * 
+	 * @param id		Id of the event
+	 * @param per_page	number of registrations to show per page.
+	 * @param offset	current page
+	 * @return			list of event registrations
+	 */
+	public function getEventRegistrations($id, $per_page, $offset)
+	{
+		$this->gb->where('eventId', $id);
+		if ($offset == 1)
+		{
+			$offset = 0;
+		}
+		$this->db->limit($per_page, $offset);
+		$query = $this->db->get("eventRegs");
+		return $query->result_array();
+	}
+	
 }

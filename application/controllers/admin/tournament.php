@@ -62,9 +62,11 @@ class Tournament extends My_Admin_Controller {
 		
 		$data['tournaments'] = $this->Tournament_model->getFutureTournaments($config["per_page"], $page);
 		$data['eventCount'] = array();
+		$data['noParticipents'] = array();
 		foreach($data['tournaments'] as $tournament )
 		{
 			$data['eventCount'][$tournament['tournamentId']] = $this->Event_model->countEventsByTournamentId($tournament['tournamentId']);
+			$data['noParticipents'][$tournament['tournamentId']] = $this->Tournament_model->getTournamentRegistrationsCount($tournament['tournamentId']);
 		}
 		
 	
@@ -92,14 +94,13 @@ class Tournament extends My_Admin_Controller {
 			exit();
 		}
 		$data['noEvents'] = $this->Event_model->countEventsByTournamentId($id);
+		$data['noParticipents'] = $this->Tournament_model->getTournamentRegistrationsCount($id);
 		// empty the nav_side region as we need to overwrite it:
 		$this->template->empty_region('nav_side');
 		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','admin/tournament/view',$data);
 		
 		$this->template->render();
-		/*echo print_r($data['tournament']);
-		echo $id;*/
 	}
 	
 	/**
@@ -268,7 +269,10 @@ class Tournament extends My_Admin_Controller {
 		$data['links'] = $this->pagination->create_links();
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
-		
+		$data['noEvents'] = $this->Event_model->countEventsByTournamentId($id);
+		// empty the nav_side region as we need to overwrite it:
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','admin/tournament/event_list',$data);
 		$this->template->render();
 		

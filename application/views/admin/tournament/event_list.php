@@ -25,8 +25,9 @@
 	foreach($events as $current )
 	{
 		echo "<tr>";
-		$url = base_url() . "index.php/admin/event/edit/".$current['eventId']."/";
-		echo "<td><a href=\"{$url}\">{$current['name']}</a></td>";
+		$editUrl = base_url() . "index.php/admin/event/edit/".$current['eventId']."/";
+		$viewUrl = base_url() . "index.php/admin/event/view/".$current['eventId']."/";
+		echo "<td><a href=\"{$viewUrl}\">{$current['name']}</a></td>";
 		echo "<td>" . $sports[$current['sportId']-1]['sportName'] . "</td>";
 		echo "<td>{$current['start']}</td>";
 		echo "<td>{$current['end']}</td>";
@@ -36,7 +37,7 @@
 		echo "<td>{$current['minEntries']}</td>";
 		echo "<td>Coming soon</td>";
 		$url = base_url() . "index.php/admin/event/edit/".$current['eventId']."/";
-		echo "<td><a href=\"{$url}\">Edit</a></td>";
+		echo "<td><a href=\"{$editUrl}\">Edit</a></td>";
 		echo "</tr>";
 		
 	}

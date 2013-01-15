@@ -29,6 +29,12 @@
 </tr>
 <tr>
 	<th>Participents registered</th>
-	<td>Coming soon...</td>
+	<td><?php echo $noParticipents; ?></td>
+</tr>
+<tr>
+	<th colspan="2">Description</th>
+</tr>
+<tr>
+	<td colspan="2"> <?php echo $tournament['description']; ?> </tr>
 </tr>
 </table>
