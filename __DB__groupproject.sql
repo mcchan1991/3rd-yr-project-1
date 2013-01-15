@@ -108,6 +108,7 @@ CREATE TABLE `events` (
   `eventId` int(5) NOT NULL AUTO_INCREMENT,
   `tournamentId` int(5) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `description` text NOT NULL,
   `sportId` int(5) NOT NULL,
   `type` int(5) NOT NULL,
   `regStart` date NOT NULL,
@@ -340,6 +341,7 @@ CREATE TABLE `ticketSales` (
 CREATE TABLE `tournaments` (
   `tournamentId` int(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `description` text NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
   `noTickets` int(7) NOT NULL,
