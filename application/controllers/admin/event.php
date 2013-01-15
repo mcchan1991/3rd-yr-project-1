@@ -77,7 +77,7 @@ class Event extends My_Admin_Controller
 				);
 				$id = $this->Event_model->create($postdata);
 				
-				echo "successfully addedd id: " . $id;
+				//echo "successfully addedd id: " . $id;
 			}
 			else
 			{
