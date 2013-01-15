@@ -103,7 +103,7 @@ class Staff extends My_Admin_Controller
 					'email' => $this->input->post('email'),		
 					'username' => $this->input->post('username'),		
 					'password' => SHA1($this->input->post('password')),
-					'manager' => $this->input->post('manager')
+					'manager' => $this->input->post('manager',TRUE)==null ? 0 : 1
 				);
 				$id = $this->Staff_model->create($postdata);
 				
@@ -111,16 +111,29 @@ class Staff extends My_Admin_Controller
 			}
 			else
 			{
-				$postdata = array(
-					'staffId'	=> $id,
-					'firstname'	=> $this->input->post('firstname'),
-					'surname' => $this->input->post('surname'),
-					'email' => $this->input->post('email'),		
-					'username' => $this->input->post('username'),		
-					'password' => SHA1($this->input->post('password')),
-					'manager' => $this->input->post('manager')		
-				);
-				
+				if ($this->input->post('password') != null)
+				{
+					$postdata = array(
+						'staffId'	=> $id,
+						'firstname'	=> $this->input->post('firstname'),
+						'surname' => $this->input->post('surname'),
+						'email' => $this->input->post('email'),		
+						'username' => $this->input->post('username'),		
+						'password' => SHA1($this->input->post('password')),
+						'manager' => $this->input->post('manager',TRUE)==null ? 0 : 1
+					);
+				}
+				else
+				{
+						$postdata = array(
+						'staffId'	=> $id,
+						'firstname'	=> $this->input->post('firstname'),
+						'surname' => $this->input->post('surname'),
+						'email' => $this->input->post('email'),		
+						'username' => $this->input->post('username'),		
+						'manager' => $this->input->post('manager',TRUE)==null ? 0 : 1
+					);
+				}
 				$this->Staff_model->update($postdata);
 			}
 			redirect( "/admin/staff" );

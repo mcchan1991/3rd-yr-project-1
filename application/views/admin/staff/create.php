@@ -122,8 +122,8 @@ echo "<div class=\"control-group\">";
 echo form_label('Manager', 'manager', $labelAttributes);
 echo "<div class=\"controls\">";
 $data = array(
-    'name'        => 'newsletter',
-    'id'          => 'newsletter',
+    'name'        => 'manager',
+    'id'          => 'manager',
     'value'       => 'accept',
     'checked'     => $manager,
     'style'       => 'margin:10px',
