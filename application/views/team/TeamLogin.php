@@ -1,27 +1,31 @@
-<html>
-	<?php
-	
-	echo form_open('team/Team/check_team_login');
-	
-	echo validation_errors();
-	
+<?php echo validation_errors(); ?>
 
-	echo "<p>email";
-	echo form_input('email');
-	echo "</p>";
+<?php 
+	echo form_open('team/verifyTeamLogin');
+?>
+
+<?php
+	// form building
+	$email = array(
+		'name'	=> 'email',
+		'id'	=> 'email',
+		'value' => $email
+	);
 	
-	echo "<p>password";
-	echo form_password('password');
-	echo "</p>";
+	echo form_input($email);
+	echo form_label('Email', 'email');
+	echo '<br />';
 	
-	echo "<p>";
-	echo form_submit('signup_submit', 'Login');
-	echo "</p>";
+	$password = array(
+		'name'	=> 'password',
+		'id'	=> 'password',
+		'value' => $password
+	);
+	
+	echo form_password($password);
+	echo form_label('Password', 'password');
+	echo '<br />';
+	
+	echo form_submit('submit', 'Submit');
 	
 	echo form_close();
-	
-	
-	
-	?>
-	<a href='<?php echo base_url()."index.php/team/Team/team_register"; ?>'>Team Registration</a>
-</html>
