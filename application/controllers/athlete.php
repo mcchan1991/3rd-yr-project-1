@@ -7,6 +7,8 @@ class Athlete extends CI_Controller
 		parent::__construct();
 		
 		$this->load->model('Athlete_model');
+		$this->load->model('admin/Event_model');
+		$this->load->model('admin/Tournament_model');	
 	}
 
 	function index()
@@ -14,7 +16,7 @@ class Athlete extends CI_Controller
 		//will do this after we have templating working and such
 	}
 	
-	function register($gender = 1)
+	function register($gender = 1, $eventId)
 	{
 		$this->load->helper('form');
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
@@ -23,7 +25,11 @@ class Athlete extends CI_Controller
 		$data['email'] = "";
 		$data['password'] = "";
 		$data['dob'] = "";
+		$data['fastest'] = "";
 		$data['gender'] = (($gender == 1) ? 'male' : 'female');
+		$data['event'] = $this->Event_model->getEvent($eventId);
+		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+		
 		$this->template->write_view('content','athlete/create',$data);
 		$this->template->render();
 	}
@@ -90,9 +96,48 @@ class Athlete extends CI_Controller
 	}
 	
 	
-	function add()
+	function add($eventId)
 	{
-	
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email");
+		
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['firstName'] = $this->input->post("firstName");
+			$data['surname'] = $this->input->post("surname");
+			$data['email'] = $this->input->post("email");
+			$data['password'] = $this->input->post("password");
+			$data['dob'] = $this->input->post("dob");
+			$data['gender'] = $this->input->post("gender");
+			$data['fastest'] = $this->input->post("fastest");
+			$data['event'] = $this->Event_model->getEvent($eventId);
+			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+			
+			$this->template->write_view('content','athlete/create',$data);
+			$this->template->render();
+		}
+		else
+		{
+			$postdata = array(
+				'firstName' => $this->input->post("firstName"),	
+				'surname' => $this->input->post("surname"),					
+				'email' => $this->input->post("email"),					
+				'password' => sha1($this->input->post("password")),					
+				'dob' => $this->input->post("dob"),					
+				'gender' => $this->input->post("gender"),	
+				'fastest' => $this->input->post("fastest")						
+			);
+			$id = $this->Athlete_model->add_record($postdata);
+			
+			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
+			
+			echo "added athlete {$id} for event {$eventId} as eventRegsId: {$eventRegsId}";
+		}
 	}
 	
 	function update()

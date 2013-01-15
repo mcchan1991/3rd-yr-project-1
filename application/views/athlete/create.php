@@ -1,8 +1,33 @@
-<?php echo validation_errors(); ?>
+<?php
+$attributes = array('class' => 'form-horizontal');
+$labelAttributes = array(
+    'class' => 'control-label',
+);
+$btnAttributes = array(
+    'class' => 'btn',
+);
+?>
 
+<ul class="breadcrumb">
+  <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/tournament">Tournaments</a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/tournamens/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/event/view/<?php echo $event['eventId']; ?>"><?php echo $event['name'] ?></a> <span class="divider">/</span></li>  
+  <li class="active">Register for event</li>
+</ul>
+<h3>Register for event: <?php echo $event['name'] ?></h3>
+<?php
+$errors = validation_errors();
+if (!empty($errors))
+{
+echo "<div class=\"alert alert-error\">";
+echo validation_errors();
+echo "</div>";
+}
+?>
 
 <?php
-	echo form_open('athlete/add');
+	echo form_open("athlete/add/{$event['eventId']}", $attributes);
 
 	// form building
 	$firstName = array(
@@ -11,9 +36,11 @@
 		'value' => $firstName
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('First Name', 'firstName', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($firstName);
-	echo form_label('First Name', 'firstName');
-	echo '<br />';
+	echo '</div></div>';
 	
 	$surname = array(
 		'name'	=> 'surname',
@@ -21,19 +48,23 @@
 		'value' => $surname
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('Surname', 'surname', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($surname);
-	echo form_label('Surname', 'surname');
-	echo '<br />';
+	echo '</div></div>';
 	
 	$email = array(
 		'name'	=> 'email',
 		'id'	=> 'email',
 		'value' => $email
 	);
-	
+
+	echo "<div class=\"control-group\">";
+	echo form_label('Email', 'email', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($email);
-	echo form_label('Email', 'email');
-	echo '<br />';
+	echo '</div></div>';
 	
 	$password = array(
 		'name'	=> 'password',
@@ -41,9 +72,11 @@
 		'value' => $password
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('Password', 'password', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_password($password);
-	echo form_label('Passowrd', 'password');
-	echo '<br />';
+	echo '</div></div>';
 	
 	$dob = array(
 		'name'	=> 'dob',
@@ -51,12 +84,30 @@
 		'value' => $dob
 	);
 	
+	echo "<div class=\"control-group\">";
+	echo form_label('Date Of Birth', 'dob', $labelAttributes);
+	echo "<div class=\"controls\">";
 	echo form_input($dob);
-	echo form_label('Date of birth', 'dob');
-	echo '<br />';
+	echo '</div></div>';
+	
+	$fastestForm = array(
+		'name'	=> 'fastest',
+		'id'	=> 'fastest',
+		'value' => $fastest
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('Fastest Run', 'fastest', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_input($fastestForm);
+	echo '</div></div>';
 	
 	echo form_hidden('gender', $gender);
 	
-	echo form_submit('submit', 'Submit');
+	echo "<div class=\"control-group\">";
+	echo "<div class=\"controls\">";
+	echo form_submit($btnAttributes, 'Submit', 'submit');
+	echo '</div>';
+	echo '</div>';
 	
 	echo form_close();

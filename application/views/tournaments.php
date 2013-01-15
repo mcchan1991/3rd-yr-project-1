@@ -25,7 +25,7 @@
 			echo "</tr>";
 			foreach ($currentEvents as $event)
 			{
-				$url = base_url() . "index.php/event/" . $event['eventId'];
+				$url = base_url() . "index.php/event/view/" . $event['eventId'];
 				echo "<tr class=\"warning\"   data-provides=\"rowlink\">";
 				echo "	<td><a href=\"{$url}\">{$event['name']}</a></td>";
 				$sport = $sports[$event['sportId']-1]['sportName'];
@@ -47,3 +47,5 @@
 	</tbody>
 </table>
 <?php echo $links; ?>
+
+<p>This screen will probably be redone where this is the archieve view, and the actual view have more details on it, for better accessibility especially when there are few planned tournaments, though this view will probably be planend if there are >2 active tournaments.</p>
