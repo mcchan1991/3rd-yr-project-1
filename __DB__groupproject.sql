@@ -133,6 +133,7 @@ CREATE TABLE `events` (
 CREATE TABLE `locations` (
   `locationId` int(5) NOT NULL AUTO_INCREMENT,
   `capacity` int(10) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `lights` tinyint(1) NOT NULL,
   PRIMARY KEY (`locationId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
