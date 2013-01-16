@@ -1,6 +1,6 @@
 <?php
 
-class Athlete extends CI_Controller 
+class Athlete extends My_Public_Controller 
 {
 	function __construct()
 	{
@@ -103,7 +103,7 @@ class Athlete extends CI_Controller
 		$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
 		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
 		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]|callback_dateCheck");
 		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");
 		
 		if ($this->form_validation->run() == FALSE)
@@ -153,6 +153,28 @@ class Athlete extends CI_Controller
 		{
 			$this->form_validation->set_message('uniqueEmail', "The e-mail you entered have already been used for registration.");
 			return false;
+		}
+	}
+	
+	public function dateCheck()
+	{
+		$dobInput = $this->input->post('dob');
+
+		// validate first date format
+		$dateFormat = "d/m/Y";
+		$this->_startDate = DateTime::createFromFormat($dateFormat, $dobInput);
+
+		$date_errors = DateTime::getLastErrors();
+		$errors = array();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			$this->form_validation->set_message('dateCheck', "The entered Date Of Birth is invalid. Use format mm/dd/yyyy");
+			return false;	
+		}
+		else
+		{
+			return true;
 		}
 	}
 	
