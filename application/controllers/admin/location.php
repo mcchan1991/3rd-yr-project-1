@@ -93,7 +93,7 @@ class Location extends My_Admin_Controller
 					'lights' => ($this->input->post('lights',TRUE)==null ? 0 : 1),			
 				);
 				$id = $this->Location_model->create($postdata);
-				
+				$this->Location_model->clearSportsAtLocation($id);
 				foreach ($this->input->post('sport') as $sportId)
 				{
 					$postdata = array(
@@ -113,7 +113,7 @@ class Location extends My_Admin_Controller
 					'lights' => ($this->input->post('lights',TRUE)==null ? 0 : 1),					
 				);
 				$this->Location_model->update($postdata);
-				
+				$this->Location_model->clearSportsAtLocation($id);
 				foreach ($this->input->post('sport') as $sportId)
 				{
 					$postdata = array(
@@ -154,7 +154,16 @@ class Location extends My_Admin_Controller
 		$data['name'] = $location['name'];
 		$data['capacity'] = $location['capacity'];
 		$data['lights'] = $location['lights'];
+		$data['sports']= $this->Sport_model->getAll();
 		$data['id'] = $id;
+		
+		$selectedSports = array();
+		
+		foreach ($this->Location_model->getLocationSports($id) as $current)
+		{
+			array_push($selectedSports,$current['sportId']);
+		}
+		$data['sportSelected'] = $selectedSports;
 		
 		$this->template->write_view('content','admin/location/create',$data);
 		$this->template->render();

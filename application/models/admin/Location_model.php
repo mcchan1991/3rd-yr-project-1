@@ -36,14 +36,21 @@ class Location_Model extends CI_Model
 		return $this->db->count_all_results($this->table_name);
 	}
 	
-	/**
-  	 * Creates a new location
-  	 * 
-	 * @param row	the row with the information to insert in the database
-     */
 	public function createSportAtLocation($row)
 	{
 		$this->db->insert('sportatlocations', $row);
+	}
+	
+	public function clearSportsAtLocation($id)
+	{
+		$this->db->delete('sportatlocations', array('locationId' => $id)); 
+	}
+	
+	public function getLocationSports($id)
+	{
+		$this->db->select('sportId');
+		$query = $this->db->get_where('sportatlocations', array('locationId' => $id));
+		return $query->result_array();
 	}
 	
 	
