@@ -98,7 +98,7 @@ class Event_model extends CI_Model
 	 */
 	public function getEventRegistrations($id, $per_page, $offset)
 	{
-		$this->gb->where('eventId', $id);
+		$this->db->where('eventId', $id);
 		if ($offset == 1)
 		{
 			$offset = 0;
@@ -106,6 +106,7 @@ class Event_model extends CI_Model
 		$this->db->limit($per_page, $offset);
 		$query = $this->db->get("eventRegs");
 		return $query->result_array();
+
 	}
 	
 }

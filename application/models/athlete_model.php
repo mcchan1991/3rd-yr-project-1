@@ -31,7 +31,7 @@ class Athlete_model extends CI_Model
 	{
 		$this->db->where('athleteid', $id);
 		$query = $this->db->get('athletes');
-		return $query->result();
+		return $query->result_array();
 	}
 	
 	function add_record($data) 
@@ -51,7 +51,7 @@ class Athlete_model extends CI_Model
 		$this->db->delete('athletes');
 	}
 	
-	function registerAthleteForEvent($athleteId, $eventId)
+	function registerAthleteForEvent($eventId, $athleteId)
 	{
 		$data = array(
 			'eventId' => $eventId,
