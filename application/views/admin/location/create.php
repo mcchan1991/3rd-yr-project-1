@@ -86,7 +86,18 @@ $data = array(
     'style'       => 'margin:10px',
     );
 echo form_checkbox($data);
-	
+echo '</div>';
+echo '</div>';	
+$sportOptions = array();
+foreach ($sports as $sportValue)
+{
+	$sportOptions[$sportValue['sportId']] = $sportValue['sportName'];
+}
+
+echo "<div class=\"control-group\">";
+echo form_label('Sport', 'sport', $labelAttributes);
+echo "<div class=\"controls\">";
+echo form_multiselect('sport[]', $sportOptions);
 echo "<br /> <br />";
 echo form_submit($btnAttributes,'submit', 'Submit');
 echo '</div>';

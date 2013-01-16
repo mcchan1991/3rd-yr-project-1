@@ -17,6 +17,7 @@ class Location extends My_Admin_Controller
 		
 		$this->load->model('admin/Location_model');
 		$this->load->helper('form');
+		$this->load->model('admin/Sport_model');
 		
 	}
 	
@@ -74,6 +75,7 @@ class Location extends My_Admin_Controller
 			$data['name'] = $this->input->post('name');
 			$data['capacity'] = $this->input->post('capacity');
 			$data['lights'] = $this->input->post('lights',TRUE)==null ? 0 : 1;
+			$data['sports']= $this->Sport_model->getAll();
 			
 			$this->template->write_view('content','admin/location/create',$data);
 			$this->template->render();
@@ -82,20 +84,25 @@ class Location extends My_Admin_Controller
 		{
 			$this->load->helper('url');			
 			
-			$dateFormat = "d/m/Y";
-			$dobObject = DateTime::createFromFormat($dateFormat, $this->input->post('dob'));
-			
 			if ($id == false)
 			{
 
 				$postdata = array(
 					'name'	=> $this->input->post('name'),
 					'capacity' => $this->input->post('capacity'),
-					'lights' => ($this->input->post('lights',TRUE)==null ? 0 : 1),				
+					'lights' => ($this->input->post('lights',TRUE)==null ? 0 : 1),			
 				);
 				$id = $this->Location_model->create($postdata);
 				
-				//echo "successfully addedd id: " . $id;
+				foreach ($this->input->post('sport') as $sportId)
+				{
+					$postdata = array(
+					'sportId'	=> $sportId,
+					'locationId' => $id,				
+					);
+					$this->Location_model->createSportAtLocation($postdata);
+				}
+				echo "successfully addedd id: " . $id;
 			}
 			else
 			{
@@ -105,8 +112,16 @@ class Location extends My_Admin_Controller
 					'capacity' => $this->input->post('capacity'),
 					'lights' => ($this->input->post('lights',TRUE)==null ? 0 : 1),					
 				);
-				
 				$this->Location_model->update($postdata);
+				
+				foreach ($this->input->post('sport') as $sportId)
+				{
+					$postdata = array(
+					'sportId'	=> $sportId,
+					'locationId' => $id,				
+					);
+					$this->Location_model->createSportAtLocation($postdata);
+				}
 			}
 			redirect( "/admin/location" );
 		}
@@ -118,6 +133,7 @@ class Location extends My_Admin_Controller
 		$data['name'] = "";
 		$data['capacity'] = "";
 		$data['lights'] = "";
+		$data['sports']= $this->Sport_model->getAll();
 		
 		$this->template->write_view('content','admin/location/create',$data);
 		$this->template->render();

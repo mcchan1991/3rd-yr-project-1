@@ -37,6 +37,17 @@ class Location_Model extends CI_Model
 	}
 	
 	/**
+  	 * Creates a new location
+  	 * 
+	 * @param row	the row with the information to insert in the database
+     */
+	public function createSportAtLocation($row)
+	{
+		$this->db->insert('sportatlocations', $row);
+	}
+	
+	
+	/**
 	 * Get all the location
 	 * 
 	 * @return total number of location
