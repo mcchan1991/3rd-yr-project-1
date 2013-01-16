@@ -104,6 +104,7 @@ else
 	$descriptionField = array(
 		'name'	=> 'description',
 		'id'	=> 'description',
+		'class' => 'input-xxlarge',
 		'value' => $description
 	);
 	
