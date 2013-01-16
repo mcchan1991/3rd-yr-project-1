@@ -138,7 +138,8 @@ class Athlete extends My_Public_Controller
 			
 			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
 			
-			echo "added athlete {$id} for event {$eventId} as eventRegsId: {$eventRegsId}";
+			redirect("/event/view/{$eventId}/1");
+			//echo "added athlete {$id} for event {$eventId} as eventRegsId: {$eventRegsId}";
 		}
 	}
 	

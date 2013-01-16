@@ -16,7 +16,7 @@ class Event extends My_Public_Controller {
 		$this->load->model('admin/Sport_model');
 	}
 	
-	public function view($id)
+	public function view($id, $registration=false)
 	{
 		
 		$event = $this->Event_model->getEvent($id);
@@ -25,6 +25,11 @@ class Event extends My_Public_Controller {
 		$sideData['event'] = $event;
 		$data['event'] = $event;
 		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
+		if ($registration != false)
+		{
+			$registration=true;
+		}
+		$data['registration'] = $registration;
 		$this->template->write_view('nav_side','navside_event', $sideData);
 		$this->template->write_view('content','event',$data);
 		$this->template->render();

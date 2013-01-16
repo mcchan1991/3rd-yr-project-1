@@ -5,4 +5,16 @@
   <li class="active">Event: <?php echo $event['name']; ?></li>
 </ul>
 <h3><?php echo $event['name']; ?></h3>
+<?php 
+if ($registration == true)
+{
+?> 
+
+<div class="alert alert-success">
+You have successfully registered for the event!
+</div>
+
+<?php	
+}	
+?>
 <div><?php echo $event['description'];?></div>

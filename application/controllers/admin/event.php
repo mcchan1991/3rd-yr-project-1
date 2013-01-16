@@ -166,7 +166,7 @@ class Event extends My_Admin_Controller
 		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['noParticipents'] = $this->Event_model->getEventRegistrationsCount($id);
-		
+
 		
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/view',$data);
