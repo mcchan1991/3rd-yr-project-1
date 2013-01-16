@@ -5,7 +5,7 @@
   <li class="active">Events</li>
 </ul>
 <h3>Events</h3>
-<table class="table">
+<table class="table table-condensed">
 	<thead>
 		<tr>
 			<th>Name</th>

@@ -34,6 +34,13 @@ class Athlete_model extends CI_Model
 		return $query->result_array();
 	}
 	
+	function getByEmail($email)
+	{
+		$this->db->where('email', $email);
+		$query = $this->db->get('athletes');
+		return $query->result_array();
+	}
+	
 	function add_record($data) 
 	{
 		return $this->db->insert('athletes', $data);

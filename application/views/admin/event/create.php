@@ -148,16 +148,22 @@ else
 		$sportOptions[$sportValue['sportId']] = $sportValue['sportName'];
 	}
 
-	$sportOptions = array();
-	foreach ($sports as $sportValue)
-	{
-		$sportOptions[$sportValue['sportId']] = $sportValue['sportName'];
-	}
-
 	echo "<div class=\"control-group\">";
 	echo form_label('Sport', 'sport', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_dropdown('sport', $sportOptions, $sport);
+	echo "</div> </div>";
+	
+	$genderOptions = array(
+		'notset'  => 'Not set',
+		'female'  => 'Female',
+		'male'    => 'Male',
+	);
+
+	echo "<div class=\"control-group\">";
+	echo form_label('Gender', 'gender', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_dropdown('gender', $genderOptions, $gender);
 	echo "</div> </div>";
 	
 	$descriptionField = array(

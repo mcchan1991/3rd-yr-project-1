@@ -104,7 +104,7 @@ class Athlete extends CI_Controller
 		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
 		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
 		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email");
+		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");
 		
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -132,11 +132,27 @@ class Athlete extends CI_Controller
 				'gender' => $this->input->post("gender"),	
 				'fastest' => $this->input->post("fastest")						
 			);
-			$id = $this->Athlete_model->add_record($postdata);
+			$this->Athlete_model->add_record($postdata);
+			
+			$id = $this->Athlete_model->getByEmail($this->input->post("email"))[0]['athleteId'];
 			
 			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
 			
 			echo "added athlete {$id} for event {$eventId} as eventRegsId: {$eventRegsId}";
+		}
+	}
+	
+	function uniqueEmail()
+	{
+		$result = $this->Athlete_model->getByEmail($this->input->post("email"));
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('uniqueEmail', "The e-mail you entered have already been used for registration.");
+			return false;
 		}
 	}
 	

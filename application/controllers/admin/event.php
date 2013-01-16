@@ -34,6 +34,10 @@ class Event extends My_Admin_Controller
 		$this->form_validation->set_rules("start", "Start date", "required");
 		$this->form_validation->set_rules("end", "End date", "required|callback_dateCheck");
 		$this->form_validation->set_rules("description", "Description", "required");
+		if ($this->input->post('sport') == 2)
+		{
+			$this->form_validation->set_rules("gender", "Gender", "callback_requireGender");
+		}
 
 		// if input is not valid, show the form again (and send the post-date to the view so it can be re-populated)
 		if ($this->form_validation->run() == FALSE)
@@ -49,6 +53,8 @@ class Event extends My_Admin_Controller
 			$data['sports'] = $this->Sport_model->getAll();
 			$data['tournament'] = $this->Tournament_model->getTournamentId($this->input->post('tournament'));
 			$data['description'] = $this->input->post('description');
+			$data['gender'] = $this->input->post('gender');
+			
 			if (!empty($id))
 			{
 				$data['id'] = $id;
@@ -73,7 +79,8 @@ class Event extends My_Admin_Controller
 					'minEntries' => $this->input->post('minEntries'),
 					'start' => DateTime::createFromFormat($dateFormat, $this->input->post('start'))->format('Y-m-d'),
 					'end' => DateTime::createFromFormat($dateFormat, $this->input->post('end'))->format('Y-m-d'),	
-					'sportId' => $this->input->post('sport'),						
+					'sportId' => $this->input->post('sport'),		
+					'gender' => $this->input->post('gender')				
 				);
 				$id = $this->Event_model->create($postdata);
 				
@@ -92,7 +99,8 @@ class Event extends My_Admin_Controller
 					'minEntries' => $this->input->post('minEntries'),
 					'start' => DateTime::createFromFormat($dateFormat, $this->input->post('start'))->format('Y-m-d'),
 					'end' => DateTime::createFromFormat($dateFormat, $this->input->post('end'))->format('Y-m-d'),	
-					'sportId' => $this->input->post('sport'),					
+					'sportId' => $this->input->post('sport'),	
+					'gender' => $this->input->post('gender')								
 				);
 				
 				$this->Event_model->update($postdata);
@@ -115,6 +123,7 @@ class Event extends My_Admin_Controller
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($tournament);
 		$data['description'] = "";
+		$data['gender'] = "";
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -143,7 +152,8 @@ class Event extends My_Admin_Controller
 		$data['sports'] = $this->Sport_model->getAll();
 		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['id'] = $id;
-		$data['description'] = $this->input->post('description');
+		$data['description'] = $event['description'];
+		$data['gender'] = $event['gender'];
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -230,6 +240,20 @@ class Event extends My_Admin_Controller
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/registrations',$data);
 		$this->template->render();
+	}
+	
+	public function requireGender()
+	{
+		$gender = $this->input->post('gender');
+		if ($gender == "male" || $gender == "female")
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('requireGender', "You must specify a gender for this sport.");
+			return false;
+		}
 	}
 	
 	public function dateCheck()

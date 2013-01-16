@@ -111,6 +111,7 @@ CREATE TABLE `events` (
   `description` text NOT NULL,
   `sportId` int(5) NOT NULL,
   `type` int(5) NOT NULL,
+  `gender` varchar(50) DEFAULT NULL,
   `regStart` date NOT NULL,
   `regEnd` date NOT NULL,
   `maxEntries` int(5) NOT NULL,

@@ -95,7 +95,7 @@ class Location extends My_Admin_Controller
 				);
 				$id = $this->Location_model->create($postdata);
 				
-				echo "successfully addedd id: " . $id;
+				//echo "successfully addedd id: " . $id;
 			}
 			else
 			{

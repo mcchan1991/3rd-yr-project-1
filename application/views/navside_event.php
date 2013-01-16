@@ -19,7 +19,15 @@ if ($sport == 1)
 }
 else
 {
-	$registerUrl = base_url() . "index.php/athlete/register/1/{$event['eventId']}";
+	if ($event['gender'] == "male")
+	{
+		$gender = 1;
+	}
+	else
+	{
+		$gender = 2;
+	}
+	$registerUrl = base_url() . "index.php/athlete/register/{$gender}/{$event['eventId']}";
 }
 ?>
 <li><a href="#"><?php echo $string; ?></a></li>
