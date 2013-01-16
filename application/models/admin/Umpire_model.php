@@ -98,7 +98,7 @@ class Umpire_model extends CI_Model
 		$this->db->select('umpires.*, umpireAvailability.date, umpireAvailability.date, umpireAvailability.availableFrom, umpireAvailability.availableTo');
 		$this->db->from('umpires, umpireAvailability, tournaments');
 		$this->db->where("umpires.umpireId = umpireAvailability.umpireId AND 
-		tournaments.tournamentId = umpireAvailability.tournamentId");
+		tournaments.tournamentId = umpireAvailability.tournamentId AND tournaments.tournamentId = {$id}");
 		
 		if ($per_page != false && $offset != false)
 		{
@@ -119,7 +119,7 @@ class Umpire_model extends CI_Model
 		$this->db->select('umpires.*, umpireAvailability.date, umpireAvailability.date, umpireAvailability.availableFrom, umpireAvailability.availableTo');
 		$this->db->from('umpires, umpireAvailability, tournaments');
 		$this->db->where("umpires.umpireId = umpireAvailability.umpireId AND 
-		tournaments.tournamentId = umpireAvailability.tournamentId");
+		tournaments.tournamentId = umpireAvailability.tournamentId AND tournaments.tournamentId = {$id}");
 		
 		return $this->db->count_all_results();
 	}
