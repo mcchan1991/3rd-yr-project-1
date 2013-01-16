@@ -16,7 +16,7 @@
 				// wattball
 				if ($event['sportId'] == 1)
 				{
-					
+
 				}
 				// hurdling
 				if ($event['sportId'] == 2)

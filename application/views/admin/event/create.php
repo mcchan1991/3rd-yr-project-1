@@ -157,7 +157,7 @@ else
 	echo "<div class=\"control-group\">";
 	echo form_label('Sport', 'sport', $labelAttributes);
 	echo "<div class=\"controls\">";
-	echo form_dropdown('sport', $sportOptions);
+	echo form_dropdown('sport', $sportOptions, $sport);
 	echo "</div> </div>";
 	
 	$descriptionField = array(
