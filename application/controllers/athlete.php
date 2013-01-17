@@ -9,6 +9,7 @@ class Athlete extends My_Public_Controller
 		$this->load->model('Athlete_model');
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Tournament_model');	
+		
 	}
 
 	function index()
@@ -44,8 +45,12 @@ class Athlete extends My_Public_Controller
 		{
 			$data['registrationError'] = 2;
 		}
+
+		$sideData['sport'] = $event['sportId'];
+		$sideData['event'] = $event;
 		
 		$this->template->write_view('content','athlete/create',$data);
+		$this->template->write_view('nav_side','navside_event', $sideData);
 		$this->template->render();
 	}
 	
@@ -133,7 +138,13 @@ class Athlete extends My_Public_Controller
 			$data['event'] = $this->Event_model->getEvent($eventId);
 			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
 			
+			$event = $this->Event_model->getEvent($id);
+
+			$sideData['sport'] = $event['sportId'];
+			$sideData['event'] = $event;
+			
 			$this->template->write_view('content','athlete/create',$data);
+			$this->template->write_view('nav_side','navside_event', $sideData);
 			$this->template->render();
 		}
 		else
