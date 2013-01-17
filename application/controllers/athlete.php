@@ -19,6 +19,7 @@ class Athlete extends My_Public_Controller
 	function register($gender = 1, $eventId)
 	{
 		$this->load->helper('form');
+		$event = $this->Event_model->getEvent($eventId);
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
 		$data['firstName'] = "";
 		$data['surname'] = "";
@@ -27,8 +28,22 @@ class Athlete extends My_Public_Controller
 		$data['dob'] = "";
 		$data['fastest'] = "";
 		$data['gender'] = (($gender == 1) ? 'male' : 'female');
-		$data['event'] = $this->Event_model->getEvent($eventId);
+		$data['event'] = $event;
 		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+		
+		$dateFormat = "Y-m-d";
+		$currentDate = new DateTime();
+		$regStart = DateTime::createFromFormat($dateFormat, $event['regStart']);
+		$regEnd = DateTime::createFromFormat($dateFormat, $event['regEnd']);
+		
+		if ($currentDate > $regEnd)
+		{
+			$data['registrationError'] = 1;
+		}
+		else if ($currentDate<$regStart)
+		{
+			$data['registrationError'] = 2;
+		}
 		
 		$this->template->write_view('content','athlete/create',$data);
 		$this->template->render();

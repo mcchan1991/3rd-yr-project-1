@@ -6,6 +6,7 @@ $labelAttributes = array(
 $btnAttributes = array(
     'class' => 'btn',
 );
+
 ?>
 
 <ul class="breadcrumb">
@@ -18,12 +19,31 @@ $btnAttributes = array(
 <h3>Register for event: <?php echo $event['name'] ?></h3>
 <?php
 $errors = validation_errors();
-if (!empty($errors))
+if (!empty($errors) || isset($registrationError))
 {
 echo "<div class=\"alert alert-error\">";
+echo "Sorry, registration for this tournament have ended.";
 echo validation_errors();
 echo "</div>";
 }
+else if (isset($registrationError))
+{
+echo "<div class=\"alert alert-error\">";
+if ($registartionError == 1)
+{
+	echo "Sorry, registration for this tournament have ended.";
+}
+else if ($registartionError == 2)
+{
+	echo "Sorry, registration for this tournament have not yet startet. Registration period is: PLACEHOLDER";
+}
+echo "</div>";
+
+$btnAttributes = array(
+    'class' => 'btn disabled',
+);
+}
+
 ?>
 
 <?php
@@ -106,7 +126,17 @@ echo "</div>";
 	
 	echo "<div class=\"control-group\">";
 	echo "<div class=\"controls\">";
-	echo form_submit($btnAttributes, 'Submit', 'submit');
+	
+	// codeigniter was causing some troubles so submit button in pure php
+	if (!empty($errors) || isset($registrationError))
+	{
+		echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"btn disabled\" disabled />";
+	}
+	else
+	{
+		echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"btn\" submit />";
+		
+	}
 	echo '</div>';
 	echo '</div>';
 	
