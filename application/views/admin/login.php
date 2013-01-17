@@ -1,6 +1,6 @@
 <?php 
 	$attributes = array('class' => 'form-signin');
-	echo form_open('admin/VerifyLogin', $attributes);
+	echo form_open('admin/verifylogin', $attributes);
 ?>
 <h2 class="form-signin-heading">Please sign in</h2>
 <?php

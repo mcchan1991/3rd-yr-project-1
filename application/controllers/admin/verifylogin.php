@@ -6,7 +6,7 @@ class VerifyLogin extends CI_Controller {
 	{
 		session_start();
 		parent::__construct();
-		$this->load->model('admin/Staff_model');
+		$this->load->model('admin/staff_model');
 		$this->template->set_template('adminLogin');
 	}
 

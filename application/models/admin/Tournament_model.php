@@ -307,7 +307,9 @@ class Tournament_model extends CI_Model {
 		$this->db->where("events.eventId", "eventRegs.eventId");
 		$this->db->where("tournaments.tournamentId={$id}");*/
 		$query = $this->db->get();
-		return $query->row_array()['COUNT(eventRegs.eventId)'];
+		
+		$result = $query->row_array();
+		return $result['COUNT(eventRegs.eventId)'];
 	}
  	
 	/**
