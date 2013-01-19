@@ -7,5 +7,6 @@
    <h1>Home</h1>
    <a href="<?php echo base_url(); ?>index.php/team/welcome/logout">Logout</a>
    <a href="<?php echo base_url(); ?>index.php/team/teamRegister/update">update</a>
+   <a href="<?php echo base_url(); ?>index.php/team/teamEvent">register event</a>
  </body>
 </html>

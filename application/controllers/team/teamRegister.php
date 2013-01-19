@@ -5,7 +5,9 @@ class teamRegister extends CI_Controller {
 	
 	public function index()
 	{
-		$this->load->view('team/TeamLogin');
+		
+		$this->template->write_view('content','team/TeamLogin',$data);
+		$this->template->render();
 	}
 	
 	function register()
@@ -26,6 +28,7 @@ class teamRegister extends CI_Controller {
 	public function add()
 	{
 		$this->load->library('form_validation');
+		$this->load->model('team/Team_model');
 		
 		$this->form_validation->set_rules('nwaId', 'nwaId', 'required|trim');
 		$this->form_validation->set_rules('name', 'name', 'required|trim');
@@ -46,19 +49,15 @@ class teamRegister extends CI_Controller {
 			'email' => $this->input->post('email'),
 			'password' => sha1($this->input->post('password')),
 			);
-		$this->db->insert('teams', $data);
+		$this->Team_model->create($data);
+		redirect('team/welcome', 'refresh');
 		}
 		else
 		{
-			//echo "please enter correct details";
-			$this->load->view('team/NewTeam');
+			redirect('team/teamRegister/register', 'refresh');
 		}
 	}
 	
-	public function team_register()
-	{
-	$this->load->view('team/NewTeam');
-	}
 	
 	public function team_update()
 	{
