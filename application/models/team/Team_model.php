@@ -41,11 +41,6 @@ class Team_model extends CI_Model {
 		$this->db->insert('teams', $data);
 	}
 	
-	public function teamLogout()
-	{
-		$this->session->sess_destroy();
-		$this->load->view('team/TeamLogin');
-	}
 	
 	public function getEventID()
 	{
@@ -75,5 +70,80 @@ class Team_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function checkUniqueEmail($email)
+	{
+		$query = $this->db->get_where('teams', array('email' => $email));
+		$result = $query->result_array();
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function checkUniqueNWAID($nwaId)
+	{
+		$query = $this->db->get_where('teams', array('nwaId' => $nwaId));
+		$result = $query->result_array();
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function checkUniqueTeamName($name)
+	{
+		$query = $this->db->get_where('teams', array('name' => $name));
+		$result = $query->result_array();
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public function UpdateCheckUniqueTeamName($name,$currentID)
+	{
+		$this->db->select('*');
+		$this->db->where('name', $name);
+		$this->db->where('nwaId != ', $currentID);
+		$query = $this->db->get("teams");
+		$result = $query->result_array();
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function UpdateCheckUniqueEmail($email,$currentID)
+	{
+		$this->db->select('*');
+		$this->db->where('email', $email);
+		$this->db->where('nwaId != ', $currentID);
+		$query = $this->db->get("teams");
+		$result = $query->result_array();
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 }
