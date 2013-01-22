@@ -16,7 +16,7 @@
 				// wattball
 				if ($event['sportId'] == 1)
 				{
-
+					$no_cols = 1;
 				}
 				// hurdling
 				if ($event['sportId'] == 2)
@@ -25,11 +25,37 @@
 					echo "<th>Date Of Birth</th>";
 					echo "<th>Gender</th>";
 					echo "<th>Fastest time</th>";
+					$no_cols = 5;
 				}
 			
 			?>
 		</tr> 
 	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="<?php echo $no_cols; ?>">
+			<?php
+			if ($event['sportId'] == 1)
+			{
+			}
+			else if ($event['sportId'] == 2)
+			{
+				$gender = "";
+				if ($event['gender'] == "male")
+				{
+					$gender = 1;
+				}
+				else 
+				{
+					$gender = 2;
+				}
+				$url = base_url() . "index.php/admin/event/registerAthlete/" . $event['eventId'] . "/" . $gender;
+				echo "<a href=\"{$url}\">Register new athlete</a>";
+			}
+			?>
+			</td>
+		</tr>
+	</tfoot>
 	<tbody>
 	<?php
 		// wattball

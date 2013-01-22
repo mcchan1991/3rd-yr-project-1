@@ -227,7 +227,12 @@ class Event extends My_Admin_Controller
 			$i = 0;
 			foreach($eventRegs as $eventReg)
 			{
-				$registrations[$i] = $this->athlete_model->get_record($eventReg['athleteId'])[0];
+				$eventReg = $this->athlete_model->get_record($eventReg['athleteId']);
+				if (count($eventReg) > 0)
+				{
+					$registrations[$i] = $eventReg[0];
+				}
+				//$registrations[$i] = $this->athlete_model->get_record($eventReg['athleteId'])[0];
 				$i++;
 			}
 		}
@@ -240,6 +245,81 @@ class Event extends My_Admin_Controller
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/registrations',$data);
 		$this->template->render();
+	}
+	
+	public function registerAthlete($eventId, $gender)
+	{
+		$this->load->helper('form');
+		$event = $this->Event_model->getEvent($eventId);
+		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
+		$data['firstName'] = "";
+		$data['surname'] = "";
+		$data['email'] = "";
+		$data['password'] = "";
+		$data['dob'] = "";
+		$data['fastest'] = "";
+		$data['gender'] = (($gender == 1) ? 'male' : 'female');
+		$data['event'] = $event;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+
+		$sideData['sport'] = $event['sportId'];
+		$sideData['event'] = $event;
+		
+		$this->template->write_view('content','admin/event/register_athlete',$data);
+		$this->template->write_view('nav_side','admin/event/navside',$data, true);
+		$this->template->render();
+	}
+	
+	public function saveAthlete($eventId)
+	{
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]|callback_dobCheck");
+		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");
+		
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['firstName'] = $this->input->post("firstName");
+			$data['surname'] = $this->input->post("surname");
+			$data['email'] = $this->input->post("email");
+			$data['password'] = $this->input->post("password");
+			$data['dob'] = $this->input->post("dob");
+			$data['gender'] = $this->input->post("gender");
+			$data['fastest'] = $this->input->post("fastest");
+			$data['event'] = $this->Event_model->getEvent($eventId);
+			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+			
+			$event = $this->Event_model->getEvent($eventId);
+
+			$sideData['sport'] = $event['sportId'];
+			$sideData['event'] = $event;
+			
+			$this->template->write_view('content','athlete/create',$data);
+			$this->template->write_view('nav_side','admin/event/navside',$data, true);
+			$this->template->render();
+		}
+		else
+		{
+			$postdata = array(
+				'firstName' => $this->input->post("firstName"),	
+				'surname' => $this->input->post("surname"),					
+				'email' => $this->input->post("email"),					
+				'password' => sha1($this->input->post("password")),					
+				'dob' => $this->input->post("dob"),					
+				'gender' => $this->input->post("gender"),	
+				'fastest' => $this->input->post("fastest")						
+			);
+			$this->Athlete_model->add_record($postdata);
+			
+			$id = $this->Athlete_model->getByEmail($this->input->post("email"))[0]['athleteId'];
+			
+			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
+			
+			redirect("/admin/event/viewRegistrations/{$eventId}");
+		}
 	}
 	
 	public function requireGender()
@@ -352,4 +432,41 @@ class Event extends My_Admin_Controller
 			return FALSE;
 		}
  	}
+
+	function uniqueEmail()
+	{
+		$this->load->model('Athlete_model');
+		$result = $this->Athlete_model->getByEmail($this->input->post("email"));
+		if (count($result) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('uniqueEmail', "The e-mail you entered have already been used for registration.");
+			return false;
+		}
+	}
+	
+	public function dobsCheck()
+	{
+		$dobInput = $this->input->post('dob');
+
+		// validate first date format
+		$dateFormat = "d/m/Y";
+		$this->_startDate = DateTime::createFromFormat($dateFormat, $dobInput);
+
+		$date_errors = DateTime::getLastErrors();
+		$errors = array();
+		// push any errors to the errors array
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			$this->form_validation->set_message('dateCheck', "The entered Date Of Birth is invalid. Use format mm/dd/yyyy");
+			return false;	
+		}
+		else
+		{
+			return true;
+		}
+	}
 }	
