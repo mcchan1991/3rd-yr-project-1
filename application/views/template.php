@@ -11,6 +11,7 @@
 		<link href="<?php echo base_url(); ?>assets/css/bootstrap.css" rel="stylesheet">
 		<link href="<?php echo base_url(); ?>assets/css/custom.css" rel="stylesheet">
 		<link href="<?php echo base_url(); ?>assets/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="<?php echo base_url(); ?>assets/css/redmond/jquery-ui-1.10.0.custom.css" rel="stylesheet">
 		
 		<link href="<?php echo base_url(); ?>assets/css/jasny-bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="<?php echo base_url(); ?>assets/css/jasny-bootstrap.min.css" rel="stylesheet">
@@ -66,10 +67,11 @@
 	    <!-- Le javascript
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/jquery-latest.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/jquery-ui-1.10.0.custom.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap-rowlink.js"></script>
-		<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+		<script src="<?php echo base_url(); ?>assets/js/nicEdit-latest.js" type="text/javascript"></script>
 		<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
 	</body>
 </html>
