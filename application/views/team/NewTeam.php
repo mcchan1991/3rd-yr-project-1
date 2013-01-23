@@ -155,11 +155,11 @@ $btnAttributes = array(
 	);
 	
 	
-	echo "<div class=\"control-group\">";
+	/*echo "<div class=\"control-group\">";
 	echo form_label('eventId', 'id', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_input($id);
-	echo '</div></div>';
+	echo '</div></div>';*/
 	
 	echo "<div class=\"control-group\">";
 	echo "<div class=\"controls\">";

@@ -33,6 +33,29 @@ class teamRegister extends My_Public_Controller {
 		$data['event']=$event;
 		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
 		//$this->template->write_view('nav_top','topnav');
+		$sideData['sport'] = $event['sportId'];
+		$sideData['event'] = $event;
+		/*if ($registration != false)
+		{
+			$registration=true;
+		}
+		$data['registration'] = $registration;*/
+		
+		$dateFormat = "Y-m-d";
+		$currentDate = new DateTime();
+		$regStart = DateTime::createFromFormat($dateFormat, $event['regStart']);
+		$regEnd = DateTime::createFromFormat($dateFormat, $event['regEnd']);
+		
+		if ($currentDate > $regEnd)
+		{
+			$data['registrationError'] = 1;
+		}
+		else if ($currentDate<$regStart)
+		{
+			$data['registrationError'] = 2;
+		}
+		
+		$this->template->write_view('nav_side','navside_event', $sideData);
 		$this->template->write_view('content','team/NewTeam',$data);
 		$this->template->render();
 	}
@@ -68,7 +91,7 @@ class teamRegister extends My_Public_Controller {
 			$this->Team_model->create($data);
 			$data1 = array(
 			'eventRegsId' =>NULL,
-			'eventId'=>$this->input->post('id'),
+			'eventId'=>$eventId,
 			'nwaId' => $this->input->post('nwaId'),
 			'athleteId' => NULL
 			);
