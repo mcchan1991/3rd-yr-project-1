@@ -90,7 +90,7 @@ $btnAttributes = array(
 	);
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('contact FirstName', 'contactFirstName', $labelAttributes);
+	echo form_label('Contact First Name', 'contactFirstName', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_input($contactFirstName);
 	echo '</div></div>';
@@ -109,7 +109,7 @@ $btnAttributes = array(
 	
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('contact Surname', 'contactSurname', $labelAttributes);
+	echo form_label('Contact Surname', 'contactSurname', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_input($contactSurname);
 	echo '</div></div>';
@@ -121,7 +121,7 @@ $btnAttributes = array(
 	);
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('Passowrd', 'password', $labelAttributes);
+	echo form_label('Password', 'password', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_password($password);
 	echo '</div></div>';
@@ -134,7 +134,7 @@ $btnAttributes = array(
 	
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('cpassowrd', 'cpassword', $labelAttributes);
+	echo form_label('Password', 'cpassword', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_password($cpassword);
 	echo '</div></div>';
@@ -147,7 +147,7 @@ $btnAttributes = array(
 	
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('email', 'email', $labelAttributes);
+	echo form_label('E-mail', 'email', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_input($email);
 	echo '</div></div>';
