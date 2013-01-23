@@ -149,12 +149,14 @@ class Athlete extends My_Public_Controller
 		}
 		else
 		{
+			$dateFormat = "d/m/Y";
+			$dob = DateTime::createFromFormat($dateFormat, $this->input->post("dob"));
 			$postdata = array(
 				'firstName' => $this->input->post("firstName"),	
 				'surname' => $this->input->post("surname"),					
 				'email' => $this->input->post("email"),					
 				'password' => sha1($this->input->post("password")),					
-				'dob' => $this->input->post("dob"),					
+				'dob' => $dob->format('Y-m-d'),			
 				'gender' => $this->input->post("gender"),	
 				'fastest' => $this->input->post("fastest")						
 			);
