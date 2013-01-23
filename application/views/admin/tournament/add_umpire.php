@@ -5,7 +5,25 @@
  * Created: 13/01/2013
  * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
  */
+?>
 
+<script>
+var tournamentStart = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['start']; ?>"); 
+var tournamentEnd = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['end']; ?>");
+$(function() {
+	$( "#date" ).datepicker({
+	  defaultDate: "+1w",
+	  changeMonth: false,
+	  numberOfMonths: 1,
+	  minDate: tournamentStart,
+	  maxDate: tournamentEnd,
+	  dateFormat: "dd/mm/yy",
+	});
+});
+
+</script>
+
+<?php
 $attributes = array('class' => 'form-horizontal');
 $labelAttributes = array(
     'class' => 'control-label',

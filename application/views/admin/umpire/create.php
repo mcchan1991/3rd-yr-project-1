@@ -1,3 +1,15 @@
+<script>
+$(function() {
+	$( "#dob" ).datepicker({
+	  defaultDate: "-30y",
+	  changeMonth: false,
+	  numberOfMonths: 1,
+	  dateFormat: "dd/mm/yy",
+	});
+});
+
+</script>
+
 <?php 
 $attributes = array('class' => 'form-horizontal');
 $labelAttributes = array(

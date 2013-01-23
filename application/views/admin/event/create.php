@@ -1,3 +1,57 @@
+<script>
+var tournamentStart = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['start']; ?>"); 
+var tournamentEnd = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['end']; ?>");
+
+$(function() {
+  $( "#regStart" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+	maxDate: tournamentStart,
+	dateFormat: "dd/mm/yy",
+    onClose: function( selectedDate ) {
+      $( "#regEnd" ).datepicker( "option", "minDate", selectedDate );
+    }
+  });
+  $( "#regEnd" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+	maxDate: tournamentStart,
+	dateFormat: "dd/mm/yy",
+    onClose: function( selectedDate ) {
+      $( "#regStart" ).datepicker( "option", "maxDate", selectedDate );
+    }
+  });
+  $( "#start" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+	minDate: tournamentStart,
+	maxDate: tournamentEnd,
+	dateFormat: "dd/mm/yy",
+    onClose: function( selectedDate ) {
+      $( "#end" ).datepicker( "option", "maxDate", selectedDate );
+    }
+  });
+  $( "#end" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+	minDate: tournamentStart,
+	maxDate: tournamentEnd,
+	dateFormat: "dd/mm/yy",
+    onClose: function( selectedDate ) {
+      $( "#start" ).datepicker( "option", "maxDate", selectedDate );
+    }
+  });
+});
+
+</script>
 <?php 
 $attributes = array('class' => 'form-horizontal');
 $labelAttributes = array(
