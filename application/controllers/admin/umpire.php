@@ -90,7 +90,8 @@ class Umpire extends My_Admin_Controller
 			$data['sport'] =$this->input->post('sport');
 			$data['sports'] = $this->Sport_model->getAll();
 			
-			$this->load->view('admin/umpire/create',$data);
+			$this->template->write_view('content','admin/umpire/create',$data);
+			$this->template->render();
 		}
 		else
 		{

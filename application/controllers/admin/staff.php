@@ -99,7 +99,8 @@ class Staff extends My_Admin_Controller
 			$data['username'] = $this->input->post('username');
 			$data['manager'] = $this->input->post('manager');
 			
-			$this->load->view('admin/staff/create',$data);
+			$this->template->write_view('content','admin/staff/create',$data);
+			$this->template->render();
 		}
 		else
 		{
