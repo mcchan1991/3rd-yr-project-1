@@ -48,6 +48,10 @@ else if ($registartionError == 2)
 {
 	echo "Sorry, registration for this tournament have not yet startet. Registration period is: PLACEHOLDER";
 }
+else if ($registrationError == 3)
+{
+	echo "Sorry, this event have reached its max entries, and no more registrations are allowed";
+}
 echo "</div>";
 
 $btnAttributes = array(

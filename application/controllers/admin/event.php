@@ -265,6 +265,11 @@ class Event extends My_Admin_Controller
 		$sideData['sport'] = $event['sportId'];
 		$sideData['event'] = $event;
 		
+		if ($this->Event_model->getEventRegistrationsCount($eventId) == $event['maxEntries'])
+		{
+			$data['registrationError'] = 3;
+		}
+		
 		$this->template->write_view('content','admin/event/register_athlete',$data);
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->render();

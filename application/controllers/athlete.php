@@ -45,6 +45,10 @@ class Athlete extends My_Public_Controller
 		{
 			$data['registrationError'] = 2;
 		}
+		else if ($this->Event_model->getEventRegistrationsCount($eventId) == $event['maxEntries'])
+		{
+			$data['registrationError'] = 3;
+		}
 
 		$sideData['sport'] = $event['sportId'];
 		$sideData['event'] = $event;

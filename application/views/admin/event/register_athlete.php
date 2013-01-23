@@ -31,11 +31,33 @@ $btnAttributes = array(
 <h3>Register for event: <?php echo $event['name'] ?></h3>
 <?php
 $errors = validation_errors();
-if (!empty($errors))
+if (!empty($errors) || isset($registrationError))
 {
 echo "<div class=\"alert alert-error\">";
+echo "Sorry, registration for this tournament have ended.";
 echo validation_errors();
 echo "</div>";
+}
+else if (isset($registrationError))
+{
+echo "<div class=\"alert alert-error\">";
+if ($registartionError == 1)
+{
+	echo "Sorry, registration for this tournament have ended.";
+}
+else if ($registartionError == 2)
+{
+	echo "Sorry, registration for this tournament have not yet startet. Registration period is: PLACEHOLDER";
+}
+else if ($registrationError == 3)
+{
+	echo "Sorry, this event have reached its max entries, and no more registrations are allowed";
+}
+echo "</div>";
+
+$btnAttributes = array(
+    'class' => 'btn disabled',
+);
 }
 
 ?>
