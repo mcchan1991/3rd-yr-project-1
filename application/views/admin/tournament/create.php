@@ -1,3 +1,25 @@
+<script>
+$(function() {
+  $( "#startDate" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+    onClose: function( selectedDate ) {
+      $( "#startEnd" ).datepicker( "option", "minDate", selectedDate );
+    }
+  });
+  $( "#endDate" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: false,
+    numberOfMonths: 1,
+	minDate: +0,
+    onClose: function( selectedDate ) {
+      $( "#startDate" ).datepicker( "option", "maxDate", selectedDate );
+    }
+  });
+});
+</script>
 <?php 
 $attributes = array('class' => 'form-horizontal');
 $labelAttributes = array(

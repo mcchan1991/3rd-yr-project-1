@@ -21,9 +21,10 @@
 		<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-
 	</head>
 	<body>
+		<script src="<?php echo base_url(); ?>assets/js/jquery-latest.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/jquery-ui-1.10.0.custom.js"></script>
 		<div class="container-fluid">
 			
 			<div class="row-fluid" style="margin-bottom:10px; margin-top:5px">
@@ -67,8 +68,6 @@
 	    <!-- Le javascript
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
-		<script src="<?php echo base_url(); ?>assets/js/jquery-latest.js"></script>
-		<script src="<?php echo base_url(); ?>assets/js/jquery-ui-1.10.0.custom.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/bootstrap-rowlink.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/nicEdit-latest.js" type="text/javascript"></script>
