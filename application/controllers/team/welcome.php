@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Welcome extends CI_Controller {
+class Welcome extends My_Public_Controller {
 
 	function __construct()
 	{
@@ -26,6 +26,6 @@ class Welcome extends CI_Controller {
 	{
 		$this->session->unset_userdata('logged_in');
 		$this->session->unset_userdata('login_state');
-		redirect('team/verifyTeamLogin', 'refresh');
+		redirect('', 'refresh');
 	}
 }

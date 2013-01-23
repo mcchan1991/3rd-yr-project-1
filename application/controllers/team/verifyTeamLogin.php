@@ -1,17 +1,27 @@
 
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class verifyTeamLogin extends CI_Controller {
+class verifyTeamLogin extends My_Public_Controller{
 
 	function __construct()
 	{
 		session_start();
 		parent::__construct();
 		$this->load->model('team/team_model');
+		$this->load->model('Athlete_model');
+		$this->load->model('admin/Event_model');
+		$this->load->model('admin/Tournament_model');
 	}
 
 	function index()
 	{
+		$this->teamLogin($eventId);
+	}
+	
+	function teamLogin($eventId)
+	{
+		$this->load->helper('form');
+		
 		if($this->session->userdata('login_state')==false)
 		{
 				//This method will have the credentials validation
@@ -21,9 +31,12 @@ class verifyTeamLogin extends CI_Controller {
 
 				if($this->form_validation->run() == FALSE)
 				{
+					$event = $this->Event_model->getEvent($eventId);
 					//Field validation failed.  User redirected to login page
 				$data['email'] = "";
 				$data['password'] = "";
+				$data['event'] = $event;
+				$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
 				$this->template->write_view('content','team/TeamLogin',$data);
 				$this->template->render();
 				}
@@ -38,7 +51,6 @@ class verifyTeamLogin extends CI_Controller {
 		$this->template->write_view('content','team/welcome1');
 		$this->template->render();
 		}
-
 	}
 
 	function check_database($password)

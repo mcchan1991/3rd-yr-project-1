@@ -1,16 +1,26 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class teamRegister extends CI_Controller {
-
+class teamRegister extends My_Public_Controller {
+	function __construct()
+	{
+		parent::__construct();
+		
+		$this->load->model('Athlete_model');
+		$this->load->model('admin/Event_model');
+		$this->load->model('admin/Tournament_model');	
+		
+	}
 	
 	public function index()
 	{
-		$this->register();
+		$this->register($eventId);
 	}
 	
-	function register()
+	function register($eventId)
 	{
 		$this->load->helper('form');
+		$event = $this->Event_model->getEvent($eventId);
+		//$event = $this->Event_model->getId($eventId);
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
 		$data['nwaId'] = "";
 		$data['name'] = "";
@@ -19,11 +29,15 @@ class teamRegister extends CI_Controller {
 		$data['email'] = "";
 		$data['password'] = "";
 		$data['cpassword'] = "";
+		$data['eventId'] = "";
+		$data['event']=$event;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+		//$this->template->write_view('nav_top','topnav');
 		$this->template->write_view('content','team/NewTeam',$data);
 		$this->template->render();
 	}
 	
-	public function add()
+	public function add($eventId)
 	{
 		$this->load->library('form_validation');
 		$this->load->model('team/Team_model');
@@ -38,7 +52,7 @@ class teamRegister extends CI_Controller {
 		
 		if($this->form_validation->run()==false)
 		{
-			$this->register();
+			$this->register($eventId);
 		}
 		else
 		{
@@ -52,7 +66,15 @@ class teamRegister extends CI_Controller {
 			'password' => sha1($this->input->post('password')),
 			);
 			$this->Team_model->create($data);
-			redirect('team/welcome', 'refresh');
+			$data1 = array(
+			'eventRegsId' =>NULL,
+			'eventId'=>$this->input->post('id'),
+			'nwaId' => $this->input->post('nwaId'),
+			'athleteId' => NULL
+			);
+			$this->Team_model->createTeamReg($data1);
+			
+			redirect('', 'refresh');
 		}
 	}
 	
@@ -95,6 +117,7 @@ class teamRegister extends CI_Controller {
 			);
 			$this->Team_model->update($this->session->userdata('nwaId'),$data);
 			redirect('team/welcome', 'refresh');
+			
 			
 		}
 	

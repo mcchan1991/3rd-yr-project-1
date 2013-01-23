@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class teamEvent extends CI_Controller {
+class teamEvent extends My_Public_Controller {
 
 	
 	function __construct()
