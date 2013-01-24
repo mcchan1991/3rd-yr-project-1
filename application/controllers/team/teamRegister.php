@@ -83,7 +83,7 @@ class teamRegister extends My_Public_Controller {
 		}
 		else
 		{
-			echo "You have registered";
+			//echo "You have registered";
 			$data = array(
 			'nwaId' => $this->input->post('nwaId'),
 			'name' => $this->input->post('name'),

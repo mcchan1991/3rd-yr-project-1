@@ -25,7 +25,7 @@ $(function() {
 	dateFormat: "dd/mm/yy",
     onClose: function( selectedDate ) {
       if ($('#regEnd').length > 0)
-	  {$( "#regStart" ).datepicker( "option", "maxDate", selectedDate ); var date2 = selectedDate; $( "#start" ).datepicker( "option", "minDate", date2 );}
+	  {$( "#regStart" ).datepicker( "option", "maxDate", selectedDate ); $( "#start" ).datepicker( "option", "minDate", selectedDate );}
 	  else {$( "#regStart" ).datepicker( "option", "maxDate", tournamentEnd );}
     }
   });

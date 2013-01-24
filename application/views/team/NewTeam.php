@@ -134,7 +134,7 @@ $btnAttributes = array(
 	
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('Password', 'cpassword', $labelAttributes);
+	echo form_label('Confirm Password', 'cpassword', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_password($cpassword);
 	echo '</div></div>';
