@@ -5,48 +5,55 @@ var tournamentEnd = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament[
 $(function() {
   $( "#regStart" ).datepicker({
     defaultDate: "+1w",
-    changeMonth: false,
+    changeMonth: true,
     numberOfMonths: 1,
 	minDate: +0,
-	maxDate: tournamentStart,
+	maxDate: tournamentEnd,
 	dateFormat: "dd/mm/yy",
     onClose: function( selectedDate ) {
-      $( "#regEnd" ).datepicker( "option", "minDate", selectedDate );
+	  if ($('#regStart').length > 0)
+	  {$( "#regEnd" ).datepicker( "option", "minDate", selectedDate );}
+	  else {$( "#regEnd" ).datepicker( "option", "maxDate", tournamentEnd );}
     }
   });
   $( "#regEnd" ).datepicker({
     defaultDate: "+1w",
-    changeMonth: false,
+    changeMonth: true,
     numberOfMonths: 1,
 	minDate: +0,
-	maxDate: tournamentStart,
+	maxDate: tournamentEnd,
 	dateFormat: "dd/mm/yy",
     onClose: function( selectedDate ) {
-      $( "#regStart" ).datepicker( "option", "maxDate", selectedDate );
+      if ($('#regEnd').length > 0)
+	  {$( "#regStart" ).datepicker( "option", "maxDate", selectedDate ); var date2 = selectedDate; $( "#start" ).datepicker( "option", "minDate", date2 );}
+	  else {$( "#regStart" ).datepicker( "option", "maxDate", tournamentEnd );}
     }
   });
   $( "#start" ).datepicker({
     defaultDate: "+1w",
-    changeMonth: false,
+    changeMonth: true,
     numberOfMonths: 1,
 	minDate: +0,
-	minDate: tournamentStart,
 	maxDate: tournamentEnd,
 	dateFormat: "dd/mm/yy",
     onClose: function( selectedDate ) {
-      $( "#end" ).datepicker( "option", "maxDate", selectedDate );
-    }
+	  if ($('#start').length  > 0)
+	  {$( "#end" ).datepicker( "option", "minDate", selectedDate );}
+	  else {$( "#end" ).datepicker( "option", "maxDate", tournamentEnd );}
+    },
   });
   $( "#end" ).datepicker({
     defaultDate: "+1w",
-    changeMonth: false,
+    changeMonth: true,
     numberOfMonths: 1,
 	minDate: +0,
 	minDate: tournamentStart,
 	maxDate: tournamentEnd,
 	dateFormat: "dd/mm/yy",
     onClose: function( selectedDate ) {
-      $( "#start" ).datepicker( "option", "maxDate", selectedDate );
+	  if ($('#end').length > 0)
+	  {$( "#start" ).datepicker( "option", "maxDate", selectedDate );}
+	  else {$( "#start" ).datepicker( "option", "maxDate", tournamentEnd );}
     }
   });
 });
