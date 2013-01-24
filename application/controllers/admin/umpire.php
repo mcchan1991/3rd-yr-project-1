@@ -112,7 +112,7 @@ class Umpire extends My_Admin_Controller
 				);
 				$id = $this->Umpire_model->create($postdata);
 				
-				echo "successfully addedd id: " . $id;
+				//echo "successfully addedd id: " . $id;
 			}
 			else
 			{
