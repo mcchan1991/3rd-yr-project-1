@@ -321,7 +321,9 @@ class Event extends My_Admin_Controller
 			);
 			$this->Athlete_model->add_record($postdata);
 			
-			$id = $this->Athlete_model->getByEmail($this->input->post("email"))[0]['athleteId'];
+			$id = $this->Athlete_model->getByEmail($this->input->post("email"));
+			$id = $id[0];
+			$id = $id['athleteId'];
 			
 			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
 			
