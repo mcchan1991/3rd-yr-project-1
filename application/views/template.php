@@ -31,7 +31,7 @@
 				
 				<div class="span10 offset1">
 					<img src="<?php echo base_url(); ?>/assets/img/logo.png" width="125px" height="125px" />
-					<img src="<?php echo base_url(); ?>/assets/img/wattball.jpg" />
+					<!-- <img src="<?php echo base_url(); ?>/assets/img/wattball.jpg" /> -->
 				</div>	
 			</div>
 

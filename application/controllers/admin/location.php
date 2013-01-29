@@ -102,7 +102,7 @@ class Location extends My_Admin_Controller
 					);
 					$this->Location_model->createSportAtLocation($postdata);
 				}
-				echo "successfully addedd id: " . $id;
+				//echo "successfully addedd id: " . $id;
 			}
 			else
 			{
@@ -134,7 +134,8 @@ class Location extends My_Admin_Controller
 		$data['capacity'] = "";
 		$data['lights'] = "";
 		$data['sports']= $this->Sport_model->getAll();
-		
+		$data['sportSelected']= "";
+
 		$this->template->write_view('content','admin/location/create',$data);
 		$this->template->render();
 	}
