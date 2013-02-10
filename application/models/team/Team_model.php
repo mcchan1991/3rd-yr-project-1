@@ -28,14 +28,14 @@ class Team_model extends CI_Model {
 		
 	
 	
-	//change contact name or add or email or password
+	//change contact name or add or email or password etc
 	public function update($id,$data1)
 	{
 		$this->db->from('teams');
 		$this->db->where('nwaId', $id);
 		$this->db->update('teams', $data1);
 	}
-	//count how many team may use in  team sechduling?
+	
 	public function create($data)
 	{
 		$this->db->insert('teams', $data);
@@ -144,6 +144,15 @@ class Team_model extends CI_Model {
 		{
 			return false;
 		}
+	}
+	
+	public function getEventReg($id)
+	{
+		$this->db->select('teams.nwaId ,teams.name');
+		$this->db->from('teams');
+		$this->db->where('teams.nwaId', $id);
+		$query = $this-> db-> get();
+		return $query->row_array();
 	}
 	
 }

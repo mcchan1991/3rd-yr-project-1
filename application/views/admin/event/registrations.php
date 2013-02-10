@@ -16,7 +16,8 @@
 				// wattball
 				if ($event['sportId'] == 1)
 				{
-					$no_cols = 1;
+					echo "<th>NWAID</th>";
+					$no_cols = 2;
 				}
 				// hurdling
 				if ($event['sportId'] == 2)
@@ -37,6 +38,8 @@
 			<?php
 			if ($event['sportId'] == 1)
 			{
+				$url = base_url() . "index.php/admin/team/register/" . $event['eventId'];
+				echo "<a href=\"{$url}\">Register new team event</a>";
 			}
 			else if ($event['sportId'] == 2)
 			{
@@ -61,7 +64,13 @@
 		// wattball
 		if ($event['sportId'] == 1)
 		{
-			
+			foreach($registrations as $teams)
+			{
+				echo "<tr>";
+				echo "<td>{$teams['name']}</td>";
+				echo "<td>{$teams['nwaId']}</td>";
+				echo "</tr>";
+			}
 		}
 		// hurdling
 		if ($event['sportId'] == 2)

@@ -212,12 +212,22 @@ class Event extends My_Admin_Controller
 		// wattball
 		if ($event['sportId'] == 1)
 		{
-			/*$i = 0;
-			foreach($result as $eventReg)
+			$this->load->model('team/team_model');
+			$i = 0;
+			foreach($eventRegs as $eventReg)
 			{
-				$registrations[$id] = 
+			$eventReg=$this->team_model->getEventReg($eventReg['nwaId']);
+				if (count($eventReg) > 0)
+				{
+					$registrations[$i] = $eventReg;
+				}
+				//$registrations[$i] = $this->athlete_model->get_record($eventReg['athleteId'])[0];
 				$i++;
-			} */
+			}
+		$data['registrations'] = $registrations;
+		$data['event'] = $event;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
+		$data['links'] = $this->pagination->create_links(); 
 			// Do this one after team stuff have been sorted out...
 		}
 		// hurdling
@@ -235,11 +245,12 @@ class Event extends My_Admin_Controller
 				//$registrations[$i] = $this->athlete_model->get_record($eventReg['athleteId'])[0];
 				$i++;
 			}
-		}
 		$data['registrations'] = $registrations;
 		$data['event'] = $event;
 		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['links'] = $this->pagination->create_links();
+		}
+
 		
 		// load view etc...
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
