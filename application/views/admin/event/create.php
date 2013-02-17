@@ -1,3 +1,29 @@
+<?php
+$attributes = array('class' => 'form-horizontal');
+$labelAttributes = array(
+    'class' => 'control-label',
+);
+$btnAttributes = array(
+    'class' => 'btn',
+	'style' => 'margin-top: 15px;'
+);
+
+$eventTimesForm = array(
+	'name'	=> 'eventTimes[]',
+	'id'	=> 'eventTimes[]',
+	'placeholder' => 'HH:MM',
+	'value' => ""
+);
+
+//echo form_input($eventTimesForm);
+$formOutput = "<div class=\"control-group\">";
+$formOutput .= form_label('Start time', 'eventTimes', $labelAttributes);
+$formOutput .= "<div class=\"controls\">";
+$formOutput .= form_input($eventTimesForm);
+$formOutput .= "<a href=\"#\" class=\"remove\" style=\"margin-left:5px;\">Remove</a>";
+$formOutput .= '</div>';
+$formOutput .= '</div>';
+?>
 <script>
 var tournamentStart = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['start']; ?>"); 
 var tournamentEnd = $.datepicker.parseDate("yy-mm-dd",  "<?php echo $tournament['end']; ?>");
@@ -58,15 +84,28 @@ $(function() {
   });
 });
 
+$(function () {
+    var eventTimesDiv = $('#eventTimesDiv');
+    var i = $('#eventTimesDiv label').size() + 1;
+
+    $('#addInput').on('click', function () {
+        $('<?php echo $formOutput;  ?>').appendTo(eventTimesDiv);
+        i++;
+        return false;
+    });
+
+    $(document).on('click', '.remove', function () {
+        if (i > 2) {
+            $(this).parent('div').parent('div').remove();
+            i--;
+        }
+        return false;
+    });
+});
+
 </script>
 <?php 
-$attributes = array('class' => 'form-horizontal');
-$labelAttributes = array(
-    'class' => 'control-label',
-);
-$btnAttributes = array(
-    'class' => 'btn',
-);
+
 if (empty($id))
 {
 	?>
@@ -124,6 +163,33 @@ else
 	echo '</div>';
 	echo '</div>';
 	
+	$startForm = array(
+		'name'	=> 'start',
+		'id'	=> 'start',
+		'value' => $start
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('Start date', 'start', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_input($startForm);
+	echo '</div>';
+	echo '</div>';
+	
+	$endForm = array(
+		'name'	=> 'end',
+		'id'	=> 'end',
+		'value' => $end
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('End date', 'end', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_input($endForm);
+	echo '</div>';
+	echo '</div>';
+	
+	
 	$regStartForm = array(
 		'name'	=> 'regStart',
 		'id'	=> 'regStart',
@@ -177,32 +243,6 @@ else
 	echo '</div>';
 	echo '</div>';
 	
-	$startForm = array(
-		'name'	=> 'start',
-		'id'	=> 'start',
-		'value' => $start
-	);
-	
-	echo "<div class=\"control-group\">";
-	echo form_label('Start date', 'start', $labelAttributes);
-	echo "<div class=\"controls\">";
-	echo form_input($startForm);
-	echo '</div>';
-	echo '</div>';
-	
-	$endForm = array(
-		'name'	=> 'end',
-		'id'	=> 'end',
-		'value' => $end
-	);
-	
-	echo "<div class=\"control-group\">";
-	echo form_label('End date', 'end', $labelAttributes);
-	echo "<div class=\"controls\">";
-	echo form_input($endForm);
-	echo '</div>';
-	echo '</div>';
-	
 	$sportOptions = array();
 	foreach ($sports as $sportValue)
 	{
@@ -241,6 +281,70 @@ else
 	echo '</div>';
 	echo '</div>';
 	
+	echo "<h2>Scheduling settings</h2>";
+	$durationField = array(
+		'name'	=> 'duration',
+		'id'	=> 'duration',
+		'placeholder' => 'HH:MM',
+		'value' => $duration
+	);
+	
+	echo "<div class=\"control-group\">";
+	echo form_label('Match/Race duration', 'duration', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_input($durationField);
+	echo '</div>';
+	echo '</div>';
+	
+	echo "<strong>Event match/race times</strong>";
+	echo "<div id=\"eventTimesDiv\">";
+	
+	$loop = 0;
+	if (count($eventTimes) != 0)
+	{
+		for ($i = 0; $i<count($eventTimes); $i++)
+		{
+			if (empty($eventTimes[$i]))
+			{
+				break;
+			}
+			else
+			{
+				$loop++;
+			}
+		}
+	}
+	if ($loop == 0)
+	{
+		$loop = 1;
+	}
+	
+	for ($i = 0; $i<=$loop; $i++)
+	{
+		$value = "";
+		if (!empty($eventTimes[$i]["start"]))
+		{
+			$value = $eventTimes[$i]["start"];
+		}
+		
+		$eventTimesForm = array(
+			'name'	=> 'eventTimes[]',
+			'id'	=> 'eventTimes[]',
+			'placeholder' => 'HH:MM',
+			'value' => $value
+		);
+
+		echo "<div class=\"control-group\">";
+		echo form_label('Start time', 'eventTimes', $labelAttributes);
+		echo "<div class=\"controls\">";
+		echo form_input($eventTimesForm);
+		if ($i != 0) { echo "<a href=\"#\" class=\"remove\" style=\"margin-left:5px;\">Remove</a>"; }
+		echo '</div>';
+		echo '</div>';
+	}
+	echo "</div>";
+	echo "<a href=\"#\" id=\"addInput\" style=\"margin-left:180px;\">Add another time</a>";
+	echo "<br />";
 	echo form_hidden('tournament', $tournament['tournamentId']);
 	
 	echo "<div class=\"control-group\">";

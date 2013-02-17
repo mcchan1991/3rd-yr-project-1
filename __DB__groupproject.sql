@@ -123,6 +123,18 @@ CREATE TABLE `events` (
   KEY `sportId` (`sportId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Table structure for table `eventTimes`
+--
+
+CREATE TABLE `eventTimes` (
+  `eventId` int(10) NOT NULL,
+  `start` time NOT NULL,
+  PRIMARY KEY (`eventId`,`start`),
+  KEY `eventId` (`eventId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 -- --------------------------------------------------------
 
 --
@@ -411,6 +423,12 @@ ALTER TABLE `eventRegs`
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`),
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`);
+
+--
+-- Constraints for table `eventTimes`
+--
+ALTER TABLE `eventTimes`
+  ADD CONSTRAINT `eventTimes_ibfk_1` FOREIGN KEY (`eventId`) REFERENCES `events` (`eventId`);
 
 --
 -- Constraints for table `matchDetails`

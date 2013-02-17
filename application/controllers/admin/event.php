@@ -34,6 +34,8 @@ class Event extends My_Admin_Controller
 		$this->form_validation->set_rules("start", "Start date", "required");
 		$this->form_validation->set_rules("end", "End date", "required|callback_dateCheck");
 		$this->form_validation->set_rules("description", "Description", "required");
+		$this->form_validation->set_rules("duration", "Duration", "required|callback_timeCheck");
+		$this->form_validation->set_rules('eventTimes[]', 'Event times', 'callback_eventTimesCheck');
 		if ($this->input->post('sport') == 2)
 		{
 			$this->form_validation->set_rules("gender", "Gender", "callback_requireGender");
@@ -54,6 +56,8 @@ class Event extends My_Admin_Controller
 			$data['tournament'] = $this->Tournament_model->getTournamentId($this->input->post('tournament'));
 			$data['description'] = $this->input->post('description');
 			$data['gender'] = $this->input->post('gender');
+			$data['duration'] = $this->input->post('duration');
+			$data['eventTimes'] = $this->input->post('eventTimes');
 			
 			if (!empty($id))
 			{
@@ -80,9 +84,12 @@ class Event extends My_Admin_Controller
 					'start' => DateTime::createFromFormat($dateFormat, $this->input->post('start'))->format('Y-m-d'),
 					'end' => DateTime::createFromFormat($dateFormat, $this->input->post('end'))->format('Y-m-d'),	
 					'sportId' => $this->input->post('sport'),		
-					'gender' => $this->input->post('gender')				
+					'gender' => $this->input->post('gender'),
+					'duration'=> $this->input->post('duration'),
+					'scheduleAproved' => 0			
 				);
 				$id = $this->Event_model->create($postdata);
+				$id = $this->Event_model->createEventTimes($id, $this->input->post('eventTimes'));
 				
 				//echo "successfully addedd id: " . $id;
 			}
@@ -100,10 +107,12 @@ class Event extends My_Admin_Controller
 					'start' => DateTime::createFromFormat($dateFormat, $this->input->post('start'))->format('Y-m-d'),
 					'end' => DateTime::createFromFormat($dateFormat, $this->input->post('end'))->format('Y-m-d'),	
 					'sportId' => $this->input->post('sport'),	
-					'gender' => $this->input->post('gender')								
+					'gender' => $this->input->post('gender'),
+					'duration'=> $this->input->post('duration')							
 				);
 				
 				$this->Event_model->update($postdata);
+				$this->Event_model->createEventTimes($id, $this->input->post('eventTimes'));
 			}
 			redirect( "/admin/tournament/viewEvents/".$this->input->post('tournament') );
 		}
@@ -124,6 +133,8 @@ class Event extends My_Admin_Controller
 		$data['tournament'] = $this->Tournament_model->getTournamentId($tournament);
 		$data['description'] = "";
 		$data['gender'] = "";
+		$data['duration'] = "";
+		$data['eventTimes'] = array();
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -154,6 +165,8 @@ class Event extends My_Admin_Controller
 		$data['id'] = $id;
 		$data['description'] = $event['description'];
 		$data['gender'] = $event['gender'];
+		$data['duration'] = $event['duration'];
+		$data['eventTimes'] = $this->Event_model->getEventTimes($id);
 		
 		$this->template->write_view('content','admin/event/create',$data);
 		$this->template->render();
@@ -488,5 +501,56 @@ class Event extends My_Admin_Controller
 		{
 			return true;
 		}
+	}
+	
+	public function timeCheck($time)
+	{
+		if (preg_match("/(2[0-3]|[01][0-9]):[0-5][0-9]/", $time))
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('timeCheck', "The duration is invalid");
+			return false;
+		}
+	}
+	
+	public function eventTimesCheck()
+	{
+		// check if at least one time have been added
+		$time = array_filter($this->input->post('eventTimes'));
+		if (empty($time))
+		{
+			$this->form_validation->set_message('eventTimesCheck', "At least one event start time is required.");
+			return false;
+		}
+		
+		// check if they are all in valid format
+		for ($i = 0; $i<count($time); $i++)
+		{
+				if (!preg_match("/(2[0-3]|[01][0-9]):[0-5][0-9]/", $time[$i]))
+				{
+					$this->form_validation->set_message('eventTimesCheck', "The entered start times are invalid, please check the format (HH/MM)");
+					return false;
+					break;
+				}
+		}
+		
+		// filter the array (remove empty inputs)
+		$counts = array_count_values($time);
+		// check if they are all unique
+		for ($i = 0; $i<count($counts); $i++)
+		{
+			$current = array_pop($counts);
+			if ($current > 1)
+			{
+				$this->form_validation->set_message('eventTimesCheck', "The start times must be unique.");
+				return false;
+				break;
+			}
+		}
+		
+		return true;
 	}
 }	

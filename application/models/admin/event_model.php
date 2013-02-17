@@ -20,6 +20,32 @@ class Event_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
+	public function createEventTimes($id, $times)
+	{
+		// to make it easy first clear any event times.
+		$this->db->delete('eventTimes', array('eventId' => $id)); 
+		
+		$times = array_filter($times);	// get rid of empty inputs
+		$postdata;
+		for ($i = 0; $i<count($times); $i++)
+		{
+			$row = array(
+					'eventId' => $id,	
+					'start' => $times[$i] . ":00",	
+				);
+			$this->db->insert("eventTimes", $row);
+		}
+	}
+	
+	public function getEventTimes($id)
+	{
+		$this->db->where('eventId', $id);
+		$this->db->select('start');
+
+		$query = $this->db->get('eventTimes');
+		return $query->result_array();
+	}
+	
 	/**
 	 * count all the events by tournament id
 	 * 
