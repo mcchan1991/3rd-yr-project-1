@@ -155,4 +155,14 @@ class Team_model extends CI_Model {
 		return $query->row_array();
 	}
 	
+	public function getTeamName($id)
+	{
+		$this->db->select('teams.name');
+		$this->db->from('teams');
+		$this->db->where('teams.nwaId', $id);
+		$query = $this->db->get();
+		$row = $query->row_array();
+		return $row['name'];
+	}
+	
 }

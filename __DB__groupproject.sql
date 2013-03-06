@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 17, 2012 at 04:30 PM
+-- Generation Time: Mar 06, 2013 at 06:50 PM
 -- Server version: 5.5.25
 -- PHP Version: 5.4.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `groupproject`
@@ -24,8 +18,6 @@ SET time_zone = "+00:00";
 
 --
 -- Table structure for table `athleteInRace`
---
--- Creation: Nov 17, 2012 at 03:24 PM
 --
 
 CREATE TABLE `athleteInRace` (
@@ -42,27 +34,23 @@ CREATE TABLE `athleteInRace` (
 --
 -- Table structure for table `athletes`
 --
--- Creation: Nov 17, 2012 at 02:54 PM
---
 
 CREATE TABLE `athletes` (
   `athleteId` int(5) NOT NULL AUTO_INCREMENT,
   `firstName` varchar(100) NOT NULL,
   `surname` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,  
+  `email` varchar(100) NOT NULL,
   `dob` date NOT NULL,
   `gender` varchar(6) NOT NULL,
   `fastest` time DEFAULT NULL,
   PRIMARY KEY (`athleteId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `customers`
---
--- Creation: Nov 17, 2012 at 03:29 PM
 --
 
 CREATE TABLE `customers` (
@@ -82,8 +70,6 @@ CREATE TABLE `customers` (
 --
 -- Table structure for table `eventRegs`
 --
--- Creation: Nov 17, 2012 at 02:58 PM
---
 
 CREATE TABLE `eventRegs` (
   `eventRegsId` int(5) NOT NULL AUTO_INCREMENT,
@@ -94,14 +80,12 @@ CREATE TABLE `eventRegs` (
   KEY `eventId` (`eventId`,`nwaId`,`athleteId`),
   KEY `nwaId` (`nwaId`),
   KEY `athleteId` (`athleteId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `events`
---
--- Creation: Nov 17, 2012 at 03:03 PM
 --
 
 CREATE TABLE `events` (
@@ -118,10 +102,14 @@ CREATE TABLE `events` (
   `minEntries` int(5) NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
+  `scheduleAproved` tinyint(1) NOT NULL,
+  `duration` time NOT NULL,
   PRIMARY KEY (`eventId`),
   KEY `tournamentId` (`tournamentId`),
   KEY `sportId` (`sportId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `eventTimes`
@@ -134,13 +122,10 @@ CREATE TABLE `eventTimes` (
   KEY `eventId` (`eventId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `locations`
---
--- Creation: Nov 13, 2012 at 05:18 PM
 --
 
 CREATE TABLE `locations` (
@@ -149,14 +134,12 @@ CREATE TABLE `locations` (
   `name` varchar(50) NOT NULL,
   `lights` tinyint(1) NOT NULL,
   PRIMARY KEY (`locationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `matchDetails`
---
--- Creation: Nov 17, 2012 at 03:16 PM
 --
 
 CREATE TABLE `matchDetails` (
@@ -164,25 +147,26 @@ CREATE TABLE `matchDetails` (
   `eventId` int(5) NOT NULL,
   `locationId` int(5) NOT NULL,
   `umpireId` int(5) NOT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL,
   `team1Id` varchar(10) NOT NULL,
   `team2Id` varchar(10) NOT NULL,
-  `team1Goals` int(5) NOT NULL,
-  `team2Goals` int(5) NOT NULL,
+  `team1Goals` int(5) DEFAULT NULL,
+  `team2Goals` int(5) DEFAULT NULL,
   `status` varchar(20) NOT NULL,
+  `round` int(3) DEFAULT NULL,
   PRIMARY KEY (`matchId`),
   KEY `eventId` (`eventId`,`locationId`,`umpireId`,`team1Id`,`team2Id`,`team1Goals`),
   KEY `locationId` (`locationId`),
   KEY `umpireId` (`umpireId`),
   KEY `team1Id` (`team1Id`),
   KEY `team2Id` (`team2Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `playerResults`
---
--- Creation: Nov 17, 2012 at 03:20 PM
 --
 
 CREATE TABLE `playerResults` (
@@ -200,8 +184,6 @@ CREATE TABLE `playerResults` (
 --
 -- Table structure for table `players`
 --
--- Creation: Nov 13, 2012 at 05:18 PM
---
 
 CREATE TABLE `players` (
   `shirtNo` int(2) NOT NULL,
@@ -216,8 +198,6 @@ CREATE TABLE `players` (
 
 --
 -- Table structure for table `raceDetails`
---
--- Creation: Nov 17, 2012 at 03:23 PM
 --
 
 CREATE TABLE `raceDetails` (
@@ -236,8 +216,6 @@ CREATE TABLE `raceDetails` (
 --
 -- Table structure for table `sportAtLocations`
 --
--- Creation: Nov 17, 2012 at 03:04 PM
---
 
 CREATE TABLE `sportAtLocations` (
   `sportId` int(5) NOT NULL,
@@ -251,31 +229,17 @@ CREATE TABLE `sportAtLocations` (
 --
 -- Table structure for table `sports`
 --
--- Creation: Nov 17, 2012 at 03:03 PM
---
 
 CREATE TABLE `sports` (
   `sportId` int(5) NOT NULL AUTO_INCREMENT,
   `sportName` varchar(50) NOT NULL,
   PRIMARY KEY (`sportId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Dumping data for table `sports`
---
-
-INSERT INTO `sports` (`sportId`, `sportName`) VALUES
-(1, 'Wattball'),
-(2, 'Hurdling');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `staff`
---
--- Creation: Nov 13, 2012 at 05:18 PM
 --
 
 CREATE TABLE `staff` (
@@ -287,14 +251,12 @@ CREATE TABLE `staff` (
   `email` varchar(100) NOT NULL,
   `manager` tinyint(1) NOT NULL,
   PRIMARY KEY (`staffId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `teams`
---
--- Creation: Nov 13, 2012 at 05:18 PM
 --
 
 CREATE TABLE `teams` (
@@ -312,8 +274,6 @@ CREATE TABLE `teams` (
 --
 -- Table structure for table `tickets`
 --
--- Creation: Nov 17, 2012 at 03:25 PM
---
 
 CREATE TABLE `tickets` (
   `ticketId` int(5) NOT NULL AUTO_INCREMENT,
@@ -328,8 +288,6 @@ CREATE TABLE `tickets` (
 
 --
 -- Table structure for table `ticketSales`
---
--- Creation: Nov 17, 2012 at 03:29 PM
 --
 
 CREATE TABLE `ticketSales` (
@@ -349,8 +307,6 @@ CREATE TABLE `ticketSales` (
 --
 -- Table structure for table `tournaments`
 --
--- Creation: Nov 13, 2012 at 05:18 PM
---
 
 CREATE TABLE `tournaments` (
   `tournamentId` int(5) NOT NULL AUTO_INCREMENT,
@@ -360,14 +316,38 @@ CREATE TABLE `tournaments` (
   `end` date NOT NULL,
   `noTickets` int(7) NOT NULL,
   PRIMARY KEY (`tournamentId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `umpires`
+-- Table structure for table `umpireAvailability`
 --
--- Creation: Nov 17, 2012 at 03:13 PM
+
+CREATE TABLE `umpireAvailability` (
+  `umpireId` int(9) NOT NULL,
+  `tournamentId` int(9) NOT NULL,
+  `date` date NOT NULL,
+  `availableFrom` time NOT NULL,
+  `availableTo` time NOT NULL,
+  PRIMARY KEY (`umpireId`,`tournamentId`,`date`),
+  KEY `tournamentId` (`tournamentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `umpireCount`
+--
+CREATE TABLE `umpireCount` (
+`count` bigint(21)
+,`umpireId` int(5)
+,`tournamentId` int(5)
+);
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `umpires`
 --
 
 CREATE TABLE `umpires` (
@@ -379,35 +359,27 @@ CREATE TABLE `umpires` (
   `sport` int(5) NOT NULL,
   PRIMARY KEY (`umpireId`),
   KEY `sport` (`sport`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `umpireAvailability`
+-- Structure for view `umpireCount`
 --
+DROP TABLE IF EXISTS `umpireCount`;
 
-CREATE TABLE `umpireAvailability` (
-  `umpireId` int(9) NOT NULL,
-  `tournamentId` int(9) NOT NULL,
-  `date` date NOT NULL,
-  `availableFrom` datetime NOT NULL,
-  `availableTo` datetime NOT NULL,
-  PRIMARY KEY (`umpireId`,`tournamentId`,`date`),
-  KEY `tournamentId` (`tournamentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `umpireCount` AS select count(`matchDetails`.`umpireId`) AS `count`,`matchDetails`.`umpireId` AS `umpireId`,`events`.`tournamentId` AS `tournamentId` from (`matchDetails` join `events`) where (`matchDetails`.`eventId` = `events`.`eventId`) group by `matchDetails`.`umpireId`,`events`.`tournamentId`;
 
 --
--- Constraints for table `umpireAvailability`
+-- Constraints for dumped tables
 --
-ALTER TABLE `umpireAvailability`
-  ADD CONSTRAINT `umpireAvailability_ibfk_2` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`),
-  ADD CONSTRAINT `umpireAvailability_ibfk_1` FOREIGN KEY (`umpireId`) REFERENCES `umpires` (`umpireId`);
 
 --
 -- Constraints for table `athleteInRace`
 --
 ALTER TABLE `athleteInRace`
-  ADD CONSTRAINT `athleteInRace_ibfk_2` FOREIGN KEY (`athleteId`) REFERENCES `athletes` (`athleteId`),
-  ADD CONSTRAINT `athleteInRace_ibfk_1` FOREIGN KEY (`raceId`) REFERENCES `raceDetails` (`raceId`);
+  ADD CONSTRAINT `athleteInRace_ibfk_1` FOREIGN KEY (`raceId`) REFERENCES `raceDetails` (`raceId`),
+  ADD CONSTRAINT `athleteInRace_ibfk_2` FOREIGN KEY (`athleteId`) REFERENCES `athletes` (`athleteId`);
 
 --
 -- Constraints for table `eventRegs`
@@ -421,8 +393,8 @@ ALTER TABLE `eventRegs`
 -- Constraints for table `events`
 --
 ALTER TABLE `events`
-  ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`),
-  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`);
+  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`),
+  ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`);
 
 --
 -- Constraints for table `eventTimes`
@@ -434,11 +406,11 @@ ALTER TABLE `eventTimes`
 -- Constraints for table `matchDetails`
 --
 ALTER TABLE `matchDetails`
-  ADD CONSTRAINT `matchDetails_ibfk_5` FOREIGN KEY (`team2Id`) REFERENCES `teams` (`nwaId`),
   ADD CONSTRAINT `matchDetails_ibfk_1` FOREIGN KEY (`eventId`) REFERENCES `events` (`eventId`),
   ADD CONSTRAINT `matchDetails_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`),
   ADD CONSTRAINT `matchDetails_ibfk_3` FOREIGN KEY (`umpireId`) REFERENCES `umpires` (`umpireId`),
-  ADD CONSTRAINT `matchDetails_ibfk_4` FOREIGN KEY (`team1Id`) REFERENCES `teams` (`nwaId`);
+  ADD CONSTRAINT `matchDetails_ibfk_4` FOREIGN KEY (`team1Id`) REFERENCES `teams` (`nwaId`),
+  ADD CONSTRAINT `matchDetails_ibfk_5` FOREIGN KEY (`team2Id`) REFERENCES `teams` (`nwaId`);
 
 --
 -- Constraints for table `playerResults`
@@ -457,15 +429,15 @@ ALTER TABLE `players`
 -- Constraints for table `raceDetails`
 --
 ALTER TABLE `raceDetails`
-  ADD CONSTRAINT `raceDetails_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`),
-  ADD CONSTRAINT `raceDetails_ibfk_1` FOREIGN KEY (`eventId`) REFERENCES `events` (`eventId`);
+  ADD CONSTRAINT `raceDetails_ibfk_1` FOREIGN KEY (`eventId`) REFERENCES `events` (`eventId`),
+  ADD CONSTRAINT `raceDetails_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`);
 
 --
 -- Constraints for table `sportAtLocations`
 --
 ALTER TABLE `sportAtLocations`
-  ADD CONSTRAINT `sportAtLocations_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`),
-  ADD CONSTRAINT `sportAtLocations_ibfk_1` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`);
+  ADD CONSTRAINT `sportAtLocations_ibfk_1` FOREIGN KEY (`sportId`) REFERENCES `sports` (`sportId`),
+  ADD CONSTRAINT `sportAtLocations_ibfk_2` FOREIGN KEY (`locationId`) REFERENCES `locations` (`locationId`);
 
 --
 -- Constraints for table `tickets`
@@ -477,15 +449,18 @@ ALTER TABLE `tickets`
 -- Constraints for table `ticketSales`
 --
 ALTER TABLE `ticketSales`
-  ADD CONSTRAINT `ticketSales_ibfk_2` FOREIGN KEY (`ticketId`) REFERENCES `tickets` (`ticketId`),
-  ADD CONSTRAINT `ticketSales_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customers` (`customerId`);
+  ADD CONSTRAINT `ticketSales_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customers` (`customerId`),
+  ADD CONSTRAINT `ticketSales_ibfk_2` FOREIGN KEY (`ticketId`) REFERENCES `tickets` (`ticketId`);
+
+--
+-- Constraints for table `umpireAvailability`
+--
+ALTER TABLE `umpireAvailability`
+  ADD CONSTRAINT `umpireAvailability_ibfk_1` FOREIGN KEY (`umpireId`) REFERENCES `umpires` (`umpireId`),
+  ADD CONSTRAINT `umpireAvailability_ibfk_2` FOREIGN KEY (`tournamentId`) REFERENCES `tournaments` (`tournamentId`);
 
 --
 -- Constraints for table `umpires`
 --
 ALTER TABLE `umpires`
   ADD CONSTRAINT `umpires_ibfk_1` FOREIGN KEY (`sport`) REFERENCES `sports` (`sportId`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

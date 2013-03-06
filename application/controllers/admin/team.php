@@ -82,7 +82,6 @@ class team extends My_Admin_Controller {
 		}
 		else
 		{
-			echo "You have registered";
 			$data = array(
 			'nwaId' => $this->input->post('nwaId'),
 			'name' => $this->input->post('name'),

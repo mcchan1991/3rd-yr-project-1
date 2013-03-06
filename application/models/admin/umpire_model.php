@@ -149,4 +149,108 @@ class Umpire_model extends CI_Model
 			return false;
 		}
 	}
+	
+	public function getUmpiresForEvent($id) 
+	{
+		$this->load->model('admin/Event_model');
+		$event = $this->Event_model->getEvent($id);
+		/*SELECT umpireAvailability.* FROM umpireAvailability, umpires
+		WHERE umpireAvailability.date >= "2013-05-22" AND umpireAvailability.date <= "2013-05-24" 
+		AND umpireAvailability.tournamentId = 5 AND umpireAvailability.umpireId = umpires.umpireId 
+		AND umpires.sport = 1 group by umpireAvailability.date ASC*/
+		$this->db->select("umpireAvailability.*");
+		$this->db->from("umpireAvailability, umpires");
+		$this->db->where("umpireAvailability.date >= \"{$event['start']}\" AND umpireAvailability.date <= \"{$event['end']}\"
+		AND umpireAvailability.tournamentId = {$event['tournamentId']} AND umpireAvailability.umpireId = umpires.umpireId 
+		AND umpires.sport = {$event['sportId']} group by umpireAvailability.date ASC");
+		$query = $this->db->get();
+		$result = $query->result_array();
+		$newArray = array();
+		foreach($result as $current) 
+		{
+			$key = $current['date'];
+			if (empty($newArray['key']))
+			{
+				$newArray[$key] = array();
+			}
+			array_push($newArray[$key], $current);
+		}
+		return $newArray;
+	}
+	
+	public function getFreeUmpireForEvent($id, $date, $time, $duration)
+	{
+		$this->load->model('admin/Event_model');
+		$event = $this->Event_model->getEvent($id);
+		if ($event['sportId'] == 1)
+		{
+			// actual statement needed:
+		
+			/*
+			SELECT umpireAvailability . * , umpireCount.count
+			FROM umpireAvailability
+			LEFT JOIN umpireCount ON umpireCount.umpireId = umpireAvailability.umpireId AND umpireAvailability.tournamentId = umpireCount.tournamentId
+			WHERE umpireAvailability.date = "2013-05-22" AND umpireAvailability.tournamentId = 5 GROUP BY umpireAvailability.umpireId
+			ORDER BY umpireCount.count ASC
+			*/
+
+			$query = $this->db->query("SELECT umpireAvailability.* , umpireCount.count 
+										FROM umpireAvailability 
+										LEFT JOIN umpireCount ON umpireCount.umpireId = umpireAvailability.umpireId 
+										AND umpireAvailability.tournamentId = umpireCount.tournamentId 
+										WHERE umpireAvailability.date =  \"{$date}\" 
+										AND umpireAvailability.tournamentId = 5 
+										GROUP BY umpireAvailability.umpireId 
+										ORDER BY umpireCount.count ASC");
+			$result = $query->result_array();
+			foreach($result as $current) 
+			{
+				// first lets check if time is OK
+				$dateFormat = "H:i:s";
+				$from = DateTime::createFromFormat($dateFormat, $current['availableFrom']);
+				$to = DateTime::createFromFormat($dateFormat, $current['availableTo']);
+				
+				$currentTime = DateTime::createFromFormat($dateFormat, $time);
+				
+				if ($from < $currentTime && $currentTime < $to->add($duration)) 
+				{
+					// make sure umpire is not busy at that time
+					$this->db->select("time");
+					$this->db->from("matchDetails");
+					$this->db->where("date = \"{$date}\" AND umpireId = {$current['umpireId']}");
+					$query = $this->db->get();
+					$result = $query->result_array();
+					if (count($result) == 0)
+					{
+						return $current['umpireId'];
+					}
+					else
+					{
+						$ok = true;
+						foreach($result as $match) 
+						{
+							$prevTime = DateTime::createFromFormat($dateFormat, $match['time']);
+							
+							$diff = $prevTime->diff($currentTime);
+							$minutesDifference = ($diff->format("%H")*60) + $diff->format("%M");
+							// umpires require at least a 60min break
+							$durationMin = ($duration->format("%H")*60) + $duration->format("%M")+60;
+							if ($minutesDifference <= $durationMin)
+							{
+								$ok = false;
+							}
+						}
+						if ($ok == true)
+						{
+							return $current['umpireId'];
+						}
+
+					}
+				}
+				
+			}
+		}
+		// return false if we haven't found anything
+		return false;
+	}
 }

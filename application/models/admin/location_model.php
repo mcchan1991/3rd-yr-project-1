@@ -38,21 +38,34 @@ class Location_Model extends CI_Model
 	
 	public function createSportAtLocation($row)
 	{
-		$this->db->insert('sportatlocations', $row);
+		$this->db->insert('sportAtLocations', $row);
 	}
 	
 	public function clearSportsAtLocation($id)
 	{
-		$this->db->delete('sportatlocations', array('locationId' => $id)); 
+		$this->db->delete('sportAtLocations', array('locationId' => $id)); 
 	}
 	
 	public function getLocationSports($id)
 	{
 		$this->db->select('sportId');
-		$query = $this->db->get_where('sportatlocations', array('locationId' => $id));
+		$query = $this->db->get_where('sportAtLocations', array('locationId' => $id));
 		return $query->result_array();
 	}
 	
+	public function getLocationsForSport($sportId)
+	{
+		/*
+		 * SELECT locations.* FROM locations, sportAtLocations 
+		   WHERE sportAtLocations.locationId = locations.locationId 
+		   AND sportAtLocations.sportId = 1 */
+		$this->db->select("locations.*");
+		$this->db->from("locations, sportAtLocations");
+		$this->db->where("sportAtLocations.locationId = locations.locationId");
+		$this->db->where("sportAtLocations.sportId = {$sportId}");
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 	
 	/**
 	 * Get all the location
@@ -104,6 +117,69 @@ class Location_Model extends CI_Model
 	{
 		$this->db->where('locationId', $row['locationId']);
 		return $this->db->update($this->table_name, $row);
+	}
+	
+	
+	public function getFreeLocation($sport, $date, $time, $duration)
+	{
+		$locationForSport = $this->getLocationsForSport($sport);
+
+
+			// loop over the locations
+			foreach($locationForSport as $location)
+			{
+				if ($sport == 1)
+				{
+				// find if any match use that location at that date
+				$this->db->select("date, time");
+				$this->db->from("matchDetails");
+				$this->db->where("date", $date);
+				$this->db->where("locationId", $location['locationId']);
+				$query = $this->db->get();
+				$result = $query->result_array();
+				// if no matches at that location the given day it's free
+				if (count($result) == 0)
+				{
+					return $location['locationId'];
+				} 
+				else
+				{
+					$ok = true;
+					foreach($result as $match)
+					{
+						$dateFormat = "H:i:s";
+						$timeObject = DateTime::createFromFormat($dateFormat, $time);
+						$currentTime = DateTime::createFromFormat($dateFormat, $match['time']);
+						// have to cast it to minutes as PHP doesn't have coparrision of interval objects.....
+						$diff = $timeObject->diff($currentTime);
+						$minutesDifference = ($diff->format("%H")*60) + $diff->format("%M");
+						$durationMin = ($duration->format("%H")*60) + $duration->format("%M");
+						//echo $minutesDifference . " duration min: " . $durationMin;
+						if ($minutesDifference < $durationMin)
+						{
+							$ok = false;
+						}						
+					}
+					if ($ok == true)
+					{
+						return $location['locationId'];
+					}
+					// free location not found that day - dont think it's needed should just return null
+					/*if ($ok == false)
+					{
+						return false;
+					}*/
+				}
+			}
+			// do it later
+			else if ($sport == 2)
+			{
+
+			}
+		}
+		// return false if we haven't found anything
+		return false;
+
 	}
 
 }

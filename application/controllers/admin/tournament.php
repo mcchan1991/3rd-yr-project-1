@@ -384,7 +384,7 @@ class Tournament extends My_Admin_Controller {
 				$fromObject = DateTime::createFromFormat($dateFormat, $from);
 				$toObject = DateTime::createFromFormat($dateFormat, $to);
 				
-				$dateFormat = "Y-m-d H:i:s";
+				$dateFormat = "H:i:s";
 								
 				$postdata = array(
 					'umpireId' => $umpire,

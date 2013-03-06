@@ -438,7 +438,7 @@ class Event extends My_Admin_Controller
 		}
 		
 		// make sure the registration end date is before
-		if ( empty($errors) && $this->_startDate < $this->_regEndDate)
+		if ( empty($errors) && $this->_startDate > $this->_regEndDate)
 		{
 			array_push($errors, "Registration end date must be before start date");
 		}
