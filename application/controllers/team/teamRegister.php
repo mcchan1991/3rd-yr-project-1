@@ -46,6 +46,8 @@ class teamRegister extends My_Public_Controller {
 		$regStart = DateTime::createFromFormat($dateFormat, $event['regStart']);
 		$regEnd = DateTime::createFromFormat($dateFormat, $event['regEnd']);
 		
+		$data['registrationError'] = 0; // no error by default
+		
 		if ($currentDate > $regEnd)
 		{
 			$data['registrationError'] = 1;
@@ -72,7 +74,7 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('nwaId', 'nwaId', 'required|trim|callback_checkUniqueNWAID');
 		$this->form_validation->set_rules('name', 'name', 'required|trim|callback_checkUniqueTeamName|min_length[1]|max_length[50]');
 		$this->form_validation->set_rules('email', 'email', 'required|trim|valid_email|callback_checkUniqueEmail');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[8]|max_length[50]');
+		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]|max_length[50]');
 		$this->form_validation->set_rules('cpassword', 'cpassword', 'required|trim|matches[password]');
 		$this->form_validation->set_rules('contactFirstName', 'Contact First Name', 'required|trim');
 		$this->form_validation->set_rules('contactSurname', 'Contact Surname', 'required|trim');
