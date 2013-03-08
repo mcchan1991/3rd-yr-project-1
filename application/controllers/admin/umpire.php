@@ -68,7 +68,7 @@ class Umpire extends My_Admin_Controller
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("surname", "Surname", "required|min_length[5]|max_length[50]");
+		$this->form_validation->set_rules("surname", "Surname", "required|min_length[2]|max_length[50]");
 		$this->form_validation->set_rules("dob", "Date Of Birth", "required|callback_dateCheck|max_length[10]");
 		if ($id == false)
 		{
