@@ -21,19 +21,18 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 
 	public function scheduleWattball($id)
 	{
+		// get event and registrations
 		$event = $this->Event_model->getEvent($id);
 		$teams = $this->Event_model->getEventRegistrations($id, 10000, 0);
+		// set date format to be used
 		$dateFormat = "Y-m-d";
+		// get event times
 		$eventStart = DateTime::createFromFormat($dateFormat, $event['start']);
 		$eventEnd = DateTime::createFromFormat($dateFormat, $event['end']);
-		//print_r($teams);
-		shuffle($teams); // shuffle the teams
-		//$this->printRegistrations($teams);
+		// shuffle the teams
+		shuffle($teams);
+		// get a list of just the teams ids, we don't actually need anything else (should probably be done in the model / make another SQL statement...)
 		$teamIds = $this->idsOnly($teams);
-		//print_r($teamIds); echo "<br />";
-		$umpires = $this->Umpire_model->getUmpiresForEvent($id);
-		//print_r($umpires);
-		echo "<br />";
 		// get duration in time interval
 		$durationArray = explode(":", $event['duration']);
 		// remove leading zeroes.
@@ -48,6 +47,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 				$durationArray[$i] = ltrim($durationArray[$i], '0');
 			}
 		}		
+		// format the string properly
 		$durationString = "P";
 		if ($durationArray[0] != "0")
 		{
@@ -57,24 +57,23 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		{
 			$durationString .= $durationArray[1] . "M";
 		}
-		
 		$duration = new DateInterval($durationString);
-		//echo $this->Location_model->getFreeLocation(1, "2013-05-22", "17:00:00", $duration);
-		//echo $this->Umpire_model->getFreeUmpireForEvent($id, "2013-05-22", "17:00:00", $duration);
+		
+		// get the total number of games, total event days, games per day, and how many days between each match
 		$totalGames = (count($teams)/2)*(count($teams)-1);
 		$totalEventDays = $eventStart->diff($eventEnd)->format("%d")+1;
-
 		$gamesPerDay = $totalGames/$totalEventDays;
 		$gameEvery = $totalEventDays / $totalGames;
-
-		echo $gamesPerDay;
+		// if games per day is less than 1 we just set it to one
 		if ($gamesPerDay < 1)
 		{
 			$gamesPerDay = 1;
 		}
+		// otherwise we round up
 		else {
 			$gamesPerDay = ceil($gamesPerDay);
 		}
+		// if we need the ocasional break in matches
 		if ($gameEvery == 1)
 		{
 			$skipDayAfter = -1;
@@ -83,6 +82,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		{
 			$skipDayAfter = pow($gameEvery-floor($gameEvery), -1);
 		}
+		// set games rounds games every x days down or set it to 1
 		if ($gameEvery < 1)
 		{
 			$gameEvery = 1;
@@ -91,108 +91,118 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		{
 			$gameEvery = floor($gameEvery);
 		}
-
-		//echo $gameEvery;
+		// if we need to have more games on some days than other
+		if ($skipDayAfter == -1 || $skipDayAfter % 1 == 0) 
+		{
+			$minusOneMatch = -1;
+		}
+		else
+		{
+			$minusOneMatch = pow($skipDayAfter-floor($skipDayAfter), -1);
+		}
 		
+		// get the number of rounds
 		$rounds = count($teams);
-		// if even substract one round
+		// if even substract we substract one round
 		if ($rounds % 2 == 0)
 		{
 			$rounds--;
 		} 
+		// if uneven number of teams we put a dummy team in the array
 		if (count($teams) % 2 != 0)
 		{
 			array_push($teams, -1);
 		}
+		// initial values
 		$dayInc = 0;
 		$currentDayCount = 0;
 		$eventTimes = $this->Event_model->getEvent($id);
 		$matchCount = 1;
-		echo "total games: " . $totalGames . " total rounds: " . $rounds . " games every: " . $gameEvery . " games per day: " . $gamesPerDay . " event days: " . $totalEventDays . " break after: " . $skipDayAfter . "<br />";
-		echo "event start: " . $eventStart->format("y-m-d") . " event end: " . $eventEnd->format("y-m-d") . "<br />";
-		
-		/*$umpire = $this->Umpire_model->getFreeUmpireForEvent($id, "2013-05-22", "15:00:00", $duration);
-		echo $umpire;*/
-		
+		// loop over the number of rounds
 		for ($i = 0; $i < $rounds; $i++)
 		{
-			echo "---- ROUND " . ($i+1) . "---- <br />";
-			// games per round:
+			// loop over games per round:
 			$day;
 			for ($j = 0; $j<count($teams)/2; $j++)
 			{
+				// if we need to have less games on this particualar day
+				if ($minusOneMatch != -1 && $dayInc % $minusOneMatch != 0 && $dayInc != 0)
+				{
+					$currentDayCount++;
+				}
+				// if we're in the beginning of the loops
 				if ($dayInc == 0)
 				{
 					$day = clone $eventStart;
 					$dayInc++;
 				}
-				//echo "currentDayCount: " . $currentDayCount .  " dayInc: " . $dayInc . "<br />";
+				// we need to go to the next day
 				if ($currentDayCount == $gamesPerDay & $totalEventDays > $dayInc)
 				{
+					// set variables
 					$currentDayCount = 0;
 					$dayInc++;
-					$day = $day->add(new DateInterval('P' . $gameEvery . "D"));
+					// add the correct number of days
+					$day->add(new DateInterval('P' . $gameEvery . "D"));
+					// if we need to skip another day
 					if ($skipDayAfter != -1)
 					{
 						if ($dayInc % $skipDayAfter == 0 && is_int($skipDayAfter))
 						{
-							$day = $day->add(new DateInterval('P' . $gameEvery . "D"));
+							$day->add(new DateInterval('P' . $gameEvery . "D")); // should this be one day and not "gameEvery" ? test probably needed
 						}
 					}
 				}
+				// if we overshoot we break, should never happen
 				if ($day > $eventEnd)
 				{
 					break;
 				}
-				//echo "initial day: " . $day->format("Y-m-d") . "<br />";
 				// select teams:
 				$team1 = $teamIds[$j];
 				$team2 = $teamIds[(count($teamIds)-1) - $j];
 				// if either team is the dummy we skip the match
 				if ($team1 != -1 || $team2 != -1)
 				{
-					
 					// get event times
 					$eventTimes = $this->Event_model->getEventTimes($id);
-					//print_r($eventTimes);
-					$ok = false;
 					// lets shuffle event times so we don't get the same time all the time
 					shuffle($eventTimes);
 					$umpire = null;
 					$location = null;
 					$curTime = null;
-					
+					$ok = false;
+					// we need a while loop for checking umpire and location availability
 					while ($ok == false) 
 					{
 						$impossible = false;
-						for ($k = 0; $k < count($eventTimes); $k++)
+						// get the match details
+						$matchDetails = $this->getMatchDetails($event, $day, $eventTimes, $duration);
+						// if we couldn't schedule that day
+						if ($matchDetails == false) 
 						{
-							$array = $eventTimes[$k];
-							$curTime = $array['start'];
-							//echo $curTime . "<br />";
-							$umpire = $this->Umpire_model->getFreeUmpireForEvent($id, $day->format("Y-m-d"), $curTime, $duration);
-							$location = $this->Location_model->getFreeLocation($event['sportId'], $day->format("Y-m-d"), $curTime, $duration);
-							
-							if ($umpire != false && $location != false)
-							{
-								//echo "ok start";
-								$finalDay = $day;
-								$ok = true;
-								break;
-							}
+							$ok = false;
 						}
-						
+						// if we could schedule that match day day
+						else
+						{
+							$finalDay = $day;
+							$ok = true;
+						}
+						// if the initial day failed we need to bruteforce
 						if ($ok == false)
 						{
 							// bruteforce and see if we can find a day that's ok
 							for ($l=1; $l <= $totalEventDays; $l++)
 							{
+								// date interval from the original date
 								$dateInterval = new DateInterval("P" . $l . "D");
+								// get the previous day and the next day
 								$prevDay = (clone $day);
 								$prevDay->sub($dateInterval);
 								$nextDay = (clone $day);
 								$nextDay->add($dateInterval);
-								//echo "prevDay: " . $prevDay->format("Y-m-d") . " nextDay: " . $nextDay->format("Y-m-d") . "<br />";
+								// if both overshoot event boundaries the schedule is impossible
 								if ($prevDay < $eventStart && $nextDay > $eventEnd)
 								{
 									$impossible = true;
@@ -200,64 +210,61 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 								}
 								else
 								{
-									//echo $prevDay->format("Y-m-d") . ">=" . $eventStart->format("Y-m-d") . "<br />";
+									// make sure the day is in the range
 									if ($prevDay >= $eventStart)
 									{
-										//echo "this never happens or does it?";
-										for ($k = 0; $k < count($eventTimes); $k++)
+										// get match details
+										$matchDetails = $this->getMatchDetails($event, $prevDay, $eventTimes, $duration);
+										if ($matchDetails == false) 
 										{
-											$curTime = $array['start'];
-											$umpire = $this->Umpire_model->getFreeUmpireForEvent($id, $prevDay->format("Y-m-d"), $curTime, $duration);
-											$location = $this->Location_model->getFreeLocation($event['sportId'], $prevDay->format("Y-m-d"), $curTime, $duration);
-											
-											if ($umpire != false && $location != false)
-											{
-												//echo "OK";
-												$finalDay = $prevDay;
-												$ok = true;
-											}
+											$ok = false;
+										}
+										else
+										{
+											$finalDay = $prevDay;
+											$ok = true;
 										}
 									}
+									// if the previous day don't work, we try the next day
 									else if ($nextDay <= $eventEnd && $ok == false)
 									{
-										for ($k = 0; $k < count($eventTimes); $k++)
+										// get the match details
+										$matchDetails = $this->getMatchDetails($event, $nextDay, $eventTimes, $duration);
+										if ($matchDetails == false) 
 										{
-											$curTime = $array['start'];
-											$umpire = $this->Umpire_model->getFreeUmpireForEvent($id, $nextDay->format("y-m-d"), $curTime, $duration);
-											$location = $this->Location_model->getFreeLocation($event['sportId'], $nextDay->format("y-m-d"), $curTime, $duration);
-											
-											if ($umpire != false && $location != false)
-											{
-												//echo "OK";
-												$finalDay = $nextDay;
-												$ok = true;
-											}
+											$ok = false;
+										}
+										else
+										{
+											$finalDay = $nextDay;
+											$ok = true;
 										}
 									}
 								}
 							}
 						}
-						
+						// if we either found a match OR the schedule is impossible we should break out of the loops
 						if ($ok == true || $impossible = true)
 						{
 							break;
 						}
 						//$ok = true; // TODO: DUMMMY REMOVE
-					}
+					} 
+					// if ok
 					if ($ok == true)
 					{
-						echo "{$team1} vs {$team2} on: " . $finalDay->format("Y-m-d") . " at: " . $curTime . " location: " . $location . " umpire: " . $umpire;
+						//echo "{$team1} vs {$team2} on: " . $finalDay->format("Y-m-d") . " at: " . $matchDetails['time'] . " location: " . $matchDetails['location'] . " umpire: " . $matchDetails['umpire'];
+						// increment counts
 						$currentDayCount++;
-						echo "<br >";
 						$matchCount++;
 						
 						// insert into database:
 						$postdata = array(
 							'eventId' => $id,	
-							'locationId' => $location,					
-							'umpireId' => $umpire,					
+							'locationId' => $matchDetails["location"],					
+							'umpireId' => $matchDetails["umpire"],					
 							'date' => $finalDay->format("Y-m-d"),					
-							'time' => $curTime,			
+							'time' => $matchDetails["time"],			
 							'team1Id' => $team1,	
 							'team2Id' => $team2,
 							'status' => "scheduled",	
@@ -267,7 +274,6 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 					}
 					else
 					{
-						echo "schedule impossible";
 						return false;
 					}
 				}
@@ -282,50 +288,28 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 	{
 
 	}
-
-	private function printRegistrations($regs)
-	{
-		// athletes
-		if (!empty($regs[0]['athleteId']))
+	
+	private function getMatchDetails($event, $day, $eventTimes, $duration) {
+		for ($k = 0; $k < count($eventTimes); $k++)
 		{
-			echo "WRONG!";
-		}
-		// watball
-		else
-		{
-			for ($i = 0; $i<count($regs); $i++)
+			$array = $eventTimes[$k];
+			$curTime = $array['start'];
+			$umpire = $this->Umpire_model->getFreeUmpireForEvent($event['eventId'], $day->format("y-m-d"), $curTime, $duration);
+			$location = $this->Location_model->getFreeLocation($event['sportId'], $day->format("y-m-d"), $curTime, $duration);
+			
+			if ($umpire != false && $location != false)
 			{
-				echo $this->Team_model->getTeamName($regs[$i]['nwaId']) . "<br />";
+				$result = array();
+				$result['time'] = $curTime;
+				$result['umpire'] = $umpire;
+				$result['location'] = $location;
+				return $result;
 			}
 		}
-	}
-
-	function array_cartesian($arrays) {
-		$result = array();
-		$keys = array_keys($arrays);
-		$reverse_keys = array_reverse($keys);
-		$size = intval(count($arrays) > 0);
-		foreach ($arrays as $array) {
-			$size *= count($array);
-		}
-		for ($i = 0; $i < $size; $i ++) {
-			$result[$i] = array();
-			foreach ($keys as $j) {
-				$result[$i][$j] = current($arrays[$j]);
-			}
-			foreach ($reverse_keys as $j) {
-				if (next($arrays[$j])) {
-					break;
-				}
-				elseif (isset ($arrays[$j])) {
-					reset($arrays[$j]);
-				}
-			}
-		}
-		return $result;
+		return false;
 	}
 	
-	function idsOnly($teams)
+	private function idsOnly($teams)
 	{
 		$teamIds = array();
 		// athletes
