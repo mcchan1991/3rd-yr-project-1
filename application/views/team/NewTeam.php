@@ -128,26 +128,52 @@ $btnAttributes = array(
 			'id'	=> 'email',
 			'value' => $email
 		);
-		
-		
+
+			
 		echo "<div class=\"control-group\">";
 		echo form_label('E-mail', 'email', $labelAttributes);
 		echo "<div class=\"controls\">";
 		echo form_input($email);
 		echo '</div></div>';
 		
-		$id = array(
-			'name'	=> 'id',
-			'id'	=> 'id',
-			'value' => $event['eventId']
+		
+		$firstName = array(
+			'name'	=> 'firstName[]',
 		);
 		
+		$surname = array(
+			'name'	=> 'surname[]',
+		);
 		
-		/*echo "<div class=\"control-group\">";
-		echo form_label('eventId', 'id', $labelAttributes);
-		echo "<div class=\"controls\">";
-		echo form_input($id);
-		echo '</div></div>';*/
+		$num = array(
+			'name'	=> 'num[]',
+		);
+		
+		echo "<div class=\"control-group\">";
+		echo "
+		<table class=\"table\">
+		<thead>
+			<tr>
+				<th></th>
+				<th>First Name</th>
+				<th>Surname</th>
+				<th>Shirt Number</th>
+			</tr> 
+		</thead>
+		<tbody>";
+		for ($i = 0; $i < 10; $i++)
+		echo "
+		<tr>
+		<td> Player " . ($i + 1) . " </td>
+		<td>" . form_input($firstName) . " </td>
+		<td>" . form_input($surname) . " </td>
+		<td>" . form_input($num) . " </td>
+		</tr>
+		";
+		echo "</tbody>
+		</table>";
+		
+		echo '</div>';
 		
 		echo "<div class=\"control-group\">";
 		echo "<div class=\"controls\">";

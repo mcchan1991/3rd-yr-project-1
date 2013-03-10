@@ -68,6 +68,8 @@ class teamRegister extends My_Public_Controller {
 	
 	public function add($eventId)
 	{
+		$data = $this->input->post('firstName');
+		echo $data['1'];
 		$this->load->library('form_validation');
 		$this->load->model('team/Team_model');
 		
