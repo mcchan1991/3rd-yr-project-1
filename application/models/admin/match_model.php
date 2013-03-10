@@ -37,11 +37,11 @@ class Match_model extends CI_Model
 		//$this->db->order_by("date", "asc"); 
 		//$this->db->order_by("time", "asc"); 
 		//$this->db->join('teams', 'comments.id = blogs.id');
-		$query = $this->db->query("SELECT matchdetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
-			FROM matchdetails
+		$query = $this->db->query("SELECT matchDetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
+			FROM matchDetails
 			INNER JOIN (teams AS team1) JOIN (teams AS team2) ON matchDetails.team1Id = team1.nwaID AND matchDetails.team2Id = team2.nwaId
-			INNER JOIN locations on matchdetails.locationId = locations.locationId
-			INNER JOIN umpires on matchdetails.umpireId = umpires.umpireId
+			INNER JOIN locations on matchDetails.locationId = locations.locationId
+			INNER JOIN umpires on matchDetails.umpireId = umpires.umpireId
 			ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page);
 		return $query->result_array();
 	}
@@ -50,6 +50,11 @@ class Match_model extends CI_Model
 	{
 		$this->db->where('eventId',$event_id);
 		return $this->db->count_all_results($this->table_name);
+	}
+	
+	public function deleteMatchesForEvent($eventId) 
+	{
+		$this->db->delete($this->table_name, array('eventId' => $eventId)); 
 	}
 	
 }

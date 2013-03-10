@@ -1,10 +1,10 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* Controller for Event administration
+* Controller for Scheduling
 *
 * Created: 11/01/2013
-* @author	Jontahan Val <jdv2@hw.ac.uk>
+* @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
 */
 class Scheduler extends CI_Controller // My_Admin_Controller 
 {
@@ -18,12 +18,39 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		$this->load->model('team/Team_model');
 		$this->load->model('admin/Match_model');
 	}
-
-	public function scheduleWattball($id)
+	
+	public function index($id)
 	{
+		$event = $this->Event_model->getEvent($id);
+		if ($event['sportId'] == 1)
+		{
+			$this->scheduleWattball($event);
+		}
+		else
+		{
+			$this->scheduleHurdling($event);
+		}
+	}
+
+	private function scheduleWattball($event)
+	{
+		$id = $event['eventId'];
 		// get event and registrations
 		$event = $this->Event_model->getEvent($id);
-		$teams = $this->Event_model->getEventRegistrations($id, 10000, 0);
+		$teams = $this->Event_model->getEventRegistrations($id, $this->Event_model->getEventRegistrationsCount($id), 0);
+		
+		if (count($teams) < 2)
+		{
+			// not enough teams
+			redirect("/admin/event/viewMatches/{$id}/1/2");
+			exit();
+		}
+		
+		if ($this->Match_model->countEventMatches($id) > 0) 
+		{
+			$this->Match_model->deleteMatchesForEvent($id); 
+		}
+		
 		// set date format to be used
 		$dateFormat = "Y-m-d";
 		// get event times
@@ -61,7 +88,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		
 		// get the total number of games, total event days, games per day, and how many days between each match
 		$totalGames = (count($teams)/2)*(count($teams)-1);
-		$totalEventDays = $eventStart->diff($eventEnd)->format("%d")+1;
+		$totalEventDays = $eventStart->diff($eventEnd)->days +1;
 		$gamesPerDay = $totalGames/$totalEventDays;
 		$gameEvery = $totalEventDays / $totalGames;
 		// if games per day is less than 1 we just set it to one
@@ -118,6 +145,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		$currentDayCount = 0;
 		$eventTimes = $this->Event_model->getEvent($id);
 		$matchCount = 1;
+		
 		// loop over the number of rounds
 		for ($i = 0; $i < $rounds; $i++)
 		{
@@ -202,6 +230,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 								$prevDay->sub($dateInterval);
 								$nextDay = (clone $day);
 								$nextDay->add($dateInterval);
+								echo "loop {$l}: prevDay: " . $prevDay->format($dateFormat) . " nextDay: " . $nextDay->format($dateFormat) . " <br />";
 								// if both overshoot event boundaries the schedule is impossible
 								if ($prevDay < $eventStart && $nextDay > $eventEnd)
 								{
@@ -248,7 +277,6 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 						{
 							break;
 						}
-						//$ok = true; // TODO: DUMMMY REMOVE
 					} 
 					// if ok
 					if ($ok == true)
@@ -263,7 +291,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 							'eventId' => $id,	
 							'locationId' => $matchDetails["location"],					
 							'umpireId' => $matchDetails["umpire"],					
-							'date' => $finalDay->format("Y-m-d"),					
+							'date' => $finalDay->format($dateFormat),					
 							'time' => $matchDetails["time"],			
 							'team1Id' => $team1,	
 							'team2Id' => $team2,
@@ -271,20 +299,24 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 							'round' => $i+1	
 						);
 						$this->Match_model->create($postdata);
+
 					}
 					else
 					{
-						return false;
+						// schedule impossible
+						redirect("/admin/event/viewMatches/{$id}/1/3");
 					}
 				}
 				
 			}
 			$teamIds = $this->nextRound($teamIds);
 		}
+		// schedule succeeded with no errors.
+		redirect("/admin/event/viewMatches/{$id}/1/1");
 		
 	}
 
-	public function scheduleHurdling($id)
+	private function scheduleHurdling($id)
 	{
 
 	}
@@ -294,8 +326,8 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		{
 			$array = $eventTimes[$k];
 			$curTime = $array['start'];
-			$umpire = $this->Umpire_model->getFreeUmpireForEvent($event['eventId'], $day->format("y-m-d"), $curTime, $duration);
-			$location = $this->Location_model->getFreeLocation($event['sportId'], $day->format("y-m-d"), $curTime, $duration);
+			$umpire = $this->Umpire_model->getFreeUmpireForEvent($event['eventId'], $day->format("Y-m-d"), $curTime, $duration);
+			$location = $this->Location_model->getFreeLocation($event['sportId'], $day->format("Y-m-d"), $curTime, $duration);
 			
 			if ($umpire != false && $location != false)
 			{

@@ -188,7 +188,7 @@ class Event extends My_Admin_Controller
 		$this->template->render();
 	}
 	
-	public function viewMatches($id, $page = 1)
+	public function viewMatches($id, $page = 1, $status = 0)
 	{
 		$this->load->helper('url');
 		$this->load->library('pagination');
@@ -229,9 +229,44 @@ class Event extends My_Admin_Controller
 		$data['event'] = $event;
 		$data['links'] = $this->pagination->create_links();
 		
+		if ($config['total_rows'] == 0) 
+		{
+			$data['scheduled'] = 0;
+		}
+		else
+		{
+			$data['scheduled'] = 1;
+		}
+		$data['status'] = $status;
+		
+		$startDate = DateTime::createFromFormat("Y-m-d", $event['start']);
+		$today = new DateTime();
+		
+		if ($startDate >= $today)
+		{
+			$data['allowAutomatic'] = 1;
+		}
+		else
+		{
+			$data['allowAutomatic'] = 0;
+		}
+		
 		$this->template->write_view('content','admin/event/match_list',$data);
+		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->render();
 	
+	}
+	
+	public function matchButtonHandler($id)
+	{
+		if ($this->input->post('submit') == "Edit schedule")
+		{
+			
+		}
+		else
+		{
+			redirect("/admin/scheduler/index/{$id}");
+		}
 	}
 	
 	public function viewRegistrations($id, $page=1)
