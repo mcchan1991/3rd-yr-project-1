@@ -20,6 +20,38 @@ class Match_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
+	/**
+	 * Get a list of location with pagination
+	 *
+     * @param per_page	number of items per page
+     * @param offset	the current page number / offse
+	 * @return			A list of location given the above restraints.
+	 */
+	public function getPaginationEvent($event_id,$per_page, $offset)
+	{
+		if ($offset == 1)
+		{
+			$offset = 0;
+		}
+		//$this->db->limit($per_page, $offset);
+		//$this->db->order_by("date", "asc"); 
+		//$this->db->order_by("time", "asc"); 
+		//$this->db->join('teams', 'comments.id = blogs.id');
+		$query = $this->db->query("SELECT matchdetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
+			FROM matchdetails
+			INNER JOIN (teams AS team1) JOIN (teams AS team2) ON matchDetails.team1Id = team1.nwaID AND matchDetails.team2Id = team2.nwaId
+			INNER JOIN locations on matchdetails.locationId = locations.locationId
+			INNER JOIN umpires on matchdetails.umpireId = umpires.umpireId
+			ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page);
+		return $query->result_array();
+	}
+	
+	public function countEventMatches($event_id)
+	{
+		$this->db->where('eventId',$event_id);
+		return $this->db->count_all_results($this->table_name);
+	}
+	
 }
 
 // END
