@@ -36,4 +36,10 @@ class Event extends My_Public_Controller {
 
 	}
 	
+	public function schedule($id)
+	{
+	
+	
+	}
+	
 }

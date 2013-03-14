@@ -68,8 +68,7 @@ class teamRegister extends My_Public_Controller {
 	
 	public function add($eventId)
 	{
-		$data = $this->input->post('firstName');
-		echo $data['1'];
+		
 		$this->load->library('form_validation');
 		$this->load->model('team/Team_model');
 		
@@ -87,7 +86,6 @@ class teamRegister extends My_Public_Controller {
 		}
 		else
 		{
-			echo "You have registered";
 			$data = array(
 			'nwaId' => $this->input->post('nwaId'),
 			'name' => $this->input->post('name'),
@@ -104,6 +102,21 @@ class teamRegister extends My_Public_Controller {
 			'athleteId' => NULL
 			);
 			$this->Team_model->createTeamReg($data1);
+			
+			$firstName = $this->input->post('firstName');
+			$surname = $this->input->post('surname');
+			$num = $this->input->post('num');
+			
+			for ($i = 0; $i < 10; $i++)
+			{
+				$data = array (
+				'nwaId' => $this->input->post('nwaId'),
+				'shirtNo' => $num[$i],
+				'firstName' => $firstName[$i],
+				'surname' => $surname[$i]
+				);
+				$this->Team_model->createPlayer($data);
+			}
 			
 			redirect('', 'refresh');
 		}

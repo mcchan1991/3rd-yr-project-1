@@ -41,6 +41,11 @@ class Team_model extends CI_Model {
 		$this->db->insert('teams', $data);
 	}
 	
+	public function createPlayer($data)
+	{
+		$this->db->insert('players', $data);
+	}
+	
 	
 	public function getEventID()
 	{
