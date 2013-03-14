@@ -37,7 +37,7 @@
 
 			<div class="row-fluid">
 				<div class="span10 offset1">
-					<div class="navbar">
+					<div class="navbar" >
 						<div class="navbar-inner">
 						<?php print $nav_top ?>
 						</div>
@@ -51,7 +51,7 @@
 					      <?php print $nav_side ?>
 					</ul>
 				</div>
-				<div class="span8 well" style="">
+				<div class="span8 well" >
 				<?php print $content ?>
  				</div>
 			</div>

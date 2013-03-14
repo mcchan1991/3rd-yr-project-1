@@ -178,6 +178,19 @@ class Umpire_model extends CI_Model
 		return $newArray;
 	}
 	
+	public function getUmpiresForTournamentAndSport($id, $sport)
+	{
+		$this->db->select('umpires.*, umpireAvailability.date, umpireAvailability.date, umpireAvailability.availableFrom, umpireAvailability.availableTo');
+		$this->db->from('umpires, umpireAvailability, tournaments');
+		$this->db->where("umpires.umpireId = umpireAvailability.umpireId AND 
+		tournaments.tournamentId = umpireAvailability.tournamentId AND tournaments.tournamentId = {$id} AND umpires.sport");
+		$this->db->group_by("umpires.umpireId"); 
+
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return $result;
+	} 
+	
 	public function getFreeUmpireForEvent($id, $date, $time, $duration)
 	{
 		$this->load->model('admin/Event_model');

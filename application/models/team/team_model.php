@@ -162,7 +162,7 @@ class Team_model extends CI_Model {
 	
 	public function getTeamName($id)
 	{
-		$this->db->select('teams.name');
+		$this->db->select('teams.nwaId, teams.name');
 		$this->db->from('teams');
 		$this->db->where('teams.nwaId', $id);
 		$query = $this->db->get();

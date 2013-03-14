@@ -6,7 +6,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 * Created: 11/01/2013
 * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>
 */
-class Scheduler extends CI_Controller // My_Admin_Controller 
+class Scheduler extends My_Admin_Controller 
 {
 	public function __construct()
 	{
@@ -17,6 +17,7 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		$this->load->model('admin/Umpire_model');
 		$this->load->model('team/Team_model');
 		$this->load->model('admin/Match_model');
+		$this->load->model('admin/Tournament_model');
 	}
 	
 	public function index($id)
@@ -29,6 +30,101 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 		else
 		{
 			$this->scheduleHurdling($event);
+		}
+	}
+	
+	public function manualWattball($id)
+	{
+		$event = $this->Event_model->getEvent($id);
+		$eventRegs = $this->Event_model->getEventRegistrations($id, $this->Event_model->getEventRegistrationsCount($id), 0);
+		$data['teams'] = $eventRegs;
+		$data['totalGames'] = (count($data['teams'])/2)*(count($data['teams'])-1);
+		$data['event'] = $event;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
+		$data['matches'] = $this->Match_model->getPaginationEvent($id, $this->Match_model->countEventMatches($id), 0);
+		
+		$teams = array();
+		foreach($eventRegs as $currentReg)
+		{
+			$team = $this->Team_model->getTeamName($currentReg['nwaId']);
+			$teams[$currentReg['nwaId']] = $team;
+		}
+		$data['teamNames'] = $teams;
+		$data['umpires'] = $this->Umpire_model->getUmpiresForTournamentAndSport($event['tournamentId'], $event['sportId']);
+		$data['locations'] = $this->Location_model->getLocationsForSport($event['sportId']);
+		
+		if (count($data['teams']) < 2)
+		{
+			// not enough teams
+			redirect("/admin/event/viewMatches/{$id}/1/2");
+			exit();
+		}
+		
+		$this->load->helper('form');
+		$this->template->write_view('content','admin/event/scheduleWattball',$data);
+		$this->template->write_view('nav_side','admin/event/navside',$data, true);
+		$this->template->render();
+	}
+	
+	public function saveWattball($id)
+	{
+		$event = $this->Event_model->getEvent($id);
+		
+		$this->load->library('form_validation');
+		
+		/*$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
+		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]|callback_dobCheck");
+		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");*/
+		
+		$this->form_validation->set_rules("eventTime[]", "Event time", "required");
+		
+		if ($this->form_validation->run() == FALSE)
+		{
+			echo "false";
+			/*$data['firstName'] = $this->input->post("firstName");
+			$data['surname'] = $this->input->post("surname");
+			$data['email'] = $this->input->post("email");
+			$data['password'] = $this->input->post("password");
+			$data['dob'] = $this->input->post("dob");
+			$data['gender'] = $this->input->post("gender");
+			$data['fastest'] = $this->input->post("fastest");
+			$data['event'] = $this->Event_model->getEvent($eventId);
+			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+			
+			$event = $this->Event_model->getEvent($eventId);
+
+			$sideData['sport'] = $event['sportId'];
+			$sideData['event'] = $event;
+			
+			$this->template->write_view('content','athlete/create',$data);
+			$this->template->write_view('nav_side','admin/event/navside',$data, true);
+			$this->template->render();*/
+		}
+		else
+		{
+			echo "true";
+			/*$dateFormat = "d/m/Y";
+			$dob = DateTime::createFromFormat($dateFormat, $this->input->post("dob"));
+			$postdata = array(
+				'firstName' => $this->input->post("firstName"),	
+				'surname' => $this->input->post("surname"),					
+				'email' => $this->input->post("email"),					
+				'password' => sha1($this->input->post("password")),					
+				'dob' => $dob->format('Y-m-d'),			
+				'gender' => $this->input->post("gender"),	
+				'fastest' => $this->input->post("fastest")						
+			);
+			$this->Athlete_model->add_record($postdata);
+			
+			$id = $this->Athlete_model->getByEmail($this->input->post("email"));
+			$id = $id[0];
+			$id = $id['athleteId'];
+			
+			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
+			
+			redirect("/admin/event/viewRegistrations/{$eventId}");*/
 		}
 	}
 
@@ -374,5 +470,18 @@ class Scheduler extends CI_Controller // My_Admin_Controller
 			$newArray[$i] = $teams[$oldIndex];
 		}
 		return $newArray;
+	}
+	
+	public function timeCheck($time)
+	{
+		if (preg_match("/(2[0-3]|[01][0-9]):[0-5][0-9]/", $time))
+		{
+			return true;
+		}
+		else
+		{
+			$this->form_validation->set_message('timeCheck', "The duration is invalid");
+			return false;
+		}
 	}
 }

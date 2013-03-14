@@ -261,7 +261,7 @@ class Event extends My_Admin_Controller
 	{
 		if ($this->input->post('submit') == "Edit schedule")
 		{
-			
+			redirect("/admin/scheduler/manualWattball/{$id}");
 		}
 		else
 		{
