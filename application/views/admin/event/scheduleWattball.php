@@ -5,6 +5,24 @@
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/viewEvents/<?php echo $event['tournamentId']; ?>">Events</a> <span class="divider">/</span></li>
   <li class="active">Event: <?php echo $event['name']; ?></li>
 </ul>
+<?php
+$errors = validation_errors();
+if (!empty($errors))
+{
+echo "<div class=\"alert alert-error\">";
+echo validation_errors();
+echo "</div>";
+}
+?>
+<script>
+$(function() {
+  $('.dateInput').datepicker({
+    changeMonth: true,
+    numberOfMonths: 1,
+	dateFormat: "dd/mm/yy"
+  });
+});
+</script>
 <h3>Schedule</h3>
 
 <?php
@@ -64,25 +82,43 @@ for ($i = 0; $i < $totalGames; $i++)
 	}
 	$matchNo = $i+1;
 	echo "<h5>Match {$matchNo} </h5>";
-	if ($match == -1)
+	if ($match == -1 || $retry == 1)
 	{
-		echo form_dropdown('team1[]', $teamsArray, NULL, 'class="input-small"');
+		$curTeam1 = NULL;
+		$curTeam2 = NULL;
+		$curUmpire = NULL;
+		$curLocation = NULL;
+		$curDate = "";
+		$curTime = "";
+		$curId = -1;
+		if ($i < count($team1))
+		{
+			$curTeam1 = $team1[$i];
+			$curTeam2 = $team2[$i];
+			$curUmpire = $umpire[$i];
+			$curLocation = $location[$i];
+			$curDate = $date[$i];
+			$curTime = $eventTime[$i];
+			$curId = $id[$i];
+		}
+		echo form_dropdown('team1[]', $teamsArray, $curTeam1, 'class="input-small"');
 		echo form_label('VS', 'team2', $labelAttributes);
-		echo form_dropdown('team2[]', $teamsArray, NULL, 'class="input-small"');
+		echo form_dropdown('team2[]', $teamsArray, $curTeam2, 'class="input-small"');
 		
 		
 		echo form_label('Umpire', 'umpire[]', $labelAttributes);
-		echo form_dropdown('umpire[]', $umpiresArray, NULL, 'class="input-small"');
+		echo form_dropdown('umpire[]', $umpiresArray, $curUmpire, 'class="input-small"');
 
 		echo "<br /> <br />";
 
-		echo form_dropdown('location[]', $locationsArray, NULL, 'class="input-small"');
+		echo form_dropdown('location[]', $locationsArray, $curLocation, 'class="input-small"');
 
 		$dateForm = array(
-			'name'	=> 'eventTime[]',
-			'id'	=> 'eventTime[]',
-			'placeholder' => 'dd-mm-yyyy',
-			'class'	=> 'input-small'
+			'name'	=> 'date[]',
+			'id'	=> 'date[]',
+			'placeholder' => 'dd/mm/yyyy',
+			'class'	=> 'input-small dateInput',
+			'value' => $curDate,
 		);
 
 		echo form_label('Date', 'date[]', $labelAttributes);
@@ -92,11 +128,13 @@ for ($i = 0; $i < $totalGames; $i++)
 			'name'	=> 'eventTime[]',
 			'id'	=> 'eventTime[]',
 			'placeholder' => 'HH:MM',
-			'class'	=> 'input-small'
+			'class'	=> 'input-small',
+			'value' => $curTime
 		);
 
 		echo form_label('At', 'eventTime[]', $labelAttributes);
 		echo form_input($eventTimesForm);
+		form_hidden('id[]', $curId);
 	}
 	else
 	{
@@ -115,10 +153,10 @@ for ($i = 0; $i < $totalGames; $i++)
 		$date = DateTime::createFromFormat("Y-m-d", $match['date']);
 		
 		$dateForm = array(
-			'name'	=> 'eventTime[]',
-			'id'	=> 'eventTime[]',
+			'name'	=> 'date[]',
+			'id'	=> 'date[]',
 			'placeholder' => 'dd/mm/yyy',
-			'class'	=> 'input-small',
+			'class'	=> 'input-small dateInput',
 			'value' => $date->format("d/m/Y")
 		);
 
@@ -134,10 +172,10 @@ for ($i = 0; $i < $totalGames; $i++)
 
 		echo form_label('At', 'eventTime[]', $labelAttributes);
 		echo form_input($eventTimesForm);
+
+		form_hidden('id[]', $match['matchId']);
 	}
 
-
-	form_hidden('id[]', '-1');
 }
 echo "<br />";
 

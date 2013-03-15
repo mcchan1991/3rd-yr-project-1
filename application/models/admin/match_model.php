@@ -21,6 +21,17 @@ class Match_model extends CI_Model
 	}
 	
 	/**
+  	 * Updates a given match
+	 *
+	 * @param row	the row to be updated
+     */
+	public function update($row)
+	{
+		$this->db->where('matchId', $row['matchId']);
+		return $this->db->update($this->table_name, $row);
+	}
+	
+	/**
 	 * Get a list of location with pagination
 	 *
      * @param per_page	number of items per page

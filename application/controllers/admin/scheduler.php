@@ -8,6 +8,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class Scheduler extends My_Admin_Controller 
 {
+	private $minusOne = false;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -52,6 +54,15 @@ class Scheduler extends My_Admin_Controller
 		$data['teamNames'] = $teams;
 		$data['umpires'] = $this->Umpire_model->getUmpiresForTournamentAndSport($event['tournamentId'], $event['sportId']);
 		$data['locations'] = $this->Location_model->getLocationsForSport($event['sportId']);
+		$data['retry'] = -1;
+		
+		$data['team1'] = array();
+		$data['team2'] = array();
+		$data['umpire'] = array();
+		$data['location'] = array();
+		$data['date'] = array();
+		$data['eventTime'] = array();
+		$data['id'] = array();
 		
 		if (count($data['teams']) < 2)
 		{
@@ -69,6 +80,7 @@ class Scheduler extends My_Admin_Controller
 	public function saveWattball($id)
 	{
 		$event = $this->Event_model->getEvent($id);
+		$eventRegs = $this->Event_model->getEventRegistrations($id, $this->Event_model->getEventRegistrationsCount($id), 0);
 		
 		$this->load->library('form_validation');
 		
@@ -78,33 +90,97 @@ class Scheduler extends My_Admin_Controller
 		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]|callback_dobCheck");
 		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");*/
 		
-		$this->form_validation->set_rules("eventTime[]", "Event time", "required");
+		$this->form_validation->set_rules("team1[]", "Event time", "callback_minusOne");
+		$this->form_validation->set_rules("team2[]", "Event time", "callback_minusOne");
+		$this->form_validation->set_rules("umpire[]", "Event time", "callback_minusOne");
+		$this->form_validation->set_rules("location[]", "Event time", "callback_minusOne");
+
+		$this->form_validation->set_rules("date[]", "Date", "required|callback_checkDateFormat");
+		$this->form_validation->set_rules("eventTime[]", "Event time", "required|callback_timeCheck");
 		
 		if ($this->form_validation->run() == FALSE)
 		{
-			echo "false";
-			/*$data['firstName'] = $this->input->post("firstName");
-			$data['surname'] = $this->input->post("surname");
-			$data['email'] = $this->input->post("email");
-			$data['password'] = $this->input->post("password");
-			$data['dob'] = $this->input->post("dob");
-			$data['gender'] = $this->input->post("gender");
-			$data['fastest'] = $this->input->post("fastest");
-			$data['event'] = $this->Event_model->getEvent($eventId);
-			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
-			
-			$event = $this->Event_model->getEvent($eventId);
+			$data['teams'] = $eventRegs;
+			$data['totalGames'] = (count($data['teams'])/2)*(count($data['teams'])-1);
+			$data['event'] = $event;
+			$data['tournament'] = $this->Tournament_model->getTournamentId($event['tournamentId']);
+			$data['matches'] = $this->Match_model->getPaginationEvent($id, $this->Match_model->countEventMatches($id), 0);
 
-			$sideData['sport'] = $event['sportId'];
-			$sideData['event'] = $event;
+			$teams = array();
+			foreach($eventRegs as $currentReg)
+			{
+				$team = $this->Team_model->getTeamName($currentReg['nwaId']);
+				$teams[$currentReg['nwaId']] = $team;
+			}
+			$data['teamNames'] = $teams;
+			$data['umpires'] = $this->Umpire_model->getUmpiresForTournamentAndSport($event['tournamentId'], $event['sportId']);
+			$data['locations'] = $this->Location_model->getLocationsForSport($event['sportId']);
 			
-			$this->template->write_view('content','athlete/create',$data);
+			$data['retry'] = 1;
+			$data['team1'] = $this->input->post("team1");
+			$data['team2'] = $this->input->post("team2");
+			$data['umpire'] = $this->input->post("umpire");
+			$data['location'] = $this->input->post("location");
+			$data['date'] = $this->input->post("date");
+			$data['eventTime'] = $this->input->post("eventTime");
+			$data['id'] = $this->input->post("id");
+			
+			$this->load->helper('form');
+			$this->template->write_view('content','admin/event/scheduleWattball',$data);
 			$this->template->write_view('nav_side','admin/event/navside',$data, true);
-			$this->template->render();*/
+			$this->template->render();
 		}
 		else
 		{
-			echo "true";
+			$team1 = $this->input->post("team1");
+			$team2 = $this->input->post("team2");
+			$umpire = $this->input->post("umpire");
+			$location = $this->input->post("location");
+			$date = $this->input->post("date");
+			$eventTime = $this->input->post("eventTime");
+			$ids = $this->input->post("id");
+
+			for ($i = 0; $i < count($ids); $i++)
+			{
+				$dateFormat = "Y-m-d";
+				$curDate = DateTime::createFromFormat("d/m/Y",$date[$i]);
+				// new row
+				if ($ids[$i] == -1)
+				{
+					
+					// insert into database:
+					$postdata = array(
+						'eventId' => $id,	
+						'locationId' => $location[$i],					
+						'umpireId' => $umpire[$i],					
+						'date' => $curDate->format($dateFormat),					
+						'time' => $eventTime[$i],			
+						'team1Id' => $team1[$i],	
+						'team2Id' => $team2[$i],
+						'status' => "scheduled",	
+						'round' => -1	
+					);
+					$this->Match_model->create($postdata);
+				}
+				// update current
+				else
+				{
+					$postdata = array(
+						'matchId' => $ids[$i],
+						'eventId' => $id,	
+						'locationId' => $location[$i],					
+						'umpireId' => $umpire[$i],					
+						'date' => $curDate->format($dateFormat),					
+						'time' => $eventTime[$i],			
+						'team1Id' => $team1[$i],	
+						'team2Id' => $team2[$i],
+						'status' => "scheduled",	
+						'round' => -1	
+					);
+					$this->Match_model->create($postdata);
+				}
+			}
+			
 			/*$dateFormat = "d/m/Y";
 			$dob = DateTime::createFromFormat($dateFormat, $this->input->post("dob"));
 			$postdata = array(
@@ -480,8 +556,47 @@ class Scheduler extends My_Admin_Controller
 		}
 		else
 		{
-			$this->form_validation->set_message('timeCheck', "The duration is invalid");
+			$this->form_validation->set_message('timeCheck', "Start time of matches must be in the format HH:MM and all matches must have a time specified.");
 			return false;
+		}
+	}
+	
+	public function minusOne($value)
+	{
+		// make sure the message isn't shwon more than once.
+		if ($this->minusOne == true)
+		{
+			return true;
+		}
+		if ($value == -1)
+		{
+			$this->minusOne = true;
+			$this->form_validation->set_message('minusOne', "Teams, umpires and locations must be entered correctly for all matches.");
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public function checkDateFormat($date)
+	{
+		$dateFormat = "d/m/Y";
+		$date = DateTime::createFromFormat($dateFormat, $date);
+		$date_errors = DateTime::getLastErrors();
+		if ($date_errors['warning_count'] + $date_errors['error_count'] > 0) 
+		{
+			if ($this->minusOne == false)
+			{
+				$this->minusOne = true;
+				$this->form_validation->set_message('checkDateFormat', "Please ensure all dates are formattet correctly using the format dd/mm/yyyy");
+			}
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 }
