@@ -170,4 +170,29 @@ class Team_model extends CI_Model {
 		return $row['name'];
 	}
 	
+	public function confirmTeamAvailability($teamId, $date, $time, $duration)
+	{
+		// SELECT * FROM matchDetails WHERE date = "2013-05-22" AND (team1Id = 123 OR team2Id = 123)
+		$query = $this->db->query("SELECT * FROM matchDetails WHERE date = \"{$date}\" AND (team1Id = 123 OR team2Id = 123)");
+		$result = $query->result_array();
+		$ok = true;
+		$dateFormat = "H:i:s";
+		
+		$timeToTest = DateTime::createFromFormat($dateFormat, $time);
+		foreach($result as $current) 
+		{
+			$currentTime = DateTime::createFromFormat($dateFormat, $current['time']);
+			$diff = $timeToTest->diff($currentTime);
+			$minutesDifference = ($diff->format("%H")*60) + $diff->format("%M");
+			// a 60min break
+			$durationMin = ($duration->format("%H")*60) + $duration->format("%M")+60;
+			
+			if ($minutesDifference <= $durationMin)
+			{
+				$ok = false;
+			}
+		}
+		return $ok;
+	}
+	
 }

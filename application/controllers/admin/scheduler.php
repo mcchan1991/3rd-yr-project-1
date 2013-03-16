@@ -351,7 +351,7 @@ class Scheduler extends My_Admin_Controller
 					{
 						$impossible = false;
 						// get the match details
-						$matchDetails = $this->getMatchDetails($event, $day, $eventTimes, $duration);
+						$matchDetails = $this->getMatchDetails($event, $day, $eventTimes, $duration, $team1, $team2);
 						// if we couldn't schedule that day
 						if ($matchDetails == false) 
 						{
@@ -376,7 +376,7 @@ class Scheduler extends My_Admin_Controller
 								$prevDay->sub($dateInterval);
 								$nextDay = (clone $day);
 								$nextDay->add($dateInterval);
-								echo "loop {$l}: prevDay: " . $prevDay->format($dateFormat) . " nextDay: " . $nextDay->format($dateFormat) . " <br />";
+								
 								// if both overshoot event boundaries the schedule is impossible
 								if ($prevDay < $eventStart && $nextDay > $eventEnd)
 								{
@@ -389,7 +389,7 @@ class Scheduler extends My_Admin_Controller
 									if ($prevDay >= $eventStart)
 									{
 										// get match details
-										$matchDetails = $this->getMatchDetails($event, $prevDay, $eventTimes, $duration);
+										$matchDetails = $this->getMatchDetails($event, $prevDay, $eventTimes, $duration, $team1, $team2);
 										if ($matchDetails == false) 
 										{
 											$ok = false;
@@ -404,7 +404,7 @@ class Scheduler extends My_Admin_Controller
 									else if ($nextDay <= $eventEnd && $ok == false)
 									{
 										// get the match details
-										$matchDetails = $this->getMatchDetails($event, $nextDay, $eventTimes, $duration);
+										$matchDetails = $this->getMatchDetails($event, $nextDay, $eventTimes, $duration, $team1, $team2);
 										if ($matchDetails == false) 
 										{
 											$ok = false;
@@ -467,15 +467,16 @@ class Scheduler extends My_Admin_Controller
 
 	}
 	
-	private function getMatchDetails($event, $day, $eventTimes, $duration) {
+	private function getMatchDetails($event, $day, $eventTimes, $duration, $team1, $team2) {
 		for ($k = 0; $k < count($eventTimes); $k++)
 		{
 			$array = $eventTimes[$k];
 			$curTime = $array['start'];
 			$umpire = $this->Umpire_model->getFreeUmpireForEvent($event['eventId'], $day->format("Y-m-d"), $curTime, $duration);
 			$location = $this->Location_model->getFreeLocation($event['sportId'], $day->format("Y-m-d"), $curTime, $duration);
-			
-			if ($umpire != false && $location != false)
+			$team1Ok = $this->Team_model->confirmTeamAvailability($team1, $day->format("Y-m-d"), $curTime, $duration);
+			$team2Ok = $this->Team_model->confirmTeamAvailability($team2, $day->format("Y-m-d"), $curTime, $duration);
+			if ($umpire != false && $location != false && $team1Ok != false && $team2Ok != false)
 			{
 				$result = array();
 				$result['time'] = $curTime;
