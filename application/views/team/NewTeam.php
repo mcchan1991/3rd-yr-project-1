@@ -139,14 +139,17 @@ $btnAttributes = array(
 		
 		$firstName = array(
 			'name'	=> 'firstName[]',
+			'id'	=> 'firstName[]',
 		);
 		
 		$surname = array(
 			'name'	=> 'surname[]',
+			'id'	=> 'surname[]',
 		);
 		
 		$num = array(
 			'name'	=> 'num[]',
+			'id'	=> 'num[]',
 		);
 		
 		echo "<div class=\"control-group\">";

@@ -79,6 +79,9 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('cpassword', 'cpassword', 'required|trim|matches[password]');
 		$this->form_validation->set_rules('contactFirstName', 'Contact First Name', 'required|trim');
 		$this->form_validation->set_rules('contactSurname', 'Contact Surname', 'required|trim');
+		$this->form_validation->set_rules('firstName[]', 'First Name', 'required|trim');
+		$this->form_validation->set_rules('surname[]', 'Surname', 'required|trim');
+		$this->form_validation->set_rules('num[]', 'Shirt Number', 'required|trim');
 		
 		if($this->form_validation->run()==false)
 		{
