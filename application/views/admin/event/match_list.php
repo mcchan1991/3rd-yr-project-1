@@ -59,6 +59,7 @@ if (count($matches) == 0)
 	echo "<td colspan=\"8\"> No matches scheduled. Schedule the event below</td>";
 	echo "</tr>";
 }
+
 foreach($matches as $current )
 {
 	echo "<tr>";

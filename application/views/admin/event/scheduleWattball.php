@@ -99,7 +99,7 @@ for ($i = 0; $i < $totalGames; $i++)
 			$curLocation = $location[$i];
 			$curDate = $date[$i];
 			$curTime = $eventTime[$i];
-			$curId = $id[$i];
+			$curId = $matchId[$i];
 		}
 		echo form_dropdown('team1[]', $teamsArray, $curTeam1, 'class="input-small"');
 		echo form_label('VS', 'team2', $labelAttributes);
@@ -134,7 +134,7 @@ for ($i = 0; $i < $totalGames; $i++)
 
 		echo form_label('At', 'eventTime[]', $labelAttributes);
 		echo form_input($eventTimesForm);
-		form_hidden('id[]', $curId);
+		echo form_hidden('matchId[]', $curId);
 	}
 	else
 	{
@@ -173,7 +173,7 @@ for ($i = 0; $i < $totalGames; $i++)
 		echo form_label('At', 'eventTime[]', $labelAttributes);
 		echo form_input($eventTimesForm);
 
-		form_hidden('id[]', $match['matchId']);
+		echo form_hidden('matchId[]', $match['matchId']);
 	}
 
 }

@@ -84,13 +84,7 @@ class Scheduler extends My_Admin_Controller
 		
 		$this->load->library('form_validation');
 		
-		/*$this->form_validation->set_rules("firstName", "First Name", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("surname", "Surname", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("password", "password", "required|min_length[3]|max_length[50]");
-		$this->form_validation->set_rules("dob", "Date of birth", "required|min_length[3]|max_length[50]|callback_dobCheck");
-		$this->form_validation->set_rules("email", "E-mail", "required|min_length[3]|max_length[50]|valid_email|callback_uniqueEmail");*/
-		
-		$this->form_validation->set_rules("team1[]", "Event time", "callback_minusOne");
+		$this->form_validation->set_rules("team1[]", "Event time", "callback_minusOne|callback_teamCheck");
 		$this->form_validation->set_rules("team2[]", "Event time", "callback_minusOne");
 		$this->form_validation->set_rules("umpire[]", "Event time", "callback_minusOne");
 		$this->form_validation->set_rules("location[]", "Event time", "callback_minusOne");
@@ -123,7 +117,7 @@ class Scheduler extends My_Admin_Controller
 			$data['location'] = $this->input->post("location");
 			$data['date'] = $this->input->post("date");
 			$data['eventTime'] = $this->input->post("eventTime");
-			$data['id'] = $this->input->post("id");
+			$data['matchId'] = $this->input->post("matchId");
 			
 			$this->load->helper('form');
 			$this->template->write_view('content','admin/event/scheduleWattball',$data);
@@ -138,8 +132,8 @@ class Scheduler extends My_Admin_Controller
 			$location = $this->input->post("location");
 			$date = $this->input->post("date");
 			$eventTime = $this->input->post("eventTime");
-			$ids = $this->input->post("id");
-
+			$ids = $this->input->post("matchId");
+			
 			for ($i = 0; $i < count($ids); $i++)
 			{
 				$dateFormat = "Y-m-d";
@@ -177,30 +171,10 @@ class Scheduler extends My_Admin_Controller
 						'status' => "scheduled",	
 						'round' => -1	
 					);
-					$this->Match_model->create($postdata);
+					$this->Match_model->update($postdata);
 				}
 			}
-			
-			/*$dateFormat = "d/m/Y";
-			$dob = DateTime::createFromFormat($dateFormat, $this->input->post("dob"));
-			$postdata = array(
-				'firstName' => $this->input->post("firstName"),	
-				'surname' => $this->input->post("surname"),					
-				'email' => $this->input->post("email"),					
-				'password' => sha1($this->input->post("password")),					
-				'dob' => $dob->format('Y-m-d'),			
-				'gender' => $this->input->post("gender"),	
-				'fastest' => $this->input->post("fastest")						
-			);
-			$this->Athlete_model->add_record($postdata);
-			
-			$id = $this->Athlete_model->getByEmail($this->input->post("email"));
-			$id = $id[0];
-			$id = $id['athleteId'];
-			
-			$eventRegsId = $this->Athlete_model->registerAthleteForEvent($eventId, $id);
-			
-			redirect("/admin/event/viewRegistrations/{$eventId}");*/
+			redirect("/admin/event/viewMatches/{$id}/1/1");
 		}
 	}
 
@@ -598,5 +572,25 @@ class Scheduler extends My_Admin_Controller
 		{
 			return true;
 		}
+	}
+	
+	// make sure teams don't play themselves
+	public function teamCheck($value)
+	{
+		$team1 = $this->input->post("team1");
+		$team2 = $this->input->post("team2");
+		
+		for ($i = 0; $i < count($team1); $i++)
+		{
+			if ($team1[$i] != -1 && $team2[$i] != -1)
+			{
+				if ($team1[$i] == $team2[$i])
+				{
+					$this->form_validation->set_message('teamCheck', "A team can't play themselves.");
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
