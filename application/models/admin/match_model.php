@@ -32,6 +32,18 @@ class Match_model extends CI_Model
 	}
 	
 	/**
+  	 * Gets a specific match
+  	 * 
+	 * @param  id	The id of the specific event
+	 * @return 		row with the specific event information
+     */
+	public function get($id)
+	{
+		$query = $this->db->get_where($this->table_name, array('matchId' => $id));
+		return $query->row_array();
+	}
+	
+	/**
 	 * Get a list of location with pagination
 	 *
      * @param per_page	number of items per page

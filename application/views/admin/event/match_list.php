@@ -65,7 +65,7 @@ foreach($matches as $current )
 	echo "<tr>";
 	echo "<td>{$current['team1Name']} vs {$current['team2Name']}</td>";
 	echo "<td>{$current['status']}</td>";
-	echo "<td>{$current['team1Goals']} - {$current['team2Goals']}</td>";
+	//echo "<td>{$current['team1Goals']} - {$current['team2Goals']}</td>";
 	echo "<td>{$current['locationName']}</td>";	
 	echo "<td>{$current['date']}</td>";	
 	echo "<td>{$current['time']}</td>";	
