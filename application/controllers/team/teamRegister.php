@@ -5,9 +5,9 @@ class teamRegister extends My_Public_Controller {
 	{
 		parent::__construct();
 		
-		$this->load->model('Athlete_model');
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Tournament_model');	
+		$this->load->model('team/Team_model');
 		
 	}
 	
@@ -86,7 +86,7 @@ class teamRegister extends My_Public_Controller {
 	{
 		
 		$this->load->library('form_validation');
-		$this->load->model('team/Team_model');
+		
 		
 		$this->form_validation->set_rules('nwaId', 'nwaId', 'required|trim|callback_checkUniqueNWAID');
 		$this->form_validation->set_rules('name', 'name', 'required|trim|callback_checkUniqueTeamName|min_length[1]|max_length[50]');
@@ -182,33 +182,30 @@ class teamRegister extends My_Public_Controller {
 	
 	public function team_update()
 	{
-	$this->load->model('team/Team_model');
-	$this->load->library('form_validation');
-		
+		$this->load->model('team/Team_model');
+		$this->load->library('form_validation');
+			
 		$this->form_validation->set_rules('name', 'name', 'required|trim|callback_UpdateCheckUniqueTeamName|min_length[1]|max_length[50]');
 		$this->form_validation->set_rules('email', 'email', 'required|trim|valid_email|callback_UpdateCheckUniqueEmail');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[8]|max_length[50]');
 		$this->form_validation->set_rules('cpassword', 'cpassword', 'required|trim|matches[password]');
 		$this->form_validation->set_rules('contactFirstName', 'Contact First Name', 'required|trim');
 		$this->form_validation->set_rules('contactSurname', 'Contact Surname', 'required|trim');
-	
-	if($this->form_validation->run()==false)
+		
+		if($this->form_validation->run()==false)
 		{
-		$this->load->helper('form');
-		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
-		$data['nwaId'] = "";
-		$data['name'] = "";
-		$data['contactFirstName'] = "";
-		$data['contactSurname'] = "";
-		$data['email'] = "";
-		$data['password'] = "";
-		$data['cpassword'] = "";
-		$this->template->write_view('content','team/update',$data);
-		$this->template->render();
+			$this->load->helper('form');
+			// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
+			$data['nwaId'] = $this->input->post('nwaId');
+			$data['name'] =  $this->input->post('name');
+			$data['contactFirstName'] =  $this->input->post('contactFirstName');
+			$data['contactSurname'] =  $this->input->post('contactSurname');
+			$data['email'] =  $this->input->post('email');
+			$this->template->write_view('content','team/update',$data);
+			$this->template->render();
 		}
-	else
+		else
 		{
-			echo "You have updated";
 			$data = array(
 			'email' => $this->input->post('email'),
 			'name' => $this->input->post('name'),
@@ -217,27 +214,41 @@ class teamRegister extends My_Public_Controller {
 			'password' => sha1($this->input->post('password'))
 			);
 			$this->Team_model->update($this->session->userdata('nwaId'),$data);
-			redirect('team/welcome', 'refresh');
-			
-			
+			redirect('team/welcome', 'refresh');		
 		}
-	
+		
 	}
 	
 	public function update()
 	{
+		$team = $this->Team_model->getTeam($this->session->userdata('nwaId'));
+		$players = $this->Team_model->getPlayers($this->session->userdata('nwaId'));
+		$firstName = array();
+		$surname = array();
+		$num = array();
+		$i = 0;
+		foreach ($players as $player)
+		{
+			$firstName[$i] = $player['firstName'];
+			$surname[$i] = $player['surname'];
+			$num[$i] = $player['shirtNo'];
+			$i++;
+		}
 		$this->load->helper('form');
-		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
-		//$data['nwaId'] = "";
-		$data['name'] = "";
-		$data['contactFirstName'] = "";
-		$data['contactSurname'] = "";
-		$data['email'] = "";
+		
+		$data['name'] = $team['name'];
+		$data['contactFirstName'] = $team['contactFirstName'];
+		$data['contactSurname'] = $team['contactSurname'];
+		$data['email'] = $team['email'];
 		$data['password'] = "";
 		$data['cpassword'] = "";
+		$data['description'] = $team['description'];
+		$data['firstName'] = $firstName;
+		$data['surname'] = $surname;
+		$data['num'] = $num;
+		$data['nwaId'] = $this->session->userdata('nwaId');
 		$this->template->write_view('content','team/update',$data);
 		$this->template->render();
-		//$this->load->view('team/update');
 	}
 	
 	public function checkUniqueEmail()
