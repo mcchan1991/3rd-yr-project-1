@@ -15,8 +15,13 @@
   <li <?php if ($segment == "contact") { echo "class=\"active\""; } ?>><a href="#">Contact</a></li>
 </ul>
 
+
+<?php if($this->session->userdata('nwaId')!= NULL ): ?>
+<div class="text" style="float:right;margin-top:7pt; "> Welcome <?php echo $team ?> </div>
+<?php else: ?>
 <form class="form-inline" style="height:10px; margin-top:2px; float:right;">
   <input type="text" class="input-small" placeholder="Email">
   <input type="password" class="input-small" placeholder="Password">
   <button type="submit" class="btn btn-small" style="margin-bottom:5px;">Sign in</button>
 </form>
+<?php endif; ?>

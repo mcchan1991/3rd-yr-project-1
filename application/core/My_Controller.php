@@ -47,6 +47,12 @@ class My_Public_Controller extends CI_Controller {
 		{
 			$data['segment'] = "home";
 		}
+		if ($this->session->userdata('nwaId')!= NULL)
+		{
+			$this->load->model('/team/Team_model');
+			$team = $this->Team_model->getTeam($this->session->userdata('nwaId'));
+			$data['team'] = $team['name'];
+		}
 		$this->template->write_view('nav_top','topnav', $data);
 		
 		// if not overwritten loads default a list of active tournaments
