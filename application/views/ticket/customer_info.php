@@ -9,7 +9,7 @@ $btnAttributes = array(
 ?>
 <ul class="breadcrumb">
   <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
-  <li class="active">Ticket</li>
+  <li class="active">Personal Information</li>
 </ul>
 <?php echo validation_errors(); ?>
 <?php

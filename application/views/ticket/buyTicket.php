@@ -9,7 +9,7 @@ beforeShowDay: checkAvailability
 });
 
 
-var $myBadDates =<?php echo json_encode($date111);?>;
+var $myBadDates =<?php echo json_encode($dateAvailable);?>;
 function checkAvailability(mydate){
 var $return1=false;
 var $returnclass ="unavailable";
@@ -47,6 +47,8 @@ $btnAttributes = array(
 ?>
 <ul class="breadcrumb">
   <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/ticket">Ticket</a> <span class="divider">/</span></li>
+  <li><a href="<?php echo base_url(); ?>index.php/ticket/tournamentTicket/<?php echo $Tid; ?>">Ticket List</a> <span class="divider">/</span></li>
   <li class="active">Ticket</li>
 </ul>
 <h3>Ticket: <?php echo $Tname ?></h3>
@@ -70,10 +72,10 @@ $btnAttributes = array(
 	$checkdate = array(
 		'name'	=> 'checkdate',
 		'id'	=> 'checkdate',
-		'value' => $date111
+		'value' => $dateAvailable
 	);
 	echo "<div class=\"control-group\">";
-	echo form_hidden('checkdate',$date111);
+	echo form_hidden('checkdate',$dateAvailable);
 	echo '</div>';
 	
  

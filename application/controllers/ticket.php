@@ -84,7 +84,6 @@ class ticket extends My_Public_Controller {
 		$id=$E_id;
 		$data['TournamentId']=$id;
 		$data['tickets'] = $this->ticket_model->getallbyE_id($id);
-		$data['something']=array();
 		$this->template->write_view('content','ticket/buyticketView',$data);
 		$this->template->render();
 	}
@@ -160,8 +159,6 @@ class ticket extends My_Public_Controller {
 		$i=0;
 		foreach($dateResult as $item)
 		{
-		$data['date']=$item['start'];
-		$data['end']=$item['end'];
 		$s_dte=$item['start'];
 		$s_dte2=strtotime("-1 day", strtotime($s_dte));
 		$s=date("Y-m-d",$s_dte2);
@@ -171,7 +168,6 @@ class ticket extends My_Public_Controller {
 		$mnth = floor(($diff - $yrs * 365*60*60*24) / (30*60*60*24)); 
 		$days = floor(($diff - $yrs * 365*60*60*24 - $mnth*30*60*60*24)/ (60*60*24));
 		$t=1;
-
 
 		while($t <= $days){
 		$dateAv[$i][$t]= $s;
@@ -188,7 +184,7 @@ class ticket extends My_Public_Controller {
 		}
 		$data['Alength'] =count($result11);
 		$data['Tname']=$Tresult['name'];
-		$data['date111']=$result11;
+		$data['dateAvailable']=$result11;
 		$data['startDate']='';
 		$data['endDate']='';
 		$data['Date']='';
@@ -227,24 +223,11 @@ class ticket extends My_Public_Controller {
                 'postcode'   =>  $this->input->post('postcode'),
                 'city'  => $this->input->post('city')
              );
-			//$this->customers_model->create($postdata);
 			$data['cart']=$this->cart->contents();
-            //print_r($this->cart->contents());
 			$this->template->write_view('content','ticket/payment',$data);
 			$this->template->render();	
 		}
 	
-	}
-	
-	
-	public function show()
-	{	
-		print_r($this->cart->contents());
-	}
-	
-	public function destory()
-	{	
-		$this->cart->destroy();
 	}
 	
 	public function update()
@@ -265,7 +248,7 @@ class ticket extends My_Public_Controller {
 		$this->template->render();	
 
 	}
-	
+	//
 	public function confirm()
 	{
 		$result=$this->input->post('postdata');
@@ -290,7 +273,8 @@ class ticket extends My_Public_Controller {
 		$this->template->write_view('content','ticket/receipt',$data);
 		$this->template->render();	
 	}
-	
+	//validation for Date
+	//check the date have event(s)
 	public function checkAvailableDate()
 	{
 		$result=false;

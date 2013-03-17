@@ -1,6 +1,7 @@
 <ul class="breadcrumb">
   <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
-  <li class="active">Ticket</li>
+    <li><a href="<?php echo base_url(); ?>index.php/ticket">Ticket</a> <span class="divider">/</span></li>
+  <li class="active">Ticket List</li>
 </ul>
 <h3>Ticket</h3>
 <table class="table" >
