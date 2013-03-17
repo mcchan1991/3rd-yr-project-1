@@ -4,22 +4,10 @@
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
   <li class="active">Edit Event: <?php echo $event['name']; ?></li>
 </ul>
-
 <?php
-
-$labelAttributes = array(
-    'class' => 'control-label',
-	'style' => 'margin-right:5px; margin-left:5px'
-);
-$btnAttributes = array(
-    'class' => 'btn',
-	'style' => 'margin-top: 15px;'
-);
-$attributes = array('class' => 'form-inline');
-
-//$form = form_label('Player', 'player[]', $labelAttributes);
-
-$form = "<select name=\"player[]\" class=\"input-medium\">";
+$form = "<div>";
+$form .= "<h6>Event</h6>";
+$form .= "<select name=\"player[]\" class=\"input-medium\">";
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">Select a player</option>";
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">---". $team1['name'] . "---</option>";
 foreach($team1Players as $currentPlayer)
@@ -70,12 +58,55 @@ $form .= "Yellow Card</label>";
 $form .= "<label class=\"radio\" style=\"margin-left:10px;\">";
 $form .= form_radio('type[]', 'redCard', FALSE);
 $form .= "Red Card</label>";
+$form .= "<br /> <br /><a href=\"#\" class=\"remove\" >Remove event</a>";
+$form .= "</div>";
+?>
+<script>
+$(function () {
+    var div = $('#events');
+    var i = $('#events h6').size();
+
+    $('#addInput').on('click', function () {
+        $('<?php echo $form;  ?>').appendTo(div);
+        i++;
+        return false;
+    });
+
+    $(document).on('click', '.remove', function () {
+        if (i > 2) {
+            $(this).parent('div').remove();
+            i--;
+        }
+        return false;
+    });
+});
+
+</script>
+<?php
+
+$labelAttributes = array(
+    'class' => 'control-label',
+	'style' => 'margin-right:5px; margin-left:5px'
+);
+$btnAttributes = array(
+    'class' => 'btn',
+	'style' => 'margin-top: 15px;'
+);
+$attributes = array('class' => 'form-inline');
+
+//$form = form_label('Player', 'player[]', $labelAttributes);
+
 
 
 //$form = form_dropdown('team[]', $playersArray, NULL, 'class="input-small"');
 
 echo form_open("admin/scheduler/saveWattball/{$event['eventId']}", $attributes);
-echo "<h6>Event 1</h6>";
+echo "<div id=\"events\">";
 echo $form;
-echo "<h6>Event 2</h6>";
 echo $form;
+echo "</div>";
+echo "<br />";
+echo "<a href=\"#\" id=\"addInput\" style=\"\">Add another event</a>";
+echo "<br />";
+echo form_submit($btnAttributes, "Submit result", 'submit');
+echo form_close();
