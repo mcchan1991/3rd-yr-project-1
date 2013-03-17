@@ -135,4 +135,14 @@ class Event_model extends CI_Model
 
 	}
 	
+	public function geStartEndTimes($tId)
+	{
+		$this->db->where('tournamentId', $tId);
+		$this->db->select('start, end');
+
+		$query = $this->db->get('events');
+		return $query->result_array();
+	}
+
+	
 }
