@@ -97,6 +97,14 @@ class Match_model extends CI_Model
 		return $this->db->update("matchResults", $data);
 	}
 	
+	public function getResults($matchId)
+	{
+		$this->db->select('*');
+		$this->db->where('matchId', $matchId);
+		$query = $this->db->get("matchResults");
+		return $query->result_array();
+	}
+	
 }
 
 // END

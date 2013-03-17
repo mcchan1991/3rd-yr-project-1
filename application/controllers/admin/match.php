@@ -45,12 +45,37 @@ class Match extends My_Admin_Controller
 		$data['team2Players'] = $this->Team_model->getTeamPlayers($match['team2Id']);
 		$data['matchId'] = $id;
 		
+		$results = $this->Match_model->getResults($id);
+		
 		$data['player'] = array();
 		$data['assist'] = array();
-		$data['time'] = array();
 		$data['type'] = array();
 		$data['minute'] = array();
 		$data['resultId'] = array();
+		
+		if (count($results) != 0)
+		{
+			foreach ($results as $curResult)
+			{
+				array_push($data['player'], $curResult['playerId']);
+				array_push($data['assist'], $curResult['assist']);
+				array_push($data['minute'], $curResult['minute']);
+				array_push($data['resultId'],$curResult['resultId']);
+				if ($curResult['goal'] != NULL)
+				{
+					array_push($data['type'], "goal");
+				}
+				if ($curResult['yellowCard'] != null)
+				{
+					array_push($data['type'], "yellowCard");
+				}
+				if ($curResult['redCard'] != null)
+				{
+					array_push($data['type'], "redCard");
+				}
+			}
+		}
+
 
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/addMatchResults',$data);

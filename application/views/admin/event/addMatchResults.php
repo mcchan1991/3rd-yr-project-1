@@ -127,7 +127,7 @@ for ($i = 0; $i < $count; $i++)
 		$curAssist = $assist[$i];
 		$curMinute = $minute[$i];
 		$curType = $type[$i];
-		$curResultId = $resultId[$id];
+		$curResultId = $resultId[$i];
 	}
 	$form = "<div class=\"event\">";
 	$form .= "<h6>Event</h6>";
