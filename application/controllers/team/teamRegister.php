@@ -16,17 +16,31 @@ class teamRegister extends My_Public_Controller {
 		$this->register($eventId);
 	}
 	
-	function register($eventId)
+	function register($eventId,$prefill = NULL)
 	{
 		$this->load->helper('form');
 		$event = $this->Event_model->getEvent($eventId);
 		//$event = $this->Event_model->getId($eventId);
 		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
-		$data['nwaId'] = "";
-		$data['name'] = "";
-		$data['contactFirstName'] = "";
-		$data['contactSurname'] = "";
-		$data['email'] = "";
+		if ($prefill != NULL)
+		{
+			$data['nwaId'] = $prefill['nwaId'];
+			$data['name'] =  $prefill['name'];
+			$data['contactFirstName'] =  $prefill['contactFirstName'];
+			$data['contactSurname'] =  $prefill['contactSurname'];
+			$data['firstName'] =  $prefill['firstName'];
+			$data['surname'] =  $prefill['surname'];
+			$data['num'] =  $prefill['num'];
+			$data['email'] = $prefill['email'];
+		}
+		else
+		{
+			$data['nwaId'] = "";
+			$data['name'] =  "";
+			$data['contactFirstName'] =  "";
+			$data['contactSurname'] =  "";
+			$data['email'] =  "";
+		}
 		$data['password'] = "";
 		$data['cpassword'] = "";
 		$data['eventId'] = "";
@@ -89,24 +103,40 @@ class teamRegister extends My_Public_Controller {
 		$config['max_width']  = '1024';
 		$config['max_height']  = '768';
 
-		// if (isset ( $_FILES['userfile']['name']))
-		// {
-			// $name = $_FILES['userfile']['name']; // get file name from form
-			// $fileNameParts   = explode( '.', $name ); // explode file name to two part
-			// $fileExtension   = end( $fileNameParts ); // give extension
-			// $fileExtension   = strtolower( $fileExtension ); // convert to lower case
-			// $encripted_pic_name   = md5($name).'.'.$fileExtension;  // new file name
-			// $config['file_name'] = $encripted_pic_name; //set file name
-		// }
+		if (isset ( $_FILES['userfile']['name']))
+		{
+			$name = $_FILES['userfile']['name']; // get file name from form
+			$fileNameParts   = explode( '.', $name ); // explode file name to two part
+			$fileExtension   = end( $fileNameParts ); // give extension
+			$fileExtension   = strtolower( $fileExtension ); // convert to lower case
+			$encripted_pic_name   = md5($this->input->post('nwaId')).'.'.$fileExtension;  // new file name
+			$config['file_name'] = $encripted_pic_name; //set file name
+		}
 		
 		$this->load->library('upload', $config);
 		
-		if($this->form_validation->run()==false && !$this->upload->do_upload("userfile"))
+		if($this->form_validation->run()==false)
 		{
-			$this->register($eventId);
+			$prefill = array(
+			'nwaId' => $this->input->post('nwaId'),
+			'name' => $this->input->post('name'),
+			'contactFirstName' => $this->input->post('contactFirstName'),
+			'contactSurname' => $this->input->post('contactSurname'),
+			'email' => $this->input->post('email'),
+			'firstName' => $this->input->post('firstName'),
+			'surname' => $this->input->post('surname'),
+			'num' => $this->input->post('num'),
+			);
+			$this->register($eventId,$prefill);
 		}
 		else
 		{
+			$this->upload->do_upload("userfile");
+			$data = array('upload_data' => $this->upload->data());
+			if ($this->upload->display_errors() != "You did not select a file to upload." && $this->upload->display_errors() != NULL)
+			{
+				$this->register($eventId);
+			}
 			$data = array(
 			'nwaId' => $this->input->post('nwaId'),
 			'name' => $this->input->post('name'),
@@ -138,9 +168,7 @@ class teamRegister extends My_Public_Controller {
 				);
 				$this->Team_model->createPlayer($data);
 			}
-			$data = array('upload_data' => $this->upload->data());
-			echo $data['upload_data']['full_path'];
-			//redirect('', 'refresh');
+			redirect('', 'refresh');
 		}
 	}
 	

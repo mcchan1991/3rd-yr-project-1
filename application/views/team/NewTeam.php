@@ -143,24 +143,6 @@ $btnAttributes = array(
 		echo '</div></div>';
 		
 		
-		
-		
-		
-		$firstName = array(
-			'name'	=> 'firstName[]',
-			'id'	=> 'firstName[]',
-		);
-		
-		$surname = array(
-			'name'	=> 'surname[]',
-			'id'	=> 'surname[]',
-		);
-		
-		$num = array(
-			'name'	=> 'num[]',
-			'id'	=> 'num[]',
-		);
-		
 		echo "<div class=\"control-group\">";
 		echo "
 		<table class=\"table\">
@@ -174,14 +156,33 @@ $btnAttributes = array(
 		</thead>
 		<tbody>";
 		for ($i = 0; $i < 10; $i++)
-		echo "
-		<tr>
-		<td> Player " . ($i + 1) . " </td>
-		<td>" . form_input($firstName) . " </td>
-		<td>" . form_input($surname) . " </td>
-		<td>" . form_input($num) . " </td>
-		</tr>
-		";
+		{
+			$firstNameProp = array(
+				'name'	=> 'firstName[]',
+				'id'	=> 'firstName[]',
+				'value' => isset($firstName[$i]) ? $firstName[$i] : ""
+			);
+			
+			$surnameProp = array(
+				'name'	=> 'surname[]',
+				'id'	=> 'surname[]',
+				'value' => isset($surname[$i]) ? $surname[$i] : ""
+			);
+			
+			$numProp = array(
+				'name'	=> 'num[]',
+				'id'	=> 'num[]',
+				'value' => isset($num[$i]) ? $num[$i] : ""
+			);
+			echo "
+				<tr>
+				<td> Player " . ($i + 1) . " </td>
+				<td>" . form_input($firstNameProp) . " </td>
+				<td>" . form_input($surnameProp) . " </td>
+				<td>" . form_input($numProp) . " </td>
+				</tr>
+			";
+		}
 		echo "</tbody>
 		</table>";
 		
