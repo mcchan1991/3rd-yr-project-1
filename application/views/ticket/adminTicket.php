@@ -31,15 +31,23 @@ $btnAttributes = array(
 		'id'	=> 'ticketType',
 		'value' => $ticketType
 	);
-	$options = array(
-                   'child'  => 'child',
-                   'adult'    => 'adult',
-                 );
+
 	echo "<div class=\"control-group\">";
 	echo form_label('Ticket Type', 'ticketType', $labelAttributes);
 	echo "<div class=\"controls\">";
-	echo form_dropdown('ticketType', $options, '');
- //form_input($ticketType);
+	echo form_input($ticketType);
+	echo '</div></div>';
+
+	$price = array(
+		'name'	=> 'price',
+		'id'	=> 'price',
+		'value' => $price
+	);
+
+	echo "<div class=\"control-group\">";
+	echo form_label('Price', 'price', $labelAttributes);
+	echo "<div class=\"controls\">";
+	echo form_input($price);
 	echo '</div></div>';
 	
 	$noTickets = array(

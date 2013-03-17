@@ -60,6 +60,7 @@ class Ticket extends My_Admin_Controller {
 		}
 		$data['ticketType']='';
 		$data['noTickets']='';
+		$data['price']='';
 		$this->template->write_view('content','ticket/adminTicket',$data);
 		$this->template->render();
 	}
@@ -70,6 +71,7 @@ class Ticket extends My_Admin_Controller {
 		//validate the input
 		$this->form_validation->set_rules("noTickets", "Number of Tickets", "required|numeric|callback_checkTicketNo");
 		$this->form_validation->set_rules("ticketType", "Ticket Type", "required");
+		$this->form_validation->set_rules("price", "Price", "required|numeric");
 		//if does not valid then go to register agin
 		//otherwise pass data to database
 		if ($this->form_validation->run() == FALSE)
@@ -83,6 +85,7 @@ class Ticket extends My_Admin_Controller {
 				'tournamentId'	=> $this->input->post('id'),
 				'ticketType' => $this->input->post('ticketType'),
 				'noTickets' => $this->input->post('noTickets'),
+				'price' => $this->input->post('price'),
 				);
 			$this->ticket_model->create($postdata);
 			redirect("admin/tournament/view/{$this->input->post('id')}", 'refresh');
