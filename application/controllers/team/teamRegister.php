@@ -70,7 +70,7 @@ class teamRegister extends My_Public_Controller {
 		{
 			$data['registrationError'] = 2;
 		}
-		else if ($this->Event_model->getEventRegistrationsCount($eventId) == $event['maxEntries'])
+		else if ($this->Event_model->getEventRegistrationsCount($eventId) >= $event['maxEntries'])
 		{
 			$data['registrationError'] = 3;
 		}
