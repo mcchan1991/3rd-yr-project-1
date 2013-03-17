@@ -221,7 +221,7 @@ class Scheduler extends My_Admin_Controller
 			}
 		}		
 		// format the string properly
-		$durationString = "P";
+		$durationString = "PT";
 		if ($durationArray[0] != "0")
 		{
 			$durationString .=$durationArray[0] . "H";
