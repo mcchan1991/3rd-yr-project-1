@@ -70,7 +70,7 @@ foreach($matches as $current )
 	echo "<td>{$current['date']}</td>";	
 	echo "<td>{$current['time']}</td>";	
 	echo "<td>{$current['umpireName']}</td>";	
-	$url = base_url() . "index.php/admin/matches/edit/".$current['matchId']."/";
+	$url = base_url() . "index.php/admin/match/enterResults/".$current['matchId']."/";
 	echo "<td><a href=\"{$url}\">Add result</a></td>";
 	echo "</tr>";
 }

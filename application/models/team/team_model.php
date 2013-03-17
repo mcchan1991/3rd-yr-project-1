@@ -36,6 +36,18 @@ class Team_model extends CI_Model {
 		$this->db->update('teams', $data1);
 	}
 	
+	/**
+  	 * Gets a specific team
+  	 * 
+	 * @param  id	The id of the specific team
+	 * @return 		row with the specific team information
+     */
+	public function getTeam($id)
+	{
+		$query = $this->db->get_where("teams", array('nwaId' => $id));
+		return $query->row_array();
+	}
+	
 	public function create($data)
 	{
 		$this->db->insert('teams', $data);
@@ -193,6 +205,12 @@ class Team_model extends CI_Model {
 			}
 		}
 		return $ok;
+	}
+	
+	public function getTeamPlayers($nwaId)
+	{
+		$query = $this->db->query("SELECT * FROM players WHERE nwaId = \"{$nwaId}\"");
+		return $query->result_array();
 	}
 	
 }

@@ -35,16 +35,13 @@ class Match extends My_Admin_Controller
 		$data['event'] = $event;
 		$tournament = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['tournament'] = $tournament;
-		// get teams for drop down.
-		$teams[-1] = "";
-		$teams[$match['team1Id']] = $this->Team_model->getTeamName($match['team1Id']); 
-		$teams[$match['team2Id']] = $this->Team_model->getTeamName($match['team2Id']);
-		
-		
-		$data['teams'] = $teams;
-		
-		
-		
+		// get teams
+		$data['team1'] = $this->Team_model->getTeam($match['team1Id']); 
+		$data['team2'] = $this->Team_model->getTeam($match['team2Id']);
+
+		$data['team1Players'] = $this->Team_model->getTeamPlayers($match['team1Id']);
+		$data['team2Players'] = $this->Team_model->getTeamPlayers($match['team2Id']);
+
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/addMatchResults',$data);
 		$this->template->render();

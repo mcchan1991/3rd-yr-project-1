@@ -56,11 +56,11 @@ class Match_model extends CI_Model
 		{
 			$offset = 0;
 		}
-		$query = $this->db->query("Select (select sum(goal) as team1Goals from matchResults where matchResults.matchid = matchid and matchResults.nwaid = team1.nwaid) as team1Goals, (select sum(goal) as team2goals from matchResults where matchResults.matchid = matchid and matchResults.nwaid = team2.nwaid)as team2Goals, matchdetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
-		FROM matchdetails
+		$query = $this->db->query("Select (select sum(goal) as team1Goals from matchResults where matchResults.matchid = matchid and matchResults.nwaid = team1.nwaid) as team1Goals, (select sum(goal) as team2goals from matchResults where matchResults.matchid = matchid and matchResults.nwaid = team2.nwaid)as team2Goals, matchDetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
+		FROM matchDetails
 		INNER JOIN (teams AS team1) JOIN (teams AS team2) ON matchDetails.team1Id = team1.nwaID AND matchDetails.team2Id = team2.nwaId
-		INNER JOIN locations on matchdetails.locationId = locations.locationId
-		INNER JOIN umpires on matchdetails.umpireId = umpires.umpireId
+		INNER JOIN locations on matchDetails.locationId = locations.locationId
+		INNER JOIN umpires on matchDetails.umpireId = umpires.umpireId
 		ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page);
 		return $query->result_array();
 	}
