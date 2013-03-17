@@ -190,6 +190,9 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('cpassword', 'cpassword', 'trim|matches[password]');
 		$this->form_validation->set_rules('contactFirstName', 'Contact First Name', 'required|trim');
 		$this->form_validation->set_rules('contactSurname', 'Contact Surname', 'required|trim');
+		$this->form_validation->set_rules('firstName[]', 'First Name', 'required|trim');
+		$this->form_validation->set_rules('surname[]', 'Surname', 'required|trim');
+		$this->form_validation->set_rules('num[]', 'Shirt Number', 'required|trim');
 		
 		if($this->form_validation->run()==false)
 		{
@@ -222,8 +225,24 @@ class teamRegister extends My_Public_Controller {
 			{
 				$data['password'] = $this->input->post('password');
 			}
-			$this->Team_model->update($this->session->userdata('nwaId'),$data);
-			redirect('team/welcome', 'refresh');		
+			$this->Team_model->update($this->session->userdata('nwaId'),$data);	
+			
+			
+			$firstName = $this->input->post('firstName');
+			$surname = $this->input->post('surname');
+			$num = $this->input->post('num');
+			$playerId = $this->input->post('playerId');
+			for ($i = 0; $i < 10; $i++)
+			{
+				$data = array (
+				'shirtNo' => $num[$i],
+				'firstName' => $firstName[$i],
+				'surname' => $surname[$i]
+				);
+				$this->Team_model->updatePlayer($data,$playerId[$i]);
+			}
+			
+			redirect("/team/teamRegister/update");
 		}
 		
 	}
@@ -235,12 +254,14 @@ class teamRegister extends My_Public_Controller {
 		$firstName = array();
 		$surname = array();
 		$num = array();
+		$playerId = array();
 		$i = 0;
 		foreach ($players as $player)
 		{
 			$firstName[$i] = $player['firstName'];
 			$surname[$i] = $player['surname'];
 			$num[$i] = $player['shirtNo'];
+			$playerId[$i] = $player['playerId'];
 			$i++;
 		}
 		$this->load->helper('form');
@@ -256,6 +277,7 @@ class teamRegister extends My_Public_Controller {
 		$data['surname'] = $surname;
 		$data['num'] = $num;
 		$data['nwaId'] = $this->session->userdata('nwaId');
+		$data['playerId'] = $playerId;
 		$this->template->write_view('content','team/update',$data);
 		$this->template->render();
 	}

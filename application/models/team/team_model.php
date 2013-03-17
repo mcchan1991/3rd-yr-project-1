@@ -64,8 +64,9 @@ class Team_model extends CI_Model {
 		$this->db->insert('players', $data);
 	}
 	
-	public function updatePlayer($data)
+	public function updatePlayer($data, $id)
 	{
+		$this->db->where('playerId', $id);
 		$this->db->update('players', $data);
 	}
 	

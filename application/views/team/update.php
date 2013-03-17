@@ -28,7 +28,8 @@ $btnAttributes = array(
 	$nwaId = array(
 		'name'	=> 'nwaId',
 		'id'	=> 'nwaId',
-		'value' => $nwaId
+		'value' => $nwaId,
+		'readonly' => 'readonly'
 	);
 
 	echo "<div class=\"control-group\">";
@@ -168,14 +169,15 @@ $btnAttributes = array(
 			'name'	=> 'num[]',
 			'id'	=> 'num[]',
 			'value' => isset($num[$i]) ? $num[$i] : "",
-			'readonly' => 'readonly'
 		);
+		
 		echo "
 			<tr>
 			<td> Player " . ($i + 1) . " </td>
 			<td>" . form_input($firstNameProp) . " </td>
 			<td>" . form_input($surnameProp) . " </td>
-			<td>" . form_input($numProp) . " </td>
+			<td>" . form_input($numProp) . " </td>"
+			. form_hidden('playerId[]', $playerId[$i]). "
 			</tr>
 		";
 	}
