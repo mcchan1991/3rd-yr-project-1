@@ -112,14 +112,7 @@ $btnAttributes = array(
 	echo '</div></div>';
 	
 	
-	if($tType=="child")
-	{
-		$pValue=2.00;
-	}
-	else
-	{
-		$pValue=5.00;
-	}
+
 		$Price= array(
 		'name'	=> 'Price',
 		'id'	=> 'Price',

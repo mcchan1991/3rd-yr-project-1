@@ -85,18 +85,6 @@ class ticket extends My_Public_Controller {
 		$data['TournamentId']=$id;
 		$data['tickets'] = $this->ticket_model->getallbyE_id($id);
 		$data['something']=array();
-		$i=0;
-		$j=0;
-		foreach($data['tickets'] as $ticket )
-		{
-			$i=0;
-			foreach($ticket as $row)
-			{
-				 $data['something'][$j][$i]=$row;
-				$i++;
-			}
-			$j++;	
-		}
 		$this->template->write_view('content','ticket/buyticketView',$data);
 		$this->template->render();
 	}
@@ -161,6 +149,8 @@ class ticket extends My_Public_Controller {
 		foreach($result as $item)
 		{
 			$tId=$item['tournamentId'];
+			$ticketPirce=$item['price'];
+			
 		}
 		$result1=$this->event_model->geStartEndTimes($tId);
 
@@ -200,7 +190,7 @@ class ticket extends My_Public_Controller {
 		$data['startDate']='';
 		$data['endDate']='';
 		$data['Date']='';
-		$data['pValue']='';
+		$data['pValue']=$ticketPirce;
 		$data['quantity']='';
 		
 		$this->template->write_view('content','ticket/buyTicket',$data);

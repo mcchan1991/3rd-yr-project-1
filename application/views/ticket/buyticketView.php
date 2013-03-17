@@ -8,7 +8,8 @@
 		<tr>
 			<th style="text-align:center;">Tournament</th>
 			<th style="text-align:center;">Ticket</th>
-			<th style="text-align:center;">Stock</th>
+			<th style="text-align:center;">Number of ticket</th>
+			<th style="text-align:center;">Price</th>
 			<th style="text-align:center;">Buy item</th>
 		</tr> 
 	</thead>
@@ -26,15 +27,12 @@
 			foreach ($tickets as $ticket)
 			{
 				echo "<tr>";
-				$tournamentName=$something[$j][0];
-				$ticket=$something[$j][1];
-				$stock=$something[$j][2];
-				$ticketId=$something[$j][3];
-				echo "<td style=\"text-align:center;\">{$tournamentName}</td>";
-				echo "<td style=\"text-align:center;\">{$ticket}</td>";
-				echo "<td style=\"text-align:center;\">{$stock}</td>";
+				echo "<td style=\"text-align:center;\">{$ticket['name']}</td>";
+				echo "<td style=\"text-align:center;\">{$ticket['ticketType']}</td>";
+				echo "<td style=\"text-align:center;\">{$ticket['noTickets']}</td>";
+				echo "<td style=\"text-align:center;\">{$ticket['price']}</td>";
 				$url = base_url() . "index.php/ticket/add/";
-				echo "	<td style=\"text-align:center;\"><a href=\"{$url}{$ticketId}/{$tournamentName}\">buy</a></td>";
+				echo "	<td style=\"text-align:center;\"><a href=\"{$url}{$ticket['ticketId']}/{$ticket['name']}\">buy</a></td>";
 				echo "</tr>";
 				$j++;
 			}

@@ -3,7 +3,7 @@ class ticket_model extends CI_Model
 {
 	function getallbyE_id($E_id)
 	{
-		$this->db->select('tournaments.name, tickets.ticketType, tickets.noTickets, tickets.ticketId');
+		$this->db->select('tournaments.name, tickets.ticketType, tickets.noTickets, tickets.ticketId,tickets.price');
 		$this->db->join('tournaments', 'tournaments.tournamentId = tickets.tournamentId');		
 		$this->db->where('tournaments.tournamentId', $E_id);
 		$query = $this-> db-> get("tickets");
