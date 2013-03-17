@@ -1,0 +1,2 @@
+ALTER TABLE  `teams` ADD  `description` VARCHAR( 400 ) NOT NULL ,
+ADD  `logo` TINYINT( 1 ) NULL DEFAULT NULL
