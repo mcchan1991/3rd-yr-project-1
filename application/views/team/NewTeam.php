@@ -142,6 +142,20 @@ $btnAttributes = array(
 		echo '<input type="file" name="userfile" size="20" />';
 		echo '</div></div>';
 		
+		$descriptionField = array(
+		'name'	=> 'description',
+		'id'	=> 'description',
+		'class' => 'input-xxlarge',
+		'value' => $description
+		);
+	
+		echo "<div class=\"control-group\">";
+		echo form_label('Description', 'description', $labelAttributes);
+		echo "<div class=\"controls\">";
+		echo form_textarea($descriptionField);
+		echo '</div>';
+		echo '</div>';
+			
 		
 		echo "<div class=\"control-group\">";
 		echo "

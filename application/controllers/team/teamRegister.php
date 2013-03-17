@@ -32,6 +32,7 @@ class teamRegister extends My_Public_Controller {
 			$data['surname'] =  $prefill['surname'];
 			$data['num'] =  $prefill['num'];
 			$data['email'] = $prefill['email'];
+			$data['description'] =  $prefill['description'];
 		}
 		else
 		{
@@ -40,6 +41,7 @@ class teamRegister extends My_Public_Controller {
 			$data['contactFirstName'] =  "";
 			$data['contactSurname'] =  "";
 			$data['email'] =  "";
+			$data['description'] =  "";
 		}
 		$data['password'] = "";
 		$data['cpassword'] = "";
@@ -102,6 +104,7 @@ class teamRegister extends My_Public_Controller {
 		$config['max_size']	= '1000';
 		$config['max_width']  = '1024';
 		$config['max_height']  = '768';
+		$config['overwrite'] = TRUE;
 
 		if (isset ( $_FILES['userfile']['name']))
 		{
@@ -126,6 +129,7 @@ class teamRegister extends My_Public_Controller {
 			'firstName' => $this->input->post('firstName'),
 			'surname' => $this->input->post('surname'),
 			'num' => $this->input->post('num'),
+			'description' => $this->input->post('description'),
 			);
 			$this->register($eventId,$prefill);
 		}
@@ -137,6 +141,7 @@ class teamRegister extends My_Public_Controller {
 			{
 				$this->register($eventId);
 			}
+			$upload_data = $this->upload->data();
 			$data = array(
 			'nwaId' => $this->input->post('nwaId'),
 			'name' => $this->input->post('name'),
@@ -144,6 +149,8 @@ class teamRegister extends My_Public_Controller {
 			'contactSurname' => $this->input->post('contactSurname'),
 			'email' => $this->input->post('email'),
 			'password' => sha1($this->input->post('password')),
+			'description' => $this->input->post('description'),
+			'logo' => $upload_data['is_image'] != NULL ? 1 : 0
 			);
 			$this->Team_model->create($data);
 			$data1 = array(
