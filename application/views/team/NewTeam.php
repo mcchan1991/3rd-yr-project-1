@@ -40,7 +40,7 @@ $btnAttributes = array(
 	else
 	{
 	
-		echo form_open("team/teamRegister/add/{$event['eventId']}", $attributes);
+		echo form_open_multipart("team/teamRegister/add/{$event['eventId']}", $attributes);
 		//echo form_open('team/teamRegister/add');
 
 		// form building
@@ -136,6 +136,15 @@ $btnAttributes = array(
 		echo form_input($email);
 		echo '</div></div>';
 		
+		echo "<div class=\"control-group\">";
+		echo form_label('Logo', 'logo', $labelAttributes);
+		echo "<div class=\"controls\">";
+		echo '<input type="file" name="userfile" size="20" />';
+		echo '</div></div>';
+		
+		
+		
+		
 		
 		$firstName = array(
 			'name'	=> 'firstName[]',
@@ -181,7 +190,7 @@ $btnAttributes = array(
 		echo "<div class=\"control-group\">";
 		echo "<div class=\"controls\">";
 		
-		echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"btn\" submit />";
+		echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"upload\" submit />";
 
 		echo '</div>';
 		echo '</div>';

@@ -83,7 +83,25 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('surname[]', 'Surname', 'required|trim');
 		$this->form_validation->set_rules('num[]', 'Shirt Number', 'required|trim');
 		
-		if($this->form_validation->run()==false)
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '1000';
+		$config['max_width']  = '1024';
+		$config['max_height']  = '768';
+
+		// if (isset ( $_FILES['userfile']['name']))
+		// {
+			// $name = $_FILES['userfile']['name']; // get file name from form
+			// $fileNameParts   = explode( '.', $name ); // explode file name to two part
+			// $fileExtension   = end( $fileNameParts ); // give extension
+			// $fileExtension   = strtolower( $fileExtension ); // convert to lower case
+			// $encripted_pic_name   = md5($name).'.'.$fileExtension;  // new file name
+			// $config['file_name'] = $encripted_pic_name; //set file name
+		// }
+		
+		$this->load->library('upload', $config);
+		
+		if($this->form_validation->run()==false && !$this->upload->do_upload("userfile"))
 		{
 			$this->register($eventId);
 		}
@@ -120,8 +138,9 @@ class teamRegister extends My_Public_Controller {
 				);
 				$this->Team_model->createPlayer($data);
 			}
-			
-			redirect('', 'refresh');
+			$data = array('upload_data' => $this->upload->data());
+			echo $data['upload_data']['full_path'];
+			//redirect('', 'refresh');
 		}
 	}
 	
