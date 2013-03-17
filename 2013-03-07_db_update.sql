@@ -1,0 +1,1 @@
+ALTER TABLE  `tickets` ADD  `price` DOUBLE NOT NULL

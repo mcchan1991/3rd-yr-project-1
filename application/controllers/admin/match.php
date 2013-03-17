@@ -41,6 +41,11 @@ class Match extends My_Admin_Controller
 
 		$data['team1Players'] = $this->Team_model->getTeamPlayers($match['team1Id']);
 		$data['team2Players'] = $this->Team_model->getTeamPlayers($match['team2Id']);
+		
+		$data['player'] = array();
+		$data['assist'] = array();
+		$data['time'] = array(),
+		$data['type'] = array();
 
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
 		$this->template->write_view('content','admin/event/addMatchResults',$data);

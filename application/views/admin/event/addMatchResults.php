@@ -94,16 +94,20 @@ $btnAttributes = array(
 );
 $attributes = array('class' => 'form-inline');
 
-//$form = form_label('Player', 'player[]', $labelAttributes);
-
-
-
-//$form = form_dropdown('team[]', $playersArray, NULL, 'class="input-small"');
-
 echo form_open("admin/scheduler/saveWattball/{$event['eventId']}", $attributes);
 echo "<div id=\"events\">";
-echo $form;
-echo $form;
+if (count($player) == 0)
+{
+	$count = 5;
+}
+else
+{
+	$count = count($player);
+}
+for ($i = 0; $i < $count; $i++)
+{
+	//if ()
+}
 echo "</div>";
 echo "<br />";
 echo "<a href=\"#\" id=\"addInput\" style=\"\">Add another event</a>";
