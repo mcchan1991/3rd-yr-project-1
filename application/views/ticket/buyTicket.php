@@ -49,11 +49,11 @@ $btnAttributes = array(
   <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
   <li class="active">Ticket</li>
 </ul>
-<h3>Ticket: <?php echo $Tournament ?></h3>
+<h3>Ticket: <?php echo $Tname ?></h3>
 <?php echo validation_errors(); ?>
 <?php
 
-	echo form_open("ticket/buyticket/{$id}/{$Tournament}", $attributes);
+	echo form_open("ticket/buyticket/{$id}", $attributes);
 
 	// form building
 
@@ -76,14 +76,6 @@ $btnAttributes = array(
 	echo form_hidden('checkdate',$date111);
 	echo '</div>';
 	
-	$TournamentName = array(
-		'name'	=> 'TournamentName',
-		'id'	=> 'TournamentName',
-		'value' => $Tournament
-	);
-	echo "<div class=\"control-group\">";
-	echo form_hidden('TournamentName',$Tournament);
-	echo '</div>';
  
 
 	$quantity = array(

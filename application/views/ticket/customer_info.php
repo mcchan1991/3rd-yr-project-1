@@ -13,7 +13,7 @@ $btnAttributes = array(
 </ul>
 <?php echo validation_errors(); ?>
 <?php
-	echo form_open("ticket/addInfo/{$ID}/{$Tournament}", $attributes);
+	echo form_open("ticket/addInfo/{$ID}/", $attributes);
 	
 	$firstName = array(
 		'name'	=> 'firstName',

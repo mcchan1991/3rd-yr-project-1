@@ -328,9 +328,17 @@ class Tournament_model extends CI_Model {
 		
 	}
 	
-		public function checkTournamentTickets($id)
+	public function checkTournamentTickets($id)
 	{
 		$this->db->select('noTickets');
+		$this->db->where('tournamentId', $id);
+		$query = $this->db->get('tournaments');
+		return $query->row_array();
+	}
+	
+	public function getTournamentnameById($id)
+	{
+		$this->db->select('name');
 		$this->db->where('tournamentId', $id);
 		$query = $this->db->get('tournaments');
 		return $query->row_array();

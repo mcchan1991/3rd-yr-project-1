@@ -18,7 +18,7 @@ class ticket extends My_Public_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('admin/Tournament_model');
+		$this->load->model('admin/tournament_model');
 		$this->load->model('admin/Event_model');
 		$this->load->model('ticket_model');
 		$this->load->helper('form');
@@ -89,19 +89,21 @@ class ticket extends My_Public_Controller {
 		$this->template->render();
 	}
 	
-	public function buyticket($id,$Tname)
+	public function buyticket($id)
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|min_length[5]|max_length[5]');
+		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|max_length[5]');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric');
 		$this->form_validation->set_rules('ticketType', 'Type of ticket', 'required');
 		$this->form_validation->set_rules('Price', 'Price for each', 'required');
 		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate');
 		if($this->form_validation->run()==false)
 		{
-			$this->add($id,$Tname);
+			$this->add($id);
 		}
+		else
+		{
 		$postdata = array(
                 'id'      => $this->input->post('TicketId'),
                 'qty'     =>  $this->input->post('quantity'),
@@ -111,7 +113,6 @@ class ticket extends My_Public_Controller {
                 'date' =>$this->input->post('Date')
              );
 		$this->cart->insert($postdata);
-		$data['Tournament']=$Tname;
 		$data['ID']=$id;
 		$data['firstName']='';
 		$data['surName']='';
@@ -123,12 +124,12 @@ class ticket extends My_Public_Controller {
 		$this->template->write_view('content','ticket/customer_info',$data);
 		$this->template->render();
 	}
+	}
 	
 	
 	
-	public function customer($id ,$Tname)
+	public function customer($id)
 	{
-		$data['Tournament']=$Tname;
 		$data['ID']=$id;
 		$data['firstName']='';
 		$data['surName']='';
@@ -140,23 +141,24 @@ class ticket extends My_Public_Controller {
 		$this->template->write_view('content','ticket/customer_info',$data);
 		$this->template->render();
 	}	
-	public function add($id,$Tname)
+	public function add($id)
 	{
 		$result=$this->ticket_model->getTicketById($id);
-		$data['Tournament']=$Tname;
 		$data['ticket']=$result;
 
 		foreach($result as $item)
 		{
 			$tId=$item['tournamentId'];
 			$ticketPirce=$item['price'];
+			$T_id=$item['tournamentId'];
 			
 		}
-		$result1=$this->event_model->geStartEndTimes($tId);
-
+		$dateResult=$this->event_model->geStartEndTimes($T_id);
+		$Tresult=$this->tournament_model->getTournamentnameById($T_id);
+		
 		$dateAv=array();
 		$i=0;
-		foreach($result1 as $item)
+		foreach($dateResult as $item)
 		{
 		$data['date']=$item['start'];
 		$data['end']=$item['end'];
@@ -185,7 +187,7 @@ class ticket extends My_Public_Controller {
 			$result11=$result11+$item;
 		}
 		$data['Alength'] =count($result11);
-
+		$data['Tname']=$Tresult['name'];
 		$data['date111']=$result11;
 		$data['startDate']='';
 		$data['endDate']='';
@@ -197,7 +199,7 @@ class ticket extends My_Public_Controller {
 		$this->template->render();		
 	}
 	
-	public function addInfo($id,$Tname)
+	public function addInfo($id)
 	{
 		$this->load->library('form_validation');
 		
@@ -211,7 +213,7 @@ class ticket extends My_Public_Controller {
 		
 		if($this->form_validation->run()==false)
 		{
-			$this->customer($id,$Tname);
+			$this->customer($id);
 		}
 		else
 		{

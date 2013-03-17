@@ -32,7 +32,7 @@
 				echo "<td style=\"text-align:center;\">{$ticket['noTickets']}</td>";
 				echo "<td style=\"text-align:center;\">{$ticket['price']}</td>";
 				$url = base_url() . "index.php/ticket/add/";
-				echo "	<td style=\"text-align:center;\"><a href=\"{$url}{$ticket['ticketId']}/{$ticket['name']}\">buy</a></td>";
+				echo "	<td style=\"text-align:center;\"><a href=\"{$url}{$ticket['ticketId']}\">buy</a></td>";
 				echo "</tr>";
 				$j++;
 			}
