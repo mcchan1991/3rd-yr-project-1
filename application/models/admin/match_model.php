@@ -85,6 +85,18 @@ class Match_model extends CI_Model
 		$this->db->delete($this->table_name, array('eventId' => $eventId)); 
 	}
 	
+	public function addResult($data)
+	{
+		$this->db->insert("matchResults", $data);
+		return $this->db->insert_id();
+	}
+	
+	public function updateResult($data)
+	{
+		$this->db->where('resultId', $data['resultId']);
+		return $this->db->update("matchResults", $data);
+	}
+	
 }
 
 // END
