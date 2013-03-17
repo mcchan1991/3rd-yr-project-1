@@ -9,8 +9,6 @@ $btnAttributes = array(
 
 ?>
 
-<?php echo validation_errors(); ?>
-
 
 <?php
 	$errors = validation_errors();
@@ -23,7 +21,7 @@ $btnAttributes = array(
 	
 
 
-	echo form_open_multipart("team/teamRegister/update/{$nwaId}", $attributes);
+	echo form_open_multipart("team/teamRegister/team_update/{$nwaId}", $attributes);
 	//echo form_open('team/teamRegister/add');
 
 	// form building
@@ -169,7 +167,8 @@ $btnAttributes = array(
 		$numProp = array(
 			'name'	=> 'num[]',
 			'id'	=> 'num[]',
-			'value' => isset($num[$i]) ? $num[$i] : ""
+			'value' => isset($num[$i]) ? $num[$i] : "",
+			'readonly' => 'readonly'
 		);
 		echo "
 			<tr>

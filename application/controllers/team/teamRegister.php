@@ -187,8 +187,7 @@ class teamRegister extends My_Public_Controller {
 			
 		$this->form_validation->set_rules('name', 'name', 'required|trim|callback_UpdateCheckUniqueTeamName|min_length[1]|max_length[50]');
 		$this->form_validation->set_rules('email', 'email', 'required|trim|valid_email|callback_UpdateCheckUniqueEmail');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[8]|max_length[50]');
-		$this->form_validation->set_rules('cpassword', 'cpassword', 'required|trim|matches[password]');
+		$this->form_validation->set_rules('cpassword', 'cpassword', 'trim|matches[password]');
 		$this->form_validation->set_rules('contactFirstName', 'Contact First Name', 'required|trim');
 		$this->form_validation->set_rules('contactSurname', 'Contact Surname', 'required|trim');
 		
@@ -201,6 +200,12 @@ class teamRegister extends My_Public_Controller {
 			$data['contactFirstName'] =  $this->input->post('contactFirstName');
 			$data['contactSurname'] =  $this->input->post('contactSurname');
 			$data['email'] =  $this->input->post('email');
+			$data['password'] =  "";
+			$data['cpassword'] =  "";
+			$data['firstName'] = $this->input->post('firstName');
+			$data['surname'] = $this->input->post('surname');
+			$data['num'] = $this->input->post('num');
+			$data['description'] = $this->input->post('description');
 			$this->template->write_view('content','team/update',$data);
 			$this->template->render();
 		}
@@ -211,8 +216,12 @@ class teamRegister extends My_Public_Controller {
 			'name' => $this->input->post('name'),
 			'contactFirstName' => $this->input->post('contactFirstName'),
 			'contactSurname' => $this->input->post('contactSurname'),
-			'password' => sha1($this->input->post('password'))
+			'description' => $this->input->post('description'),
 			);
+			if ($this->input->post('password') != NULL && $this->input->post('password') != "")
+			{
+				$data['password'] = $this->input->post('password');
+			}
 			$this->Team_model->update($this->session->userdata('nwaId'),$data);
 			redirect('team/welcome', 'refresh');		
 		}
