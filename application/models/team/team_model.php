@@ -70,6 +70,12 @@ class Team_model extends CI_Model {
 		$this->db->update('players', $data);
 	}
 	
+	public function getPlayerTeam($player)
+	{
+		$query = $this->db->get_where("players", array('playerId' => $player));
+		$result = $query->row_array();
+		return $result['nwaId'];
+	}
 	
 	public function getEventID()
 	{

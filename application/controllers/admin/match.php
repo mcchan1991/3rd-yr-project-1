@@ -185,7 +185,7 @@ class Match extends My_Admin_Controller
 					$this->Match_model->updateResult($postdata);
 				}
 			}
-			
+			$this->Match_model->setMatchAsFinished($id);
 			redirect("http://localhost:8888/groupproject/index.php/admin/event/viewMatches/" . $match['eventId']);
 		}
 	}

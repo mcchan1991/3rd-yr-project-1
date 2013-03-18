@@ -12,12 +12,12 @@ $form .= "<option value=\"-1\" style=\"font-weight:bold;\">Select a player</opti
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">---". $team1['name'] . "---</option>";
 foreach($team1Players as $currentPlayer)
 {	
-	$form .= "<option value=\" " . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
+	$form .= "<option value=\"" . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
 }
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">---". $team2['name'] . "---</option>";
 foreach($team2Players as $currentPlayer)
 {	
-	$form .= "<option value=\" " . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
+	$form .= "<option value=\"" . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
 }
 $form .= "</select>";
 
@@ -27,12 +27,12 @@ $form .= "<option value=\"-1\" style=\"font-weight:bold;\">Assist</option>";
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">---". $team1['name'] . "---</option>";
 foreach($team1Players as $currentPlayer)
 {	
-	$form .= "<option value=\" " . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
+	$form .= "<option value=\"" . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
 }
 $form .= "<option value=\"-1\" style=\"font-weight:bold;\">---". $team2['name'] . "---</option>";
 foreach($team2Players as $currentPlayer)
 {	
-	$form .= "<option value=\" " . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
+	$form .= "<option value=\"" . $currentPlayer['playerId'] .  "\">". $currentPlayer['shirtNo'] . ". " . $currentPlayer['surname'] . "</option>";
 }
 $form .= "</select>";
 
@@ -58,8 +58,8 @@ $form .= "Yellow Card</label>";
 $form .= "<label class=\"radio\" style=\"margin-left:10px;\">";
 $form .= form_radio('typex', 'redCard', FALSE);
 $form .= "Red Card</label>";
+$form .= "<input type=\"hidden\" name=\"resultId[]\" value=\"-1\" />";
 $form .= "<br /> <br /><a href=\"#\" class=\"remove\" >Remove event</a>";
-$form .= form_hidden('resultId[]', -1);
 $form .= "</div>";
 ?>
 <script>

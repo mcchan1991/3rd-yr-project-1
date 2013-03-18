@@ -106,6 +106,15 @@ class Match_model extends CI_Model
 		return $query->result_array();
 	}
 	
+	public function setMatchAsFinished($matchId)
+	{
+		$data = array(
+			"status" => "finished"
+		);
+		$this->db->where('matchId', $matchId);
+		$this->db->update($this->table_name, $data);
+	}
+	
 }
 
 // END
