@@ -116,7 +116,7 @@ $btnAttributes = array(
 	echo "<div class=\"control-group\">";
 	echo form_label('Price for each', 'Price', $labelAttributes);
 	echo "<div class=\"controls\">";
-	echo form_fieldset($pValue);
+	echo form_fieldset("£{$pValue}");
 	echo form_hidden('Price',$pValue);
 	echo '</div></div>';
 

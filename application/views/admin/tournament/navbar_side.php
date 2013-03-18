@@ -11,3 +11,4 @@
 <li><a href="<?php echo base_url() . "index.php/admin/tournament/viewEvents/{$tournament['tournamentId']}/"; ?>">Events</a></li>
 <li><a href="<?php echo base_url() . "index.php/admin/tournament/umpireList/{$tournament['tournamentId']}/"; ?>">Umpires</a></li>
 <li><a href="<?php echo base_url() . "index.php/admin/ticket/index/{$tournament['tournamentId']}/"; ?>">Tickets</a></li>
+<li><a href="<?php echo base_url() . "index.php/admin/ticket/ticketSale/{$tournament['tournamentId']}/"; ?>">Tickets Sales</a></li>

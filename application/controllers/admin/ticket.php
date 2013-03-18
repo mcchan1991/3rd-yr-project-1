@@ -8,6 +8,7 @@ class Ticket extends My_Admin_Controller {
 		$this->load->model('admin/Event_model');
 		$this->load->helper('form');
 		$this->load->model('ticket_model');
+		$this->load->model('ticketSale_model');
 	}
 	
 	public function index($id,$page = 1)
@@ -91,6 +92,17 @@ class Ticket extends My_Admin_Controller {
 			redirect("admin/tournament/view/{$this->input->post('id')}", 'refresh');
 		}
 	}
+	
+	public function ticketSale($id)
+	{
+		$result=$this->ticketSale_model->findSale($id);
+		$data['ticketsinfo']=$result;
+		
+		$this->template->write_view('content','ticket/adminTicketSaleView',$data);
+		$this->template->render();
+	}
+	
+	
 	//this is the function for check validation
 	//sales of ticket number does not exceed the total number of ticket 
 	public function checkTicketNo()

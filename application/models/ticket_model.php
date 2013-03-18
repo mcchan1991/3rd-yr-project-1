@@ -6,7 +6,7 @@ class ticket_model extends CI_Model
 		$this->db->select('tournaments.name, tickets.ticketType, tickets.noTickets, tickets.ticketId,tickets.price');
 		$this->db->join('tournaments', 'tournaments.tournamentId = tickets.tournamentId');		
 		$this->db->where('tournaments.tournamentId', $E_id);
-		$query = $this-> db-> get("tickets");
+		$query = $this-> db-> get("ticket");
 		return $query->result_array();
 	}
 	
