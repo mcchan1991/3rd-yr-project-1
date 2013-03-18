@@ -157,31 +157,30 @@ class ticket extends My_Public_Controller {
 		
 		$dateAv=array();
 		$i=0;
+				$result11=array();
 		foreach($dateResult as $item)
 		{
-		$s_dte=$item['start'];
-		$s_dte2=strtotime("-1 day", strtotime($s_dte));
-		$s=date("Y-m-d",$s_dte2);
-		$e_dte=$item['end'];
-		$diff = abs(strtotime($e_dte) - strtotime($s)); 
-		$yrs = floor($diff / (365*60*60*24)); 
-		$mnth = floor(($diff - $yrs * 365*60*60*24) / (30*60*60*24)); 
-		$days = floor(($diff - $yrs * 365*60*60*24 - $mnth*30*60*60*24)/ (60*60*24));
-		$t=1;
+			$s_dte=$item['start'];
+			$s_dte2=strtotime("-1 day", strtotime($s_dte));
+			$s=date("Y-m-d",$s_dte2);
+			$e_dte=$item['end'];
+			$diff = abs(strtotime($e_dte) - strtotime($s)); 
+			$yrs = floor($diff / (365*60*60*24)); 
+			$mnth = floor(($diff - $yrs * 365*60*60*24) / (30*60*60*24)); 
+			$days = floor(($diff - $yrs * 365*60*60*24 - $mnth*30*60*60*24)/ (60*60*24));
+			$t=0;
 
-		while($t <= $days){
-		$dateAv[$i][$t]= $s;
-		$date = strtotime("+1 day", strtotime($s));
-		$s=date("Y-m-d", $date);
-		$t++;
+			while($t <= $days)
+			{
+				$date = strtotime("+1 day", strtotime($s));
+				$s=date("Y-m-d", $date);
+				$result11[$i]=$s;
+				$t++;
+				$i++;
+			}
 		}
-		$i++;
-		}
-		$result11=array();
-		foreach($dateAv as $item)
-		{
-			$result11=$result11+$item;
-		}
+
+		
 		$data['Alength'] =count($result11);
 		$data['Tname']=$Tresult['name'];
 		$data['dateAvailable']=$result11;

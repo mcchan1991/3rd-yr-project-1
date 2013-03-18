@@ -14,7 +14,7 @@ function checkAvailability(mydate){
 var $return1=false;
 var $returnclass ="unavailable";
 $checkdate = $.datepicker.formatDate('yy-mm-dd', mydate);
-for(var i = 1; i <<?php echo $Alength; ?>+1; i++)
+for(var i = 0; i <<?php echo $Alength; ?>; i++)
 { 
 if($myBadDates[i] == $checkdate)
 {
