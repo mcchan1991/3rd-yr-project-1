@@ -128,7 +128,7 @@ class Match extends My_Admin_Controller
 			$minute = $this->input->post("minute");
 			$resultId = $this->input->post("resultId");
 
-			for ($i = 0; $i < count($resultId); $i++)
+			for ($i = 0; $i < count($player); $i++)
 			{
 				
 				$curAssist = NULL;
@@ -141,7 +141,7 @@ class Match extends My_Admin_Controller
 					$goal = 1;
 					if ($assist[$i] != -1)
 					{
-						$assist = $assist[$i];
+						$curAssist = $assist[$i];
 					}
 				}
 				else if ($type[$i] == "owngoal")

@@ -240,4 +240,12 @@ class Team_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	public function getPlayer($playerId)
+	{
+		$this->db->select('*');
+		$this->db->where('playerId', $playerId);
+		$query = $this->db->get("players");
+		return $query->row_array();
+	}
+	
 }

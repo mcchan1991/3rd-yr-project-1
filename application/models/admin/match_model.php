@@ -112,6 +112,12 @@ class Match_model extends CI_Model
 		return $query->result_array();
 	}
 	
+	public function getExtendedResults($matchId)
+	{
+		$query = $this->db->query("SELECT matchResults.*,players.nwaId, players.shirtNo, players.surname FROM matchResults, players WHERE matchId = {$matchId} AND matchResults.playerId = players.playerId ORDER BY matchResults.minute ASC");
+		return $query->result_array();
+	}
+	
 	public function setMatchAsFinished($matchId)
 	{
 		$data = array(

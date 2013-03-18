@@ -15,6 +15,8 @@ class Match extends My_Public_Controller {
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Sport_model');
 		$this->load->model('admin/Match_model');
+		$this->load->model('admin/Location_model');
+		$this->load->model('admin/Umpire_model');
 	}
 	
 	public function view($id)
@@ -25,8 +27,41 @@ class Match extends My_Public_Controller {
 		$tournament = $this->Tournament_model->getTournamentId($event['tournamentId']);
 		$data['tournament'] = $tournament;
 		$data['sport'] = $event['sportId'];
-		$data['result'] = $this->Match_model->getFinalResult($id);
-		print_r($data['result']);
+		$result = $this->Match_model->getFinalResult($id);
+		$result = $result[0];
+		$data['result'] = $result;
+		
+		$team1 = $this->Team_model->getTeam($result['team1Id']);
+		$team2 = $this->Team_model->getTeam($result['team2Id']);
+		
+		$data['team1'] = $team1;
+		$data['team2'] = $team2;
+		
+		$resultEvents = $this->Match_model->getExtendedResults($id);
+		
+		// get assist names
+		for($i = 0; $i < count($resultEvents); $i++)
+		{
+			$currentEvent = $resultEvents[$i];
+			if ($currentEvent['assist'] == NULL)
+			{
+				$currentEvent['assistShirtNo'] = NULL;
+				$currentEvent['assistSurname'] = NULL;
+			}
+			else
+			{
+				$assist = $this->Team_model->getPlayer($currentEvent['assist']);
+				$currentEvent['assistShirtNo'] = $assist['shirtNo'];
+				$currentEvent['assistSurname'] = $assist['surname'];
+			}
+			 $resultEvents[$i] = $currentEvent;
+		}
+		
+		$data['resultEvents'] = $resultEvents;
+		$umpire = $this->Umpire_model->getUmpire($match['umpireId']);
+		$data['umpire'] = $umpire['firstName'] . " " . $umpire['surname'];
+		$location = $this->Location_model->getLocation($match['locationId']);
+		$data['location'] = $location['name'];
 
 		$this->template->write_view('nav_side','navside_event', $data);
 		$this->template->write_view('content','view_match',$data);
