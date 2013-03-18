@@ -1,7 +1,7 @@
 <li><a href="<?php echo base_url() . "index.php/admin/event/view/";?>">Event info</a></li>
-<li><a href="#">Schedule</a></li>
+<li><a href="<?php echo base_url() . "index.php/event/schedule/{$event['eventId']}"; ?>">Schedule</a></li>
 <li><a href="#">Rankings</a></li>
-<li><a href="#">Results</a></li>
+<li><a href="<?php echo base_url() . "index.php/event/schedule/{$event['eventId']}/1/1"; ?>">Results</a></li>
 <?php
 if ($sport == 1)
 {

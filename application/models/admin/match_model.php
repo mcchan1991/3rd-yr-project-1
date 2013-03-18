@@ -50,13 +50,13 @@ class Match_model extends CI_Model
      * @param offset	the current page number / offse
 	 * @return			A list of location given the above restraints.
 	 */
-	public function getPaginationEvent($event_id,$per_page, $offset)
+	public function getPaginationEvent($event_id,$per_page, $offset, $finished = 0)
 	{
 		if ($offset == 1)
 		{
 			$offset = 0;
 		}
-		$query = $this->db->query("SELECT
+		$sql = "SELECT
 		(select sum(goal) from matchResults
 		INNER JOIN players on matchResults.playerId = players.playerId
 		where players.nwaId = matchDetails.team1Id) as team1Goals
@@ -70,8 +70,14 @@ class Match_model extends CI_Model
 		INNER JOIN (teams AS team1) JOIN (teams AS team2) ON matchDetails.team1Id = team1.nwaID AND matchDetails.team2Id = team2.nwaId
 		INNER JOIN locations on matchDetails.locationId = locations.locationId
 		INNER JOIN umpires on matchDetails.umpireId = umpires.umpireId
-		WHERE matchDetails.eventId = {$event_id}
-		ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page);
+		WHERE matchDetails.eventId = {$event_id}";
+		if ($finished == 1)
+		{
+			$sql .= " AND matchDetails.status = \"finished\"";
+		}
+		$sql .= " ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page;
+		
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	

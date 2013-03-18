@@ -18,7 +18,6 @@ class Event extends My_Admin_Controller
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Sport_model');
 		$this->load->model('admin/Tournament_model');
-		$this->load->model('admin/Tournament_model');
 		$this->load->model('admin/Match_model');
 		$this->load->helper('form');
 		
@@ -250,6 +249,7 @@ class Event extends My_Admin_Controller
 		{
 			$data['allowAutomatic'] = 0;
 		}
+		$data['public'] = false;
 		
 		$this->template->write_view('content','admin/event/match_list',$data);
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
