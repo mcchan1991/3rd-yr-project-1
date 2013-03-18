@@ -15,13 +15,12 @@ class verifyTeamLogin extends My_Public_Controller{
 
 	function index()
 	{
-		$this->teamLogin($eventId);
+		$this->teamLogin();
 	}
 	
-	function teamLogin($eventId)
+	function teamLogin($eventId = NULL)
 	{
 		$this->load->helper('form');
-		
 		if($this->session->userdata('login_state')==false)
 		{
 				//This method will have the credentials validation
@@ -31,25 +30,38 @@ class verifyTeamLogin extends My_Public_Controller{
 
 				if($this->form_validation->run() == FALSE)
 				{
-					$event = $this->Event_model->getEvent($eventId);
 					//Field validation failed.  User redirected to login page
 				$data['email'] = "";
 				$data['password'] = "";
-				$data['event'] = $event;
-				$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+				if ($eventId != NULL)
+				{
+					$data['eventId'] = $eventId;
+				}
 				$this->template->write_view('content','team/TeamLogin',$data);
 				$this->template->render();
 				}
 				else
 				{
-				//Go to private area
-				redirect('team/welcome', 'refresh');
+					if ($eventId != NULL)
+					{
+						redirect('team/teamRegister/register/' . $eventId, 'refresh');
+					}
+					else
+					{
+						redirect('team/welcome', 'refresh');
+					}
 				}
 		}
 		else
 		{
-		$this->template->write_view('content','team/welcome1');
-		$this->template->render();
+			if ($eventId != NULL)
+			{
+				redirect('team/teamRegister/register/' . $eventId, 'refresh');
+			}
+			else
+			{
+				redirect('team/welcome', 'refresh');
+			}
 		}
 	}
 

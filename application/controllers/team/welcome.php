@@ -26,6 +26,7 @@ class Welcome extends My_Public_Controller {
 	{
 		$this->session->unset_userdata('logged_in');
 		$this->session->unset_userdata('login_state');
+		$this->session->unset_userdata('nwaId');
 		redirect('', 'refresh');
 	}
 }

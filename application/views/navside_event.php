@@ -15,7 +15,7 @@ else
 $registerUrl = "";
 if ($sport == 1)
 {
-		$registerUrl = base_url() . "index.php/team/teamRegister/register/{$event['eventId']}";
+		$registerUrl = base_url() . "index.php/team/verifyTeamLogin/teamLogin/{$event['eventId']}";
 }
 else
 {
@@ -33,6 +33,5 @@ else
 <li><a href="#"><?php echo $string; ?></a></li>
 <li><a href="<?php echo $registerUrl; ?>">Register</a></li>
 
-<li><a href="<?php echo base_url() . "index.php/team/verifyTeamLogin/teamLogin/{$event['eventId']}";; ?>">Team Login</a></li>
 
 <!-- athlete/register/1/2 -->

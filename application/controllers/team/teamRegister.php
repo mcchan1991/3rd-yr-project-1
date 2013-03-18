@@ -18,68 +18,80 @@ class teamRegister extends My_Public_Controller {
 	
 	function register($eventId,$prefill = NULL)
 	{
-		$this->load->helper('form');
-		$event = $this->Event_model->getEvent($eventId);
-		//$event = $this->Event_model->getId($eventId);
-		// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
-		if ($prefill != NULL)
+	
+		if ($this->session->userdata('nwaId') != NULL)
 		{
-			$data['nwaId'] = $prefill['nwaId'];
-			$data['name'] =  $prefill['name'];
-			$data['contactFirstName'] =  $prefill['contactFirstName'];
-			$data['contactSurname'] =  $prefill['contactSurname'];
-			$data['firstName'] =  $prefill['firstName'];
-			$data['surname'] =  $prefill['surname'];
-			$data['num'] =  $prefill['num'];
-			$data['email'] = $prefill['email'];
-			$data['description'] =  $prefill['description'];
+			if($this->Team_model->checkIfTeamRegistered($eventId,$this->session->userdata('nwaId')))
+			{
+				$this->template->write('content','You have already registered for this event!');
+				$this->template->render();
+			}
 		}
 		else
 		{
-			$data['nwaId'] = "";
-			$data['name'] =  "";
-			$data['contactFirstName'] =  "";
-			$data['contactSurname'] =  "";
-			$data['email'] =  "";
-			$data['description'] =  "";
+			$this->load->helper('form');
+			$event = $this->Event_model->getEvent($eventId);
+			//$event = $this->Event_model->getId($eventId);
+			// need to set these as null to make sure no warnings come up (prepolation the form if validation error or edit)
+			if ($prefill != NULL)
+			{
+				$data['nwaId'] = $prefill['nwaId'];
+				$data['name'] =  $prefill['name'];
+				$data['contactFirstName'] =  $prefill['contactFirstName'];
+				$data['contactSurname'] =  $prefill['contactSurname'];
+				$data['firstName'] =  $prefill['firstName'];
+				$data['surname'] =  $prefill['surname'];
+				$data['num'] =  $prefill['num'];
+				$data['email'] = $prefill['email'];
+				$data['description'] =  $prefill['description'];
+			}
+			else
+			{
+				$data['nwaId'] = "";
+				$data['name'] =  "";
+				$data['contactFirstName'] =  "";
+				$data['contactSurname'] =  "";
+				$data['email'] =  "";
+				$data['description'] =  "";
+			}
+			$data['password'] = "";
+			$data['cpassword'] = "";
+			$data['eventId'] = "";
+			$data['event']=$event;
+			$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
+			//$this->template->write_view('nav_top','topnav');
+			$sideData['sport'] = $event['sportId'];
+			$sideData['event'] = $event;
+			/*if ($registration != false)
+			{
+				$registration=true;
+			}
+			$data['registration'] = $registration;*/
+			
+			$dateFormat = "Y-m-d";
+			$currentDate = new DateTime();
+			$regStart = DateTime::createFromFormat($dateFormat, $event['regStart']);
+			$regEnd = DateTime::createFromFormat($dateFormat, $event['regEnd']);
+			
+			$data['registrationError'] = 0; // no error by default
+			
+			if ($currentDate > $regEnd)
+			{
+				$data['registrationError'] = 1;
+			}
+			else if ($currentDate<$regStart)
+			{
+				$data['registrationError'] = 2;
+			}
+			else if ($this->Event_model->getEventRegistrationsCount($eventId) >= $event['maxEntries'])
+			{
+				$data['registrationError'] = 3;
+			}
+			
+			$this->template->write_view('nav_side','navside_event', $sideData);
+			$this->template->write_view('content','team/NewTeam',$data);
+			$this->template->render();
 		}
-		$data['password'] = "";
-		$data['cpassword'] = "";
-		$data['eventId'] = "";
-		$data['event']=$event;
-		$data['tournament'] = $this->Tournament_model->getTournamentId($data['event']['tournamentId']);
-		//$this->template->write_view('nav_top','topnav');
-		$sideData['sport'] = $event['sportId'];
-		$sideData['event'] = $event;
-		/*if ($registration != false)
-		{
-			$registration=true;
-		}
-		$data['registration'] = $registration;*/
-		
-		$dateFormat = "Y-m-d";
-		$currentDate = new DateTime();
-		$regStart = DateTime::createFromFormat($dateFormat, $event['regStart']);
-		$regEnd = DateTime::createFromFormat($dateFormat, $event['regEnd']);
-		
-		$data['registrationError'] = 0; // no error by default
-		
-		if ($currentDate > $regEnd)
-		{
-			$data['registrationError'] = 1;
-		}
-		else if ($currentDate<$regStart)
-		{
-			$data['registrationError'] = 2;
-		}
-		else if ($this->Event_model->getEventRegistrationsCount($eventId) >= $event['maxEntries'])
-		{
-			$data['registrationError'] = 3;
-		}
-		
-		$this->template->write_view('nav_side','navside_event', $sideData);
-		$this->template->write_view('content','team/NewTeam',$data);
-		$this->template->render();
 	}
 	
 	public function add($eventId)

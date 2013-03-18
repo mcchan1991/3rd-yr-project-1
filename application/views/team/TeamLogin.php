@@ -9,46 +9,27 @@ $btnAttributes = array(
 
 ?>
 
-<ul class="breadcrumb">
-  <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
-  <li><a href="<?php echo base_url(); ?>index.php/tournament">Tournaments</a> <span class="divider">/</span></li>
-  <li><a href="<?php echo base_url(); ?>index.php/tournamens/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
-  <li><a href="<?php echo base_url(); ?>index.php/event/view/<?php echo $event['eventId']; ?>"><?php echo $event['name'] ?></a> <span class="divider">/</span></li>  
-  <li class="active">Register for event</li>
-</ul>
-<h3>Login for view event: <?php echo $event['name'] ?></h3>
-<?php
-$errors = validation_errors();
-if (!empty($errors) || isset($registrationError))
-{
-echo "<div class=\"alert alert-error\">";
-echo "Sorry, registration for this tournament have ended.";
-
-echo "</div>";
-}
-else if (isset($registrationError))
-{
-echo "<div class=\"alert alert-error\">";
-if ($registartionError == 1)
-{
-	echo "Sorry, registration for this tournament have ended.";
-}
-else if ($registartionError == 2)
-{
-	echo "Sorry, registration for this tournament have not yet startet. Registration period is: PLACEHOLDER";
-}
-echo "</div>";
-
-$btnAttributes = array(
-    'class' => 'btn disabled',
-);
-}
-
+		
+<?php 	
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+		echo "<div class=\"alert alert-error\">";
+		echo validation_errors();
+		echo "</div>";
+	}
 ?>
-<?php echo validation_errors(); ?>
+
+<H2> Login to register<H2>
 <?php
-	echo form_open("team/verifyTeamLogin/teamLogin/{$event['eventId']}", $attributes);
-	//echo form_open('team/teamRegister/add');
+	if(isset($eventId))
+	{
+		echo form_open("team/verifyTeamLogin/teamLogin/{$eventId}", $attributes);
+	}
+	else
+	{
+		echo form_open("team/verifyTeamLogin/teamLogin/", $attributes);
+	}
 
 	// form building
 	$email = array(
@@ -56,13 +37,13 @@ $btnAttributes = array(
 		'id'	=> 'email',
 		'value' => $email
 	);
-
+	
+	
 	echo "<div class=\"control-group\">";
-	echo form_label('email', 'email', $labelAttributes);
+	echo form_label('Email', 'email', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_input($email);
 	echo '</div></div>';
-
 	
 	$password = array(
 		'name'	=> 'password',
@@ -71,7 +52,7 @@ $btnAttributes = array(
 	);
 	
 	echo "<div class=\"control-group\">";
-	echo form_label('Passowrd', 'password', $labelAttributes);
+	echo form_label('Password', 'password', $labelAttributes);
 	echo "<div class=\"controls\">";
 	echo form_password($password);
 	echo '</div></div>';
@@ -84,6 +65,8 @@ $btnAttributes = array(
 	// codeigniter was causing some troubles so submit button in pure php
 
 	echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"btn\" submit />";
+	$registerUrl = base_url() . "index.php/team/teamRegister/add/{$eventId}";
+	echo '<a href="' . $registerUrl .'" class="btn btn-large btn-primary" style="margin-left:20pt;">Register New Team</a>';
 	echo '</div>';
 	echo '</div>';
 	

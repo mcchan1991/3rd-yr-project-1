@@ -59,6 +59,15 @@ class Team_model extends CI_Model {
 		$this->db->insert('teams', $data);
 	}
 	
+	public function checkIfTeamRegistered($eventId,$teamId)
+	{
+		$query = $this->db->get_where("eventregs", array('nwaId' => $teamId,'eventId' => $eventId));
+		if ($query->num_rows() > 0)
+			return true;
+		else
+			return false;
+	}
+	
 	public function createPlayer($data)
 	{
 		$this->db->insert('players', $data);
