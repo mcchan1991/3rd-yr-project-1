@@ -112,7 +112,7 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('num[]', 'Shirt Number', 'required|trim');
 		
 		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
+		$config['allowed_types'] = 'png';
 		$config['max_size']	= '1000';
 		$config['max_width']  = '1024';
 		$config['max_height']  = '768';
@@ -207,7 +207,7 @@ class teamRegister extends My_Public_Controller {
 		$this->form_validation->set_rules('num[]', 'Shirt Number', 'required|trim');
 		
 		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
+		$config['allowed_types'] = 'png';
 		$config['max_size']	= '1000';
 		$config['max_width']  = '1024';
 		$config['max_height']  = '768';
@@ -246,12 +246,14 @@ class teamRegister extends My_Public_Controller {
 		else
 		{
 			$this->upload->do_upload("userfile");
+			$upload_data = $this->upload->data();
 			$data = array(
 			'email' => $this->input->post('email'),
 			'name' => $this->input->post('name'),
 			'contactFirstName' => $this->input->post('contactFirstName'),
 			'contactSurname' => $this->input->post('contactSurname'),
 			'description' => $this->input->post('description'),
+			'logo' => $upload_data['is_image'] != NULL ? 1 : 0
 			);
 			if ($this->input->post('password') != NULL && $this->input->post('password') != "")
 			{
