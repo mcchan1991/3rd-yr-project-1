@@ -255,7 +255,7 @@ class teamRegister extends My_Public_Controller {
 			);
 			if ($this->input->post('password') != NULL && $this->input->post('password') != "")
 			{
-				$data['password'] = $this->input->post('password');
+				$data['password'] = sha1($this->input->post('password'));
 			}
 			$this->Team_model->update($this->session->userdata('nwaId'),$data);	
 			
