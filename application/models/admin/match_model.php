@@ -70,6 +70,7 @@ class Match_model extends CI_Model
 		INNER JOIN (teams AS team1) JOIN (teams AS team2) ON matchDetails.team1Id = team1.nwaID AND matchDetails.team2Id = team2.nwaId
 		INNER JOIN locations on matchDetails.locationId = locations.locationId
 		INNER JOIN umpires on matchDetails.umpireId = umpires.umpireId
+		WHERE matchDetails.eventId = {$event_id}
 		ORDER BY `date`,`time` ASC LIMIT " . $offset . "," . $per_page);
 		return $query->result_array();
 	}
