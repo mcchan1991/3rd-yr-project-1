@@ -63,10 +63,13 @@ $btnAttributes = array(
 	echo "<div class=\"controls\">";
 	
 	// codeigniter was causing some troubles so submit button in pure php
-
+	
 	echo "<input type=\"submit\" name=\"\" value=\"Submit\" class=\"btn\" submit />";
-	$registerUrl = base_url() . "index.php/team/teamRegister/add/{$eventId}";
-	echo '<a href="' . $registerUrl .'" class="btn btn-large btn-primary" style="margin-left:20pt;">Register New Team</a>';
+	if (isset($eventId))
+	{
+		$registerUrl = base_url() . "index.php/team/teamRegister/add/{$eventId}";
+		echo '<a href="' . $registerUrl .'" class="btn btn-large btn-primary" style="margin-left:20pt;">Register New Team</a>';
+	}
 	echo '</div>';
 	echo '</div>';
 	
