@@ -389,7 +389,7 @@ CREATE TABLE `umpires` (
 --
 DROP TABLE IF EXISTS `matchResultsView`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `matchResultsView` AS select (select sum(`matchResults`.`goal`) from (`matchResults` join `players` on((`matchResults`.`playerId` = `players`.`playerId`))) where (`players`.`nwaId` = `matchDetails`.`team1Id`)) AS `team1Goals`,(select sum(`matchResults`.`goal`) from (`matchResults` join `players` on((`matchResults`.`playerId` = `players`.`playerId`))) where (`players`.`nwaId` = `matchDetails`.`team2Id`)) AS `team2Goals`,`matchDetails`.`matchId` AS `matchId`,`matchDetails`.`team1Id` AS `team1Id`,`matchDetails`.`team2Id` AS `team2Id` from ((`matchDetails` join `teams` `team1`) join `teams` `team2` on(((`matchDetails`.`team1Id` = `team1`.`nwaId`) and (`matchDetails`.`team2Id` = `team2`.`nwaId`))));
+CREATE VIEW `matchResultsView` AS select (select sum(`matchResults`.`goal`) from (`matchResults` join `players` on((`matchResults`.`playerId` = `players`.`playerId`))) where (`players`.`nwaId` = `matchDetails`.`team1Id`)) AS `team1Goals`,(select sum(`matchResults`.`goal`) from (`matchResults` join `players` on((`matchResults`.`playerId` = `players`.`playerId`))) where (`players`.`nwaId` = `matchDetails`.`team2Id`)) AS `team2Goals`,`matchDetails`.`matchId` AS `matchId`,`matchDetails`.`team1Id` AS `team1Id`,`matchDetails`.`team2Id` AS `team2Id` from ((`matchDetails` join `teams` `team1`) join `teams` `team2` on(((`matchDetails`.`team1Id` = `team1`.`nwaId`) and (`matchDetails`.`team2Id` = `team2`.`nwaId`))));
 
 -- --------------------------------------------------------
 
@@ -398,7 +398,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `umpireCount`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `umpireCount` AS select count(`matchDetails`.`umpireId`) AS `count`,`matchDetails`.`umpireId` AS `umpireId`,`events`.`tournamentId` AS `tournamentId` from (`matchDetails` join `events`) where (`matchDetails`.`eventId` = `events`.`eventId`) group by `matchDetails`.`umpireId`,`events`.`tournamentId`;
+CREATE VIEW `umpireCount` AS select count(`matchDetails`.`umpireId`) AS `count`,`matchDetails`.`umpireId` AS `umpireId`,`events`.`tournamentId` AS `tournamentId` from (`matchDetails` join `events`) where (`matchDetails`.`eventId` = `events`.`eventId`) group by `matchDetails`.`umpireId`,`events`.`tournamentId`;
 
 --
 -- Constraints for dumped tables
