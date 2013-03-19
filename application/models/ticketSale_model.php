@@ -15,5 +15,16 @@ class ticketSale_model extends CI_Model
 		$query = $this-> db-> get("ticketsales");
 		return $query->result_array();
 	}
+	
+	function findTicketTypeSale($id,$type)
+	{
+		$this->db->select('*');
+		$this->db->join('ticketsales','ticketsales.ticketId = tickets.ticketId');		
+		$this->db->where('tickets.tournamentId', $id);
+		$this->db->where('tickets.ticketType', $type);
+		$query = $this-> db-> get("tickets");
+		return $query->result_array();
+	}
+	
 }
 

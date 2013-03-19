@@ -95,8 +95,21 @@ class Ticket extends My_Admin_Controller {
 	
 	public function ticketSale($id)
 	{
+		$sortType=$this->ticket_model->getTicketTypeById($id);
+		$typeData=array();
+		$type=array();
+		$i=0;
+		foreach($sortType as $item)
+		{
+			$type[$i]=$item;
+			$typeResult=$this->ticketSale_model->findTicketTypeSale($id,$item['ticketType']);
+			$typeData[$item['ticketType']]=$typeResult;
+			$i++;
+		}
 		$result=$this->ticketSale_model->findSale($id);
+		$data['types']=$type;
 		$data['ticketsinfo']=$result;
+		$data['typeData']=$typeData;
 		
 		$this->template->write_view('content','ticket/adminTicketSaleView',$data);
 		$this->template->render();
