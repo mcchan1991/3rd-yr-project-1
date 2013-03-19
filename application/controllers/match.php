@@ -17,6 +17,8 @@ class Match extends My_Public_Controller {
 		$this->load->model('admin/Match_model');
 		$this->load->model('admin/Location_model');
 		$this->load->model('admin/Umpire_model');
+		$this->load->model('team/Team_model');
+		
 	}
 	
 	public function view($id)

@@ -4,10 +4,6 @@
   <li><a href="<?php echo base_url(); ?>index.php/tournaments/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
   <li class="active">Event: <?php echo $event['name']; ?></li>
 </ul>
-<!--- <div style="">
-<h1><img src="<?php echo base_url() . "uploads/" . md5($team1['nwaId']) . ".png"; ?>" style="width:150px; height:150px;" class="img-rounded" /> 0 - 0  <img src="<?php echo base_url() . "uploads/" . md5($team2['nwaId']) . ".png"; ?>" style="width:150px; height:150px;" class="img-rounded" /></h1>
-<div style="float-left;"><?php echo $team1['name']; ?></div><div style="float:right;"><?php echo $team2['name']; ?></div>
-</div> ---!>
 
 <table class="table">
 	<thead>

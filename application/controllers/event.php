@@ -15,7 +15,7 @@ class Event extends My_Public_Controller {
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Sport_model');
 		$this->load->model('admin/Match_model');
-		$this->load->model('admin/Team_model');
+		$this->load->model('team/Team_model');
 	}
 	
 	public function view($id, $registration=false)
@@ -127,11 +127,12 @@ class Event extends My_Public_Controller {
 			$eventReg=$this->Team_model->getEventReg($eventReg['nwaId']);
 			if (count($eventReg) > 0)
 			{
-				$teams[$i] = $eventReg;
-				$teamResults[$eventReg['nwaId']] = array("points" => 0, "goalsScored" => 0, "goalsAgainst" => 0);
+				$teams[$eventReg['nwaId']] = $eventReg;
+				$teamResults[$eventReg['nwaId']] = array("points" => 0, "goalsScored" => 0, "goalsAgainst" => 0, "matches" => 0, "won" => 0, "draw" => 0, "lost" => 0);
 			}				
 			$i++;
 		}
+		
 		$data['teams'] = $teams;
 		//print_r($registrations);
 		
@@ -139,9 +140,15 @@ class Event extends My_Public_Controller {
 		foreach($allResults as $currentResult)
 		{
 			$team1 = $teamResults[$currentResult['team1Id']];
+			$team2 = $teamResults[$currentResult['team2Id']];
+			
+			$team1['teamId'] = $currentResult['team1Id'];
+			$team2['teamId'] = $currentResult['team2Id'];
+			$team1['matches'] += 1;
+			$team2['matches'] += 1;
+			
 			$team1['goalsScored'] += $currentResult['team1Goals'];
 			$team1['goalsAgainst'] += $currentResult['team2Goals'];
-			$team2 = $teamResults[$currentResult['team2Id']];
 			$team2['goalsScored'] += $currentResult['team2Goals'];
 			$team2['goalsAgainst'] += $currentResult['team1Goals'];
 			// team draw
@@ -149,31 +156,42 @@ class Event extends My_Public_Controller {
 			{
 				$team1['points'] += 1;
 				$team2['points'] += 1;
+				$team1['draw'] += 1;
+				$team2['draw'] += 1;
 			}
 			// team 1 wins
 			else if ($currentResult['team1Goals'] > $currentResult['team2Goals'])
 			{
 				$team1['points'] += 3;
+				$team1['won'] += 1;
+				$team2['lost'] += 1;
 			}
 			// team 2 wins
 			else
 			{
 				$team2['points'] += 3;
+				$team2['won'] += 1;
+				$team1['lost'] += 1;
 			}
 			
+			//$team1['teamName'] = $currentResult['teamName'];
 			// put them back into the array (php seems to be doing some weird referencing....)
 			$teamResults[$currentResult['team1Id']] = $team1;
 			$teamResults[$currentResult['team2Id']] = $team2;
 		}
 		// sort the teams after points then goal score
 		usort($teamResults, array('Event', 'compareResults'));
-	
-		$topScores = $this->Event_model->getTopscores($id);
-		$mostAssists = $this->Event_model->getMostAssists($id);
-		$mostYellowCards = $this->Event_model->getMostYellowCards($id);
-		$mostRedCards = $this->Event_model->getMostRedCards($id);
-		print_r($mostYellowCards);
+		// get more stats
+		$data['topScores'] = $this->Event_model->getTopscores($id);
+		$data['mostAssists'] = $this->Event_model->getMostAssists($id);
+		$data['mostYellowCards'] = $this->Event_model->getMostYellowCards($id);
+		$data['mostRedCards'] = $this->Event_model->getMostRedCards($id);
+		$data['teamResults'] = $teamResults;
+		//print_r($mostYellowCards);
 		
+		$this->template->write_view('content','rankings',$data);
+		$this->template->write_view('nav_side','navside_event', $data);
+		$this->template->render();
 	}
 	
 	static function compareResults($team1, $team2)
