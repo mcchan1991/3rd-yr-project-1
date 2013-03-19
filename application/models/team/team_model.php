@@ -54,6 +54,12 @@ class Team_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	public function getPlayersWithStats($id)
+	{
+		$query = $this->db->get_where("playerresults", array('nwaId' => $id));
+		return $query->result_array();
+	}
+	
 	public function create($data)
 	{
 		$this->db->insert('teams', $data);

@@ -11,11 +11,6 @@ function __construct()
 		
 	}
 	
-	public function index()
-	{
-		$this->register($eventId);
-	}
-	
 	public function view($id)
 	{
 		$team = $this->Team_model->getTeam($id);
@@ -26,6 +21,8 @@ function __construct()
 		{
 			$data['image'] = md5($team['nwaId']) . ".png";
 		}
+		$data['team'] = $team;
+		$data['players'] = $this->Team_model->getPlayersWithStats($id);
 		
 		$this->template->write_view('content','team/view',$data);
 		$this->template->render();
