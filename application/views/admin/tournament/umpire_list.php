@@ -50,8 +50,8 @@
 			$to = $umpire['availableTo'];
 			$dateFormat = "Y-m-d H:i:s";
 			
-			$fromObject = DateTime::createFromFormat($dateFormat, $from);
-			$toObject = DateTime::createFromFormat($dateFormat, $to);
+			$fromObject = DateTime::createFromFormat("H:i:s", $from);
+			$toObject = DateTime::createFromFormat("H:i:s", $to);
 			
 			$fromShow = $fromObject->format('H:i');
 			$toShow = $toObject->format('H:i');
