@@ -144,5 +144,57 @@ class Event_model extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getTopScores($eventId)
+	{
+		$query = $this->db->query("SELECT matchResults.playerId, sum(goal) as goals, players.shirtNo, players.firstName, players.surName, teams.nwaId as nwaId, teams.name as teamName FROM matchResults, players, teams WHERE matchResults.matchId in
+		(SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId}) AND players.playerId = matchResults.playerId AND teams.nwaId = players.nwaId GROUP BY matchResults.playerId ORDER BY goals DESC LIMIT 8");
+		return $query->result_array();
+	}
+	
+	
+	public function findMatchResults($eventId)
+	{
+		$query = $this->db->query("SELECT * FROM matchResultsView WHERE matchId IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId})");
+		return $query->result_array();
+	}
+	
+	public function getMostAssists($eventId)
+	{
+		$sql = "SELECT matchResults.assist as playerId, count( assist ) AS assists, players.shirtNo, players.firstName, players.surName, teams.nwaId AS nwaId, teams.name AS teamName";
+		$sql .= " FROM matchResults, players, teams";
+		$sql .= " WHERE matchResults.matchId";
+		$sql .= " IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId})";
+		$sql .= " AND players.playerId = matchResults.assist AND teams.nwaId = players.nwaId";
+		$sql .= " GROUP BY matchResults.assist ORDER BY assists DESC LIMIT 8";
+		
+		$query = $this->db->query("$sql");
+		return $query->result_array();
+	}
+	
+	public function getMostRedCards($eventId)
+	{
+		$sql = "SELECT matchResults.playerId as playerId, count( redCard ) AS redCards, players.shirtNo, players.firstName, players.surName, teams.nwaId AS nwaId, teams.name AS teamName";
+		$sql .= " FROM matchResults, players, teams";
+		$sql .= " WHERE matchResults.matchId";
+		$sql .= " IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId})";
+		$sql .= " AND players.playerId = matchResults.playerId AND teams.nwaId = players.nwaId";
+		$sql .= " GROUP BY matchResults.assist ORDER BY redCards DESC LIMIT 8";
+		
+		$query = $this->db->query("$sql");
+		return $query->result_array();
+	}
+	
+	public function getMostYellowCards($eventId)
+	{
+		$sql = "SELECT matchResults.playerId as playerId, count( yellowCard ) AS yellowCards, players.shirtNo, players.firstName, players.surName, teams.nwaId AS nwaId, teams.name AS teamName";
+		$sql .= " FROM matchResults, players, teams";
+		$sql .= " WHERE matchResults.matchId";
+		$sql .= " IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId})";
+		$sql .= " AND players.playerId = matchResults.playerId AND teams.nwaId = players.nwaId";
+		$sql .= " GROUP BY matchResults.assist ORDER BY yellowCards DESC LIMIT 8";
+		
+		$query = $this->db->query("$sql");
+		return $query->result_array();
+	}
 	
 }

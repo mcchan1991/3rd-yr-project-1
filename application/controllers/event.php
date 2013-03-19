@@ -15,6 +15,7 @@ class Event extends My_Public_Controller {
 		$this->load->model('admin/Event_model');
 		$this->load->model('admin/Sport_model');
 		$this->load->model('admin/Match_model');
+		$this->load->model('admin/Team_model');
 	}
 	
 	public function view($id, $registration=false)
@@ -110,4 +111,90 @@ class Event extends My_Public_Controller {
 	
 	}
 	
+	public function showRankings($id)
+	{
+		$event = $this->Event_model->getEvent($id);
+		$tournament = $this->Tournament_model->getTournamentId($event['tournamentId']);
+		$data['sport'] = $event['sportId'];
+		$data['tournament'] = $tournament;
+		$data['event'] = $event;
+		$eventRegs = $this->Event_model->getEventRegistrations($id, $this->Event_model->getEventRegistrationsCount($id), 1);
+		
+		$i = 0;
+		$teamResults = array();
+		foreach($eventRegs as $eventReg)
+		{
+			$eventReg=$this->Team_model->getEventReg($eventReg['nwaId']);
+			if (count($eventReg) > 0)
+			{
+				$teams[$i] = $eventReg;
+				$teamResults[$eventReg['nwaId']] = array("points" => 0, "goalsScored" => 0, "goalsAgainst" => 0);
+			}				
+			$i++;
+		}
+		$data['teams'] = $teams;
+		//print_r($registrations);
+		
+		$allResults = $this->Event_model->findMatchResults($id);
+		foreach($allResults as $currentResult)
+		{
+			$team1 = $teamResults[$currentResult['team1Id']];
+			$team1['goalsScored'] += $currentResult['team1Goals'];
+			$team1['goalsAgainst'] += $currentResult['team2Goals'];
+			$team2 = $teamResults[$currentResult['team2Id']];
+			$team2['goalsScored'] += $currentResult['team2Goals'];
+			$team2['goalsAgainst'] += $currentResult['team1Goals'];
+			// team draw
+			if ($currentResult['team1Goals'] == $currentResult['team2Goals'])
+			{
+				$team1['points'] += 1;
+				$team2['points'] += 1;
+			}
+			// team 1 wins
+			else if ($currentResult['team1Goals'] > $currentResult['team2Goals'])
+			{
+				$team1['points'] += 3;
+			}
+			// team 2 wins
+			else
+			{
+				$team2['points'] += 3;
+			}
+			
+			// put them back into the array (php seems to be doing some weird referencing....)
+			$teamResults[$currentResult['team1Id']] = $team1;
+			$teamResults[$currentResult['team2Id']] = $team2;
+		}
+		// sort the teams after points then goal score
+		usort($teamResults, array('Event', 'compareResults'));
+	
+		$topScores = $this->Event_model->getTopscores($id);
+		$mostAssists = $this->Event_model->getMostAssists($id);
+		$mostYellowCards = $this->Event_model->getMostYellowCards($id);
+		$mostRedCards = $this->Event_model->getMostRedCards($id);
+		print_r($mostYellowCards);
+		
+	}
+	
+	static function compareResults($team1, $team2)
+	{
+		if ($team1['points'] != $team2['points'])
+		{
+			return ($team1['points'] > $team2['points']) ? -1 : 1;
+		}
+		else
+		{
+			$team1GoalScore = $team1['goalsScored'] - $team1['goalsAgainst'];
+			$team2GoalScore = $team1['goalsScored'] - $team1['goalsAgainst'];
+			if ($team1GoalScore != $team2GoalScore)
+			{
+				return ($team1GoalScore > $team2GoalScore) ? -1 : 1;
+			}
+			else
+			{
+				// should probably find matches between the two and see who won these, if equal I don't know what to do.
+				// could be implemented if more time on hands sometime
+			}
+		}
+	}
 }
