@@ -118,8 +118,6 @@ class Staff extends My_Admin_Controller
 					'manager' => $this->input->post('manager',TRUE)==null ? 0 : 1
 				);
 				$id = $this->Staff_model->create($postdata);
-				
-				echo "successfully addedd id: " . $id;
 			}
 			else
 			{
