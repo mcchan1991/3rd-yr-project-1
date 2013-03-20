@@ -142,7 +142,7 @@ class Ticket extends My_Admin_Controller {
 		$total=$total+$ticketNumber;
 		if($total>$total1)
 		{
-			$this->form_validation->set_message('checkTicketNo', "the total of ticket have reached {$total1}");	
+			$this->form_validation->set_message('checkTicketNo', "The total of ticket have reached {$total1}");	
 			$result=false;
 		}
 		else

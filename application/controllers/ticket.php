@@ -95,7 +95,7 @@ class ticket extends My_Public_Controller {
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|max_length[5]');
-		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric');
+		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural_no_zero');
 		$this->form_validation->set_rules('ticketType', 'Type of ticket', 'required');
 		$this->form_validation->set_rules('Price', 'Price for each', 'required');
 		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate|callback_checkEventDate');
@@ -290,7 +290,7 @@ class ticket extends My_Public_Controller {
 		
 		if ($result == false)
 		{
-			$this->form_validation->set_message('checkAvailableDate', "The date is not available");	
+			$this->form_validation->set_message('checkAvailableDate', "The selected date have no events");	
 		}
 		
 		return $result;
@@ -311,7 +311,7 @@ class ticket extends My_Public_Controller {
 		
 		if ($result == false)
 		{
-			$this->form_validation->set_message('checkEventDate', "The date have no matche");	
+			$this->form_validation->set_message('checkEventDate', "The selected date have no matches");	
 		}
 		
 		return $result;

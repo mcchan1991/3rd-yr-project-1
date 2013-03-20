@@ -64,17 +64,14 @@ $errors = validation_errors();
   </tbody>
 </table>
 <?php echo form_open('ticket/confirm'); ?>
-<?php echo validation_errors(); ?>
+<?php 	
+if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	} 
+?>
 <?php echo form_hidden('postdata', $postdata); ?>
 <?php echo form_submit('submit', 'Confirm Order'); ?>
 <?= form_close(); ?>
-
-
-
-
-
-
-
-
-
-

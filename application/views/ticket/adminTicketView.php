@@ -8,7 +8,7 @@
   <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
   <li class="active">Ticket</li>
 </ul>
-<h3>Umpires</h3>
+<h3>Ticket</h3>
 <table class="table">
 	<thead>
 		<tr>
