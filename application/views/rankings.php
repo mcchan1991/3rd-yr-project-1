@@ -19,7 +19,6 @@
 <tbody>
 	<?php
 		$i = 0;
-
 		foreach ($teamResults as $currentTeam)
 		{
 			$i++;

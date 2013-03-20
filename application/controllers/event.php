@@ -128,7 +128,7 @@ class Event extends My_Public_Controller {
 			if (count($eventReg) > 0)
 			{
 				$teams[$eventReg['nwaId']] = $eventReg;
-				$teamResults[$eventReg['nwaId']] = array("points" => 0, "goalsScored" => 0, "goalsAgainst" => 0, "matches" => 0, "won" => 0, "draw" => 0, "lost" => 0);
+				$teamResults[$eventReg['nwaId']] = array("points" => 0, "goalsScored" => 0, "goalsAgainst" => 0, "matches" => 0, "won" => 0, "draw" => 0, "lost" => 0, "teamId" => $eventReg['nwaId']);
 			}				
 			$i++;
 		}
@@ -176,8 +176,6 @@ class Event extends My_Public_Controller {
 			
 			//$team1['teamName'] = $currentResult['teamName'];
 			// put them back into the array (php seems to be doing some weird referencing....)
-			$teamResults[$currentResult['team1Id']] = $team1;
-			$teamResults[$currentResult['team2Id']] = $team2;
 		}
 		// sort the teams after points then goal score
 		usort($teamResults, array('Event', 'compareResults'));

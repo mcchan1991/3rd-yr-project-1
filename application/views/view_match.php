@@ -4,7 +4,16 @@
   <li><a href="<?php echo base_url(); ?>index.php/tournaments/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
   <li class="active">Event: <?php echo $event['name']; ?></li>
 </ul>
-
+<?php
+if ($result['team1Goals'] == NULL)
+{
+	$result['team1Goals'] = 0;
+}
+if ($result['team2Goals'] == NULL)
+{
+	$result['team2Goals'] = 0;
+}
+?>
 <table class="table">
 	<thead>
 		<tr>
