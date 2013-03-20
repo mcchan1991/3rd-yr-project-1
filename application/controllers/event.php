@@ -176,6 +176,8 @@ class Event extends My_Public_Controller {
 			
 			//$team1['teamName'] = $currentResult['teamName'];
 			// put them back into the array (php seems to be doing some weird referencing....)
+			$teamResults[$currentResult['team1Id']] = $team1;
+			$teamResults[$currentResult['team2Id']] = $team2;
 		}
 		// sort the teams after points then goal score
 		usort($teamResults, array('Event', 'compareResults'));
