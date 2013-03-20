@@ -50,6 +50,10 @@
 			
 			echo "</tr>";
 		}
+		if (count($teamResults) == 0)
+		{
+			echo "<tr><td colpsan=\"7\">No teams has registered for this event yet...</td></tr>";
+		}
 	?>
 </tbody>
 </table>
@@ -72,6 +76,11 @@
 					$i++;
 				}
 			}
+			if ($i == 1)
+			{
+				echo "<tr><td colpsan=\"3\">No goals have been scored yet...</td></tr>";
+			}
+			
 		?>
 	</tbody>
 </table>
@@ -92,6 +101,10 @@
 					echo "</tr>";
 					$i++;
 				}
+			}
+			if ($i == 1)
+			{
+				echo "<tr><td colpsan=\"3\">No assists has ben made yet...</td></tr>";
 			}
 		?>
 	</tbody>

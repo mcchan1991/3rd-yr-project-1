@@ -122,6 +122,7 @@ class Event extends My_Public_Controller {
 		
 		$i = 0;
 		$teamResults = array();
+		$teams = array();
 		foreach($eventRegs as $eventReg)
 		{
 			$eventReg=$this->Team_model->getEventReg($eventReg['nwaId']);
@@ -173,8 +174,6 @@ class Event extends My_Public_Controller {
 				$team2['won'] += 1;
 				$team1['lost'] += 1;
 			}
-			
-			//$team1['teamName'] = $currentResult['teamName'];
 			// put them back into the array (php seems to be doing some weird referencing....)
 			$teamResults[$currentResult['team1Id']] = $team1;
 			$teamResults[$currentResult['team2Id']] = $team2;
