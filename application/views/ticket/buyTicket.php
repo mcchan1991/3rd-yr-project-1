@@ -68,6 +68,15 @@ $btnAttributes = array(
 	echo form_hidden('TicketId',$id);
 	echo '</div>';
 	
+	$TournamentName = array(
+		'name'	=> 'TournamentName',
+		'id'	=> 'TournamentName',
+		'value' => $Tname
+	);
+	echo "<div class=\"control-group\">";
+	echo form_hidden('TournamentName',$Tname);
+	echo '</div>';
+	
 	
 	$checkdate = array(
 		'name'	=> 'checkdate',

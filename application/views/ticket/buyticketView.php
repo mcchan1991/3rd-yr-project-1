@@ -31,7 +31,7 @@
 				echo "<td style=\"text-align:center;\">{$ticket['name']}</td>";
 				echo "<td style=\"text-align:center;\">{$ticket['ticketType']}</td>";
 				echo "<td style=\"text-align:center;\">{$ticket['noTickets']}</td>";
-				echo "<td style=\"text-align:center;\">{$ticket['price']}</td>";
+				echo "<td style=\"text-align:center;\">£{$ticket['price']}</td>";
 				$url = base_url() . "index.php/ticket/add/";
 				echo "	<td style=\"text-align:center;\"><a href=\"{$url}{$ticket['ticketId']}\">buy</a></td>";
 				echo "</tr>";

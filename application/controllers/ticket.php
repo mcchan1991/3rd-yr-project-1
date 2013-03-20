@@ -290,7 +290,7 @@ class ticket extends My_Public_Controller {
 		
 		if ($result == false)
 		{
-			$this->form_validation->set_message('checkAvailableDate', "The Date is not available");	
+			$this->form_validation->set_message('checkAvailableDate', "The date is not available");	
 		}
 		
 		return $result;
@@ -311,7 +311,7 @@ class ticket extends My_Public_Controller {
 		
 		if ($result == false)
 		{
-			$this->form_validation->set_message('checkEventDate', "The Date have no event");	
+			$this->form_validation->set_message('checkEventDate', "The date have no matche");	
 		}
 		
 		return $result;
