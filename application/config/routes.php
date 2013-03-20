@@ -44,7 +44,7 @@ $route['admin'] = "admin/welcome";
 $route['admin/login'] = "admin/login";
 $route['admin/logout'] = "admin/welcome/logout";
 $route['admin/derp'] = "admin/staff";
-$route['team/(:num)'] = "teamview/view/$1";
+$route['team/(:any)'] = "teamview/view/$1";
 
 
 /* End of file routes.php */
