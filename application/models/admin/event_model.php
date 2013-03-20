@@ -154,7 +154,7 @@ class Event_model extends CI_Model
 	
 	public function findMatchResults($eventId)
 	{
-		$query = $this->db->query("SELECT * FROM matchResultsView WHERE matchId IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId})");
+		$query = $this->db->query("SELECT * FROM matchResultsView WHERE matchId IN (SELECT matchDetails.matchId FROM matchDetails WHERE matchDetails.eventId = {$eventId} AND matchDetails.status = \"finished\")");
 		return $query->result_array();
 	}
 	
