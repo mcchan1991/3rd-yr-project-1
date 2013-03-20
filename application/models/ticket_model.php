@@ -60,5 +60,13 @@ class ticket_model extends CI_Model
 		return $query->result_array();
 	}
 	
-	
+		public function getEventDatebyTicketId($id)
+	{
+		$this->db->select('matchdetails.date');
+		$this->db->where('tickets.ticketId', $id);
+		$this->db->join('events', 'events.tournamentId = tickets.tournamentId');
+		$this->db->join('matchdetails', 'events.eventId = matchdetails.eventId');
+		$query = $this->db->get("tickets");
+		return $query->result_array();
+	}
 }

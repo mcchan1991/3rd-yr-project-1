@@ -33,6 +33,7 @@ class ticket extends My_Public_Controller {
 	 */
 	public function index($page = 1)
 	{
+		
 		$this->load->helper('url');
 		$this->load->library('pagination');
 		
@@ -90,13 +91,14 @@ class ticket extends My_Public_Controller {
 	
 	public function buyticket($id)
 	{
+		
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|max_length[5]');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric');
 		$this->form_validation->set_rules('ticketType', 'Type of ticket', 'required');
 		$this->form_validation->set_rules('Price', 'Price for each', 'required');
-		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate');
+		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate|callback_checkEventDate');
 		if($this->form_validation->run()==false)
 		{
 			$this->add($id);
@@ -293,6 +295,28 @@ class ticket extends My_Public_Controller {
 		
 		return $result;
 	}
+	
+	public function checkEventDate()
+	{
+		$result=false;
+		$ticketID=$this->input->post('TicketId');
+		$date=$this->ticket_model->getEventDatebyTicketId($ticketID);
+		foreach($date as $item)
+		{
+			if($item['date']==$this->input->post('Date'))
+			{
+				$result=true;
+			}
+		}
+		
+		if ($result == false)
+		{
+			$this->form_validation->set_message('checkEventDate', "The Date have no event");	
+		}
+		
+		return $result;
+	}
+	
 }
 
 
