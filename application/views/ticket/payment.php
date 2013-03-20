@@ -1,5 +1,13 @@
 <?php echo form_open('ticket/update'); ?>
-<?php echo validation_errors(); ?>
+<?php 	
+$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
+?>
 <table cellpadding="6" cellspacing="1" style="width:100%" border="0">
 
 <tr>

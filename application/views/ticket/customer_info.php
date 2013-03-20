@@ -11,7 +11,15 @@ $btnAttributes = array(
   <li><a href="<?php echo base_url(); ?>index.php/">Home</a> <span class="divider">/</span></li>
   <li class="active">Personal Information</li>
 </ul>
-<?php echo validation_errors(); ?>
+<?php
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
+ ?>
 <?php
 	echo form_open("ticket/addInfo/{$ID}/", $attributes);
 	

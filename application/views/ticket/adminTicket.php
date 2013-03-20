@@ -20,7 +20,15 @@ $btnAttributes = array(
 
 
 
-<?php echo validation_errors(); ?>
+<?php
+	$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	}
+?>
 <?php
 	echo form_open("admin/ticket/addTicket", $attributes);
 	//echo form_open('team/teamRegister/add');

@@ -52,7 +52,14 @@ $btnAttributes = array(
   <li class="active">Ticket</li>
 </ul>
 <h3>Ticket: <?php echo $Tname ?></h3>
-<?php echo validation_errors(); ?>
+<?php 	
+$errors = validation_errors();
+	if (!empty($errors))
+	{
+	echo "<div class=\"alert alert-error\">";
+	echo validation_errors();
+	echo "</div>";
+	} ?>
 <?php
 
 	echo form_open("ticket/buyticket/{$id}", $attributes);
