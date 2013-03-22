@@ -68,6 +68,7 @@ class Ticket extends My_Admin_Controller {
 	
 	public function addTicket()
 	{
+
 		$this->load->library('form_validation');
 		//validate the input
 		$this->form_validation->set_rules("noTickets", "Number of Tickets", "required|numeric|callback_checkTicketNo");
@@ -151,7 +152,6 @@ class Ticket extends My_Admin_Controller {
 		}
 		
 		return $result;
-			
-
 	}
+
 }

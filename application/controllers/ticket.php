@@ -91,14 +91,12 @@ class ticket extends My_Public_Controller {
 	
 	public function buyticket($id)
 	{
-		
 		$this->load->library('form_validation');
-
 		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|max_length[5]');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural_no_zero');
 		$this->form_validation->set_rules('ticketType', 'Type of ticket', 'required');
 		$this->form_validation->set_rules('Price', 'Price for each', 'required');
-		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate|callback_checkEventDate');
+		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate|callback_checkEventDate|callback_checkEventDateNotInPast');
 		if($this->form_validation->run()==false)
 		{
 			$this->add($id);
@@ -317,6 +315,24 @@ class ticket extends My_Public_Controller {
 		return $result;
 	}
 	
+	public function checkEventDateNotInPast()
+	{
+		$date=new DateTime();
+		$todayDate=strtotime($date->format("Y-m-d"));
+		$selectedDate=strtotime($this->input->post('Date'));
+		$result=false;
+		if($selectedDate>=$todayDate)
+		{
+				$result=true;
+		}
+		
+		if ($result == false)
+		{
+			$this->form_validation->set_message('checkEventDateNotInPast', "The selected date is expired");	
+		}
+		
+		return $result;
+	}	
 }
 
 
