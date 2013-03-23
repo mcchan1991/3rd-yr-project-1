@@ -173,7 +173,7 @@ function __construct()
 				);
 				$this->Team_model->createPlayer($data);
 			}
-			redirect('', 'refresh');
+			redirect("admin/event/viewRegistrations/{$eventId}", 'refresh');
 		}
 	}
 	

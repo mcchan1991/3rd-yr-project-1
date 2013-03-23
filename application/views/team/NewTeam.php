@@ -186,6 +186,7 @@ $btnAttributes = array(
 			$numProp = array(
 				'name'	=> 'num[]',
 				'id'	=> 'num[]',
+				'class' => "input-small",
 				'value' => isset($num[$i]) ? $num[$i] : ""
 			);
 			echo "
