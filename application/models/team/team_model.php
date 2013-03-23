@@ -67,7 +67,7 @@ class Team_model extends CI_Model {
 	
 	public function checkIfTeamRegistered($eventId,$teamId)
 	{
-		$query = $this->db->get_where("eventregs", array('nwaId' => $teamId,'eventId' => $eventId));
+		$query = $this->db->get_where("eventRegs", array('nwaId' => $teamId,'eventId' => $eventId));
 		if ($query->num_rows() > 0)
 			return true;
 		else
