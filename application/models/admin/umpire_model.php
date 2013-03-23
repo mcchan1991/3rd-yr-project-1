@@ -195,6 +195,7 @@ class Umpire_model extends CI_Model
 	{
 		$this->load->model('admin/Event_model');
 		$event = $this->Event_model->getEvent($id);
+		$tournamentId = $event['tournamentId'];
 		if ($event['sportId'] == 1)
 		{
 			// actual statement needed:
@@ -212,10 +213,11 @@ class Umpire_model extends CI_Model
 										LEFT JOIN umpireCount ON umpireCount.umpireId = umpireAvailability.umpireId 
 										AND umpireAvailability.tournamentId = umpireCount.tournamentId 
 										WHERE umpireAvailability.date =  \"{$date}\" 
-										AND umpireAvailability.tournamentId = 5 
+										AND umpireAvailability.tournamentId = {$tournamentId} 
 										GROUP BY umpireAvailability.umpireId 
 										ORDER BY umpireCount.count ASC");
 			$result = $query->result_array();
+
 			foreach($result as $current) 
 			{
 				// first lets check if time is OK
