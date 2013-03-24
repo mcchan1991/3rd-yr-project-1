@@ -54,7 +54,7 @@ class Athlete extends My_Public_Controller
 		$sideData['event'] = $event;
 		
 		$this->template->write_view('content','athlete/create',$data);
-		$this->template->write_view('nav_side','navside_event', $sideData);
+		$this->template->write_view('nav_side','navside_event', $sideData, TRUE);
 		$this->template->render();
 	}
 	
@@ -148,7 +148,7 @@ class Athlete extends My_Public_Controller
 			$sideData['event'] = $event;
 			
 			$this->template->write_view('content','athlete/create',$data);
-			$this->template->write_view('nav_side','navside_event', $sideData);
+			$this->template->write_view('nav_side','navside_event', $sideData, TRUE);
 			$this->template->render();
 		}
 		else
