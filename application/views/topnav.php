@@ -11,8 +11,8 @@
   <li <?php if ($segment == "home") { echo "class=\"active\""; } ?> ><a href="<?php echo base_url(); ?>index.php/">Home</a></li>
   <li <?php if ($segment == "tournaments") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/tournaments">Tournaments</a></li>
    <li <?php if ($segment == "ticket") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/ticket">Buy Tickets</a></li>
-  <li <?php if ($segment == "about") { echo "class=\"active\""; } ?>><a href="#">About Us</a></li>
-  <li <?php if ($segment == "contact") { echo "class=\"active\""; } ?>><a href="#">Contact</a></li>
+  <li <?php if ($segment == "about") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/welcome/about">About Us</a></li>
+  <li <?php if ($segment == "contact") { echo "class=\"active\""; } ?>><a href="<?php echo base_url(); ?>index.php/welcome/contact">Contact</a></li>
 </ul>
 
 

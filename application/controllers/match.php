@@ -65,7 +65,7 @@ class Match extends My_Public_Controller {
 		$location = $this->Location_model->getLocation($match['locationId']);
 		$data['location'] = $location['name'];
 
-		$this->template->write_view('nav_side','navside_event', $data);
+		$this->template->write_view('nav_side','navside_event', $data, TRUE);
 		$this->template->write_view('content','view_match',$data);
 		$this->template->render();
 

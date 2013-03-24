@@ -57,7 +57,21 @@ class My_Public_Controller extends CI_Controller {
 		
 		// if not overwritten loads default a list of active tournaments
 		$this->load->model('admin/Tournament_model');
+		$this->load->model('admin/Event_model');
 		$sideData['tournaments'] = $this->Tournament_model->getFutureTournaments(5, 1);
+		$sideData['events'] = array();
+		foreach($sideData['tournaments'] as $tournament)
+		{
+			$sideData['events'][$tournament['tournamentId']] = $this->Event_model->getPaginationByTournamentId($tournament['tournamentId'],10, 1);
+		}
+		
+		$sideData['pastTournaments'] = $this->Tournament_model->getPastTournament(5, 1);
+		$sideData['pastEvents'] = array();
+		foreach($sideData['pastTournaments'] as $tournament)
+		{
+			$sideData['pastEvents'][$tournament['tournamentId']] = $this->Event_model->getPaginationByTournamentId($tournament['tournamentId'],10, 1);
+		}
+		$this->template->write_view('nav_side','navside',$sideData, true);
 		//$this->template->write_view('nav_side','admin/navside_standard',$sideData);
 		
 	}

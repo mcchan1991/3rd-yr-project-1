@@ -19,13 +19,13 @@ if ($result['team2Goals'] == NULL)
 		<tr>
 			<th></th>
 			<th>
-				<img  src="<?php if ($team1['logo'] == 1) {echo base_url() . "uploads/" . md5($team1['nwaId']) . ".png";} ?>" style="width:150px; height:150px; margin-left: auto; margin-right: auto; display:block;" class="img-rounded" />
-				<div style="text-align:center; padding-top:5px;"> <?php echo $team1['name']; ?> </div>
+				<a href="<?php echo base_url(); ?>index.php/team/<?php echo $team1['nwaId']; ?>"> <img  src="<?php if ($team1['logo'] == 1) {echo base_url() . "uploads/" . md5($team1['nwaId']) . ".png";} ?>" style="width:150px; height:150px; margin-left: auto; margin-right: auto; display:block;" class="img-rounded" /></a>
+				<div style="text-align:center; padding-top:5px;"><a href="<?php echo base_url(); ?>index.php/team/<?php echo $team1['nwaId']; ?>"> <?php echo $team1['name']; ?></a> </div>
 			</th>
 			<th style="text-align:center; vertical-align: middle"><h1><?php echo $result['team1Goals'] . " - ". $result['team2Goals']; ?></h1></th>
 			<th style="padding-right:30px">
-				<img  src="<?php  if ($team2['logo'] == 1) { echo base_url() . "uploads/" . md5($team2['nwaId']) . ".png";} ?>" style="width:150px; height:150px; margin-left: auto; margin-right: auto; display:block;" class="img-rounded" />
-				<div style="text-align:center; padding-top:5px;"> <?php echo $team2['name']; ?> </div>
+				<a href="<?php echo base_url(); ?>index.php/team/<?php echo $team2['nwaId']; ?>"><img  src="<?php  if ($team2['logo'] == 1) { echo base_url() . "uploads/" . md5($team2['nwaId']) . ".png";} ?>" style="width:150px; height:150px; margin-left: auto; margin-right: auto; display:block;" class="img-rounded" /></a>
+				<div style="text-align:center; padding-top:5px;"><a href="<?php echo base_url(); ?>index.php/team/<?php echo $team2['nwaId']; ?>"> <?php echo $team2['name']; ?></a> </div>
 			</th>
 		</tr>
 	</thead>

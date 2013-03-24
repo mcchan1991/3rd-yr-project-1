@@ -1,7 +1,7 @@
 <?php
 /**
  * Standard view for the sidebar in the administration area.
- * It shows a list of current tournaments (and events, though these are static for now..)
+ * It shows a list of current tournaments and events
  *
  * Created: 13/01/2013
  * @author	Jacob Baungard Hansen <jeb14@hw.ac.uk>

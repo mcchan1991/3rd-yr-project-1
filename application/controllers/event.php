@@ -32,7 +32,7 @@ class Event extends My_Public_Controller {
 			$registration=true;
 		}
 		$data['registration'] = $registration;
-		$this->template->write_view('nav_side','navside_event', $sideData);
+		$this->template->write_view('nav_side','navside_event', $sideData, TRUE);
 		$this->template->write_view('content','event',$data);
 		$this->template->render();
 
@@ -106,7 +106,7 @@ class Event extends My_Public_Controller {
 			$data['public'] = true;
 
 			$this->template->write_view('content','admin/event/match_list',$data);
-			$this->template->write_view('nav_side','navside_event', $data);
+			$this->template->write_view('nav_side','navside_event', $data, TRUE);
 			$this->template->render();
 	
 	}
@@ -189,7 +189,7 @@ class Event extends My_Public_Controller {
 		//print_r($mostYellowCards);
 		
 		$this->template->write_view('content','rankings',$data);
-		$this->template->write_view('nav_side','navside_event', $data);
+		$this->template->write_view('nav_side','navside_event', $data, TRUE);
 		$this->template->render();
 	}
 	

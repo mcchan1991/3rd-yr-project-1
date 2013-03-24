@@ -40,7 +40,7 @@
 			
 			echo "<td>{$i}</td>";
 			$curTeam = $teams[$currentTeam['teamId']];
-			echo "<td>" . $curTeam['name'] . "</td>";
+			echo "<td><a href=\"" . base_url() ."index.php/team/{$currentTeam['teamId']}\">" . $curTeam['name'] . "</a></td>";
 			echo "<td style=\"text-align:center;\">" . $currentTeam['matches'] . "</td>";
 			echo "<td style=\"text-align:center;\">" . $currentTeam['won'] . "</td>";
 			echo "<td style=\"text-align:center;\">" . $currentTeam['draw'] . "</td>";
@@ -52,7 +52,7 @@
 		}
 		if (count($teamResults) == 0)
 		{
-			echo "<tr><td colpsan=\"7\">No teams has registered for this event yet...</td></tr>";
+			echo "<tr><td colspan=\"8\">No teams has registered for this event yet...</td></tr>";
 		}
 	?>
 </tbody>
@@ -70,7 +70,7 @@
 				{
 					echo "<tr>";
 					echo "<td>{$i}</td>";
-					echo "<td><strong>{$currentPlayer['shirtNo']}. {$currentPlayer['firstName']} {$currentPlayer['surName']}</strong>, {$currentPlayer['teamName']} </td>";
+					echo "<td><strong>{$currentPlayer['shirtNo']}. {$currentPlayer['firstName']} {$currentPlayer['surName']}</strong>, <a href=\"" . base_url() ."index.php/team/{$currentPlayer['nwaId']}\">{$currentPlayer['teamName']}</a> </td>";
 					echo "<td><strong>{$currentPlayer['goals']}</strong></td>";
 					echo "</tr>";
 					$i++;
@@ -78,7 +78,7 @@
 			}
 			if ($i == 1)
 			{
-				echo "<tr><td colpsan=\"3\">No goals have been scored yet...</td></tr>";
+				echo "<tr><td colspan=\"3\">No goals have been scored yet...</td></tr>";
 			}
 			
 		?>
@@ -96,7 +96,7 @@
 				{
 					echo "<tr>";
 					echo "<td>{$i}</td>";
-					echo "<td><strong>{$currentPlayer['shirtNo']}. {$currentPlayer['firstName']} {$currentPlayer['surName']}</strong>, {$currentPlayer['teamName']} </td>";
+					echo "<td><strong>{$currentPlayer['shirtNo']}. {$currentPlayer['firstName']} {$currentPlayer['surName']}</strong>, <a href=\"" . base_url() ."index.php/team/{$currentPlayer['nwaId']}\">{$currentPlayer['teamName']}</a> </td>";
 					echo "<td><strong>{$currentPlayer['assists']}</strong></td>";
 					echo "</tr>";
 					$i++;
@@ -104,7 +104,7 @@
 			}
 			if ($i == 1)
 			{
-				echo "<tr><td colpsan=\"3\">No assists has ben made yet...</td></tr>";
+				echo "<tr><td colspan=\"3\">No assists has ben made yet...</td></tr>";
 			}
 		?>
 	</tbody>

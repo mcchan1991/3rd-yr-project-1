@@ -1,4 +1,4 @@
-<li><a href="<?php echo base_url() . "index.php/admin/event/view/";?>">Event info</a></li>
+<li><a href="<?php echo base_url() . "index.php/event/view/{$event['eventId']}";?>">Event info</a></li>
 <li><a href="<?php echo base_url() . "index.php/event/schedule/{$event['eventId']}"; ?>">Schedule</a></li>
 <li><a href="<?php echo base_url() . "index.php/event/showRankings/{$event['eventId']}"; ?>">Rankings</a></li>
 <li><a href="<?php echo base_url() . "index.php/event/schedule/{$event['eventId']}/1/1"; ?>">Results</a></li>
