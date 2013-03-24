@@ -30,7 +30,7 @@ else
 	$registerUrl = base_url() . "index.php/athlete/register/{$gender}/{$event['eventId']}";
 }
 ?>
-<li><a href="#"><?php echo $string; ?></a></li>
+<li><a href="<?php echo base_url() . "index.php/teamview/teamlist/{$event['eventId']}"; ?>"><?php echo $string; ?></a></li>
 <li><a href="<?php echo $registerUrl; ?>">Register</a></li>
 
 
