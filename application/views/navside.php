@@ -21,12 +21,12 @@ foreach ($tournaments as $tournament)
 <?php
 if (count($events[$tournament['tournamentId']]) > 0) {
 ?>
-<li><a href="<?php echo base_url() . "index.php/admin/tournament/view/{$tournament['tournamentId']}";?>"><?php echo $tournament['name']; ?></a></li>
+<li><?php echo $tournament['name']; ?></li>
 <ul class="nav nav-list">
 <?php 
 	foreach($events[$tournament['tournamentId']] as $event)
 	{
-		$url = base_url() . "index.php/admin/event/view/{$event['eventId']}";
+		$url = base_url() . "index.php/event/view/{$event['eventId']}";
 		echo "<li><a href=\"{$url}\">{$event['name']}</a>";
 	}
 ?>
@@ -46,12 +46,12 @@ foreach ($pastTournaments as $tournament)
 <?php
 if (count($pastEvents[$tournament['tournamentId']]) > 0) {
 ?>
-<li><a href="<?php echo base_url() . "index.php/admin/tournament/view/{$tournament['tournamentId']}";?>"><?php echo $tournament['name']; ?></a></li>
+<li><?php echo $tournament['name']; ?></li>
 <ul class="nav nav-list">
 <?php 
 	foreach($pastEvents[$tournament['tournamentId']] as $event)
 	{
-		$url = base_url() . "index.php/admin/event/view/{$event['eventId']}";
+		$url = base_url() . "index.php/event/view/{$event['eventId']}";
 		echo "<li><a href=\"{$url}\">{$event['name']}</a>";
 	}
 ?>
