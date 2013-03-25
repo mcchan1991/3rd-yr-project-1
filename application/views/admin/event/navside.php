@@ -13,4 +13,3 @@ else
 ?>
 <li><a href="<?php echo $scheduleUrl; ?>">Schedule</a></li>
 <li><a href="<?php echo base_url() . "index.php/admin/event/viewRegistrations/{$event['eventId']}/"; ?>">Registrations</a></li>
-<li><a href="#">Results</a></li>

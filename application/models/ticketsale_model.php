@@ -3,7 +3,7 @@ class ticketSale_model extends CI_Model
 {
 	function create($row)
 	{
-		$this->db->insert('ticketsales', $row);
+		$this->db->insert('ticketSales', $row);
 		return $this->db->insert_id();
 	}
 	

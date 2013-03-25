@@ -1,7 +1,18 @@
 <div class="row-fluid">
 	
 	<div class="span2">
-		<img src="<?php echo base_url() . "/uploads/" . $image;?>" class="img-rounded">
+		<?php 
+		if (isset($image))
+		{
+		?>
+		<img src="<?php echo base_url() . "/uploads/" . $image;?>" class="img-rounded" />
+		<?php
+		}
+		else
+		{?>
+		<img src="" class="img-rounded" />
+		<?}
+		?>
 	</div>
 	
 	<div class="span10">

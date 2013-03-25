@@ -26,6 +26,7 @@ class ticket extends My_Public_Controller {
 		$this->load->model('customers_model');
 		$this->load->model('ticketSale_model');
 		$this->load->model('admin/event_model');
+		$this->load->library('cart');
 	}
 	
 	/**
@@ -334,7 +335,6 @@ class ticket extends My_Public_Controller {
 		return $result;
 	}	
 }
-
 
 
 

@@ -44,7 +44,7 @@ class Event extends My_Public_Controller {
 			$this->load->helper('url');
 			$this->load->library('pagination');
 
-			$config['base_url'] = base_url() . "index.php/admin/event/viewMatches/";
+			$config['base_url'] = base_url() . "index.php/event/schedule/";
 			$config['total_rows'] = $this->Match_model->countEventMatches($id);
 			$config['per_page'] = 10; 
 			$config['uri_segment'] = 4;

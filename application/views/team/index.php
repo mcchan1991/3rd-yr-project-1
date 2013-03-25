@@ -5,7 +5,6 @@
   <li><a href="<?php echo base_url(); ?>index.php/event/view/<?php echo $event['eventId'] ?>"><?php echo $event['name'] ?></a> <span class="divider">/</span></li>
   <li class="active">Teams: <?php echo $event['name']; ?></li>
 </ul>
-<h3>Teams registered for <?php echo $event['name']; ?></h3>
 <table class="table table-striped">
 	<thead>
 		<tr>

@@ -9,7 +9,7 @@ if ($allowAutomatic == 1)
 <?php } ?>
 
 <ul class="breadcrumb">
-   <li><a href="<?php echo base_url(); ?>index.php/admin/">Admin Home</a> <span class="divider">/</span></li>
+   <li><a href="<?php echo base_url(); ?>index.php/<?php if ($public == false) { echo "admin/"; }?>/"> Home</a> <span class="divider">/</span></li>
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament">Tournaments</a> <span class="divider">/</span></li>
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/view/<?php echo $tournament['tournamentId'] ?>"><?php echo $tournament['name'] ?></a> <span class="divider">/</span></li>
   <li><a href="<?php echo base_url(); ?>index.php/admin/tournament/viewEvents/<?php echo $event['tournamentId']; ?>">Events</a> <span class="divider">/</span></li>

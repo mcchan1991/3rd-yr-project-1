@@ -56,7 +56,7 @@ class Team_model extends CI_Model {
 	
 	public function getPlayersWithStats($id)
 	{
-		$query = $this->db->get_where("playerresults", array('nwaId' => $id));
+		$query = $this->db->get_where("playerResults", array('nwaId' => $id));
 		return $query->result_array();
 	}
 	
