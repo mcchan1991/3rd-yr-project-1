@@ -11,7 +11,7 @@
 		else
 		{?>
 		<img src="" class="img-rounded" />
-		<?}
+		<?php }
 		?>
 	</div>
 	
@@ -70,3 +70,5 @@
   </tbody>
 </table>
 </div>
+
+
