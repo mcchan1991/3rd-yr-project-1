@@ -349,7 +349,7 @@ class ticket extends My_Public_Controller {
 		
 		$totalTicket=$totalTicket+$this->input->post('quantity');
 		$result=false;
-		if($totalTicket<$checkTicket)
+		if($totalTicket<=$checkTicket)
 		{
 				$result=true;
 		}
