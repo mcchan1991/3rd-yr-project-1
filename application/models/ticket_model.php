@@ -60,7 +60,7 @@ class ticket_model extends CI_Model
 		return $query->result_array();
 	}
 	
-		public function getEventDatebyTicketId($id)
+	public function getEventDatebyTicketId($id)
 	{
 		$this->db->select('matchDetails.date');
 		$this->db->where('tickets.ticketId', $id);

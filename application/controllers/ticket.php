@@ -94,7 +94,7 @@ class ticket extends My_Public_Controller {
 	{
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('TicketId', 'TicketId', 'required|numeric|max_length[5]');
-		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural_no_zero');
+		$this->form_validation->set_rules('quantity', 'Quantity', 'required|numeric|is_natural_no_zero|callback_checkNumberOfTicket');
 		$this->form_validation->set_rules('ticketType', 'Type of ticket', 'required');
 		$this->form_validation->set_rules('Price', 'Price for each', 'required');
 		$this->form_validation->set_rules('Date', 'Date', 'required|callback_checkAvailableDate|callback_checkEventDate|callback_checkEventDateNotInPast');
@@ -330,6 +330,38 @@ class ticket extends My_Public_Controller {
 		if ($result == false)
 		{
 			$this->form_validation->set_message('checkEventDateNotInPast', "The selected date is expired");	
+		}
+		
+		return $result;
+	}
+	
+	public function checkNumberOfTicket()
+	{
+		
+		$result=$this->ticket_model->getTicketById($this->input->post('TicketId'));
+		$resultSaleTicket=$this->ticketSale_model->findTicketSaleByid($this->input->post('TicketId'));
+		$checkTicket= $result[0]['noTickets'];
+		$totalTicket=0;
+		foreach($resultSaleTicket as $items)
+		{
+			$totalTicket=$totalTicket+$items['quantity'];
+		}
+		
+		$totalTicket=$totalTicket+$this->input->post('quantity');
+		$result=false;
+		if($totalTicket<$checkTicket)
+		{
+				$result=true;
+		}
+		$errorMessage="";
+		if($checkTicket<$totalTicket)
+		{
+			$avail=$checkTicket-($totalTicket-$this->input->post('quantity'));
+			$errorMessage="Only have $avail ticket available";
+		}
+		if ($result == false)
+		{
+			$this->form_validation->set_message('checkNumberOfTicket', $errorMessage);	
 		}
 		
 		return $result;
