@@ -73,7 +73,7 @@ class Ticket extends My_Admin_Controller {
 		//validate the input
 		$this->form_validation->set_rules("noTickets", "Number of Tickets", "required|numeric|callback_checkTicketNo");
 		$this->form_validation->set_rules("ticketType", "Ticket Type", "required");
-		$this->form_validation->set_rules("price", "Price", "required|numeric");
+		$this->form_validation->set_rules("price", "Price", "required|numeric|greater_than[0]");
 		//if does not valid then go to register agin
 		//otherwise pass data to database
 		if ($this->form_validation->run() == FALSE)
