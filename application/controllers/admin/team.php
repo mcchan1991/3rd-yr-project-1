@@ -206,7 +206,7 @@ function __construct()
 		}
 	else
 		{
-			echo "You have updated";
+			//echo "You have updated";
 			$data = array(
 			'email' => $this->input->post('email'),
 			'name' => $this->input->post('name'),

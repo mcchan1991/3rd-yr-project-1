@@ -40,7 +40,7 @@ class teamEvent extends My_Public_Controller {
 		else
 		{		
 
-				echo "You have registered";
+				//echo "You have registered";
 				$data = array(
 				'eventRegsId' =>NULL,
 				'eventId' => $this->input->post('eventId'),
