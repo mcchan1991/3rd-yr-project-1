@@ -60,8 +60,10 @@ if (count($matches) == 0)
 	echo "</tr>";
 }
 
+$i=0;
 foreach($matches as $current )
 {
+
 	$url = base_url() . "index.php/match/view/" . $current['matchId'];
 	echo "<tr data-provides=\"rowlink\">";
 	echo "<td>{$current['team1Name']} vs {$current['team2Name']}</td>";
@@ -72,7 +74,10 @@ foreach($matches as $current )
 	}
 	else
 	{
-		echo "<td><a href=\"{$url}\" style=\"color:#333333;\">". ($current['team1Goals'] != NULL ? $current['team1Goals'] : "0"). " - " . ($current['team2Goals'] != NULL ? $current['team2Goals'] : "0") . "</a></td>";
+		foreach($Score[$i] as $item)
+		{
+		echo "<td><a href=\"{$url}\" style=\"color:#333333;\">". ($item['team1Goals'] != NULL ? $item['team1Goals'] : "0"). " - " . ($item['team2Goals'] != NULL ? $item['team2Goals'] : "0") . "</a></td>";
+		}
 	}
 	echo "<td>{$current['locationName']}</td>";	
 	echo "<td>{$current['date']}</td>";	
@@ -84,6 +89,7 @@ foreach($matches as $current )
 		echo "<td><a href=\"{$url}\">Add result</a></td>";
 	}
 	echo "</tr>";
+	$i++;
 }
 ?>
 	</tbody>

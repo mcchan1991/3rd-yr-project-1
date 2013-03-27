@@ -15,7 +15,6 @@ function __construct()
 	public function view($id)
 	{
 		$team = $this->Team_model->getTeam($id);
-		
 		$data = array();
 		$data['teamName'] = $team['name'];
 		if ($team['logo'] == 1)

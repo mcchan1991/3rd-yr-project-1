@@ -105,6 +105,7 @@ class Event extends My_Public_Controller {
 			
 			$data['public'] = true;
 
+
 			$this->template->write_view('content','admin/event/match_list',$data);
 			$this->template->write_view('nav_side','navside_event', $data, TRUE);
 			$this->template->render();

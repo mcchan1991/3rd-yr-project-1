@@ -250,6 +250,14 @@ class Event extends My_Admin_Controller
 			$data['allowAutomatic'] = 0;
 		}
 		$data['public'] = false;
+
+		$data['Score']=array();
+		$i=0;
+		foreach($data['matches'] as $items)
+		{
+				$data['Score'][$i]=$this->Match_model->getFinalResult($items['matchId']);
+				$i++;
+		}
 		
 		$this->template->write_view('content','admin/event/match_list',$data);
 		$this->template->write_view('nav_side','admin/event/navside',$data, true);
