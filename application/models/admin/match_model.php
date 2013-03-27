@@ -59,12 +59,10 @@ class Match_model extends CI_Model
 		$sql = "SELECT
 		(select sum(goal) from matchResults
 		INNER JOIN players on matchResults.playerId = players.playerId
-		INNER JOIN matchDetails on matchResults.matchId  = matchDetails.matchId
-		where players.nwaId = matchDetails.team1Id and matchDetails.matchId=matchDetails.matchId) as team1Goals
+		where players.nwaId = matchDetails.team1Id) as team1Goals
 		,
 		(select sum(goal) from matchResults
 		INNER JOIN players on matchResults.playerId = players.playerId
-		INNER JOIN matchDetails on matchResults.matchId  = matchDetails.matchId
 		where players.nwaId = matchDetails.team2Id) as team2Goals
 		,
 		matchDetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
@@ -136,7 +134,6 @@ class Match_model extends CI_Model
 		$query = $this->db->get("matchResultsView");
 		return $query->result_array();
 	}
-
 	
 }
 
