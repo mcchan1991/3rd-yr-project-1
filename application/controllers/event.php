@@ -105,13 +105,7 @@ class Event extends My_Public_Controller {
 			
 			$data['public'] = true;
 
-			$data['Score']=array();
-			$i=0;
-			foreach($data['matches'] as $items)
-			{
-				$data['Score'][$i]=$this->Match_model->getFinalResult($items['matchId']);
-				$i++;
-			}
+
 			$this->template->write_view('content','admin/event/match_list',$data);
 			$this->template->write_view('nav_side','navside_event', $data, TRUE);
 			$this->template->render();
