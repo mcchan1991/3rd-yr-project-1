@@ -59,11 +59,11 @@ class Match_model extends CI_Model
 		$sql = "SELECT
 		(select sum(goal) from matchResults
 		INNER JOIN players on matchResults.playerId = players.playerId
-		where players.nwaId = matchDetails.team1Id) as team1Goals
+		where players.nwaId = matchDetails.team1Id AND matchDetails.matchId = matchResults.matchId) as team1Goals
 		,
 		(select sum(goal) from matchResults
 		INNER JOIN players on matchResults.playerId = players.playerId
-		where players.nwaId = matchDetails.team2Id) as team2Goals
+		where players.nwaId = matchDetails.team2Id AND matchDetails.matchId = matchResults.matchId) as team2Goals
 		,
 		matchDetails.* , team1.name as team1Name, team2.name as team2Name, locations.name as locationName, CONCAT(umpires.firstName ,' ', umpires.surname) as umpireName
 		FROM matchDetails
