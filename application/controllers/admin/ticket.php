@@ -41,9 +41,12 @@ class Ticket extends My_Admin_Controller {
 		$config['num_tag_close'] = '</li>';
 		
 		$this->pagination->initialize($config);
+		$data['tournamentId']=$id;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
 		$data['id']=$id;
 		$data['tickets'] = $this->ticket_model->getPagination($config["per_page"], $page,$id);
-
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','ticket/adminTicketView',$data);
 		$this->template->render();
 		
@@ -62,6 +65,8 @@ class Ticket extends My_Admin_Controller {
 		$data['ticketType']='';
 		$data['noTickets']='';
 		$data['price']='';
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','ticket/adminTicket',$data);
 		$this->template->render();
 	}
@@ -111,7 +116,11 @@ class Ticket extends My_Admin_Controller {
 		$data['types']=$type;
 		$data['ticketsinfo']=$result;
 		$data['typeData']=$typeData;
-		
+		$data['tournamentId']=$id;
+		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
+
+		$this->template->empty_region('nav_side');
+		$this->template->write_view('nav_side','admin/tournament/navbar_side', $data);
 		$this->template->write_view('content','ticket/adminTicketSaleView',$data);
 		$this->template->render();
 	}
