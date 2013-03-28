@@ -14,15 +14,7 @@ echo validation_errors();
 echo "</div>";
 }
 ?>
-<script>
-$(function() {
-  $('.dateInput').datepicker({
-    changeMonth: true,
-    numberOfMonths: 1,
-	dateFormat: "dd/mm/yy"
-  });
-});
-</script>
+
 <h3>Schedule</h3>
 
 <?php
