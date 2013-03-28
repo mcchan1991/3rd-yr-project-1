@@ -20,7 +20,7 @@ class teamRegister extends My_Public_Controller {
 	{
 		if ($this->session->userdata('nwaId') != NULL)
 		{
-			if($this->createTeamReg->Team_model->checkIfTeamRegistered($eventId,$this->session->userdata('nwaId')))
+			if($this->Team_model->checkIfTeamRegistered($eventId,$this->session->userdata('nwaId')))
 			{
 				$this->template->write('content','You have already registered for this event!');
 				$this->template->render();
