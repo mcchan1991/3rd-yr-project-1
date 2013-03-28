@@ -141,7 +141,7 @@ class Tournament_model extends CI_Model {
 				}
 				else
 				{
-					$logic_operator = "<";
+					$logic_operator = "<=";
 				}
 				$this->db->where("end {$logic_operator}", $date);
 			}
