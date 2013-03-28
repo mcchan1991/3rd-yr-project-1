@@ -35,8 +35,13 @@ class verifyTeamLogin extends My_Public_Controller{
 				if ($eventId != NULL)
 				{
 					$data['eventId'] = $eventId;
+					$event = $this->Event_model->getEvent($eventId);
+					$data['event'] = $this->Event_model->getEvent($eventId);
+					$data['sport'] = $event['sportId'];
+					$this->template->write_view('nav_side','navside_event', $data, TRUE);
 				}
 				$this->template->write_view('content','team/TeamLogin',$data);
+				
 				$this->template->render();
 				}
 				else
