@@ -118,7 +118,7 @@ class Ticket extends My_Admin_Controller {
 		$data['tournamentId']=$id;
 		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
 
-		$this->template->write_view('nav_side','admin/event/navside',$data, true);
+		$this->template->write_view('nav_side','admin/tournament/navbar_side',$data, true);
 		$this->template->write_view('content','ticket/adminTicketSaleView',$data);
 		$this->template->render();
 	}
