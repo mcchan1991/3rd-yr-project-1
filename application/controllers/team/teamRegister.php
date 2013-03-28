@@ -18,7 +18,6 @@ class teamRegister extends My_Public_Controller {
 	
 	function register($eventId,$prefill = NULL)
 	{
-	
 		if ($this->session->userdata('nwaId') != NULL)
 		{
 			if($this->Team_model->checkIfTeamRegistered($eventId,$this->session->userdata('nwaId')))
