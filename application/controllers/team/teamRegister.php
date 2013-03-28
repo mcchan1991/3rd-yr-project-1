@@ -32,7 +32,7 @@ class teamRegister extends My_Public_Controller {
 				'nwaId' => $this->session->userdata('nwaId'),
 				'athleteId' => NULL
 				);
-				$this->Team_model->($data1);
+				$this->Team_model->createTeamReg($data1);
 				redirect("/teamview/teamlist/{$eventId}");
 				
 				
