@@ -88,7 +88,7 @@ class teamRegister extends My_Public_Controller {
 				$data['registrationError'] = 3;
 			}
 			
-			$this->template->write_view('nav_side','navside_event', $sideData);
+			$this->template->write_view('nav_side','navside_event', $sideData,true);
 			$this->template->write_view('content','team/NewTeam',$data);
 			$this->template->render();
 		}
