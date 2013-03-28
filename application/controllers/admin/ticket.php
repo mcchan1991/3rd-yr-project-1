@@ -45,7 +45,7 @@ class Ticket extends My_Admin_Controller {
 		$data['tournament'] = $this->Tournament_model->getTournamentId($id);
 		$data['id']=$id;
 		$data['tickets'] = $this->ticket_model->getPagination($config["per_page"], $page,$id);
-		$this->template->write_view('nav_side','admin/event/navside',$data, true);
+		$this->template->write_view('nav_side','admin/tournament/navbar_side',$data, true);
 		$this->template->write_view('content','ticket/adminTicketView',$data);
 		$this->template->render();
 		
