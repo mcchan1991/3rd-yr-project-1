@@ -28,7 +28,6 @@ class teamRegister extends My_Public_Controller {
 			else
 			{
 				$data1 = array(
-				'eventRegsId' =>NULL,
 				'eventId'=>$eventId,
 				'nwaId' => $this->input->post('nwaId'),
 				'athleteId' => NULL
@@ -178,7 +177,6 @@ class teamRegister extends My_Public_Controller {
 			);
 			$this->Team_model->create($data);
 			$data1 = array(
-			'eventRegsId' =>NULL,
 			'eventId'=>$eventId,
 			'nwaId' => $this->input->post('nwaId'),
 			'athleteId' => NULL
