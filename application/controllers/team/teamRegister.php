@@ -26,6 +26,19 @@ class teamRegister extends My_Public_Controller {
 				$this->template->write('content','You have already registered for this event!');
 				$this->template->render();
 			}
+			else
+			{
+				$data1 = array(
+				'eventRegsId' =>NULL,
+				'eventId'=>$eventId,
+				'nwaId' => $this->input->post('nwaId'),
+				'athleteId' => NULL
+				);
+				$this->Team_model->createTeamReg($data1);
+				redirect("/teamview/teamlist/{$eventId}");
+				
+				
+			}
 		}
 		else
 		{
