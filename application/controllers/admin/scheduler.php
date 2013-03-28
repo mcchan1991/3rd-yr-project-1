@@ -319,12 +319,12 @@ class Scheduler extends My_Admin_Controller
 					// add the correct number of days
 					$day->add(new DateInterval('P' . $gameEvery . "D"));
 					// if we need to skip another day
-					if ($skipDayAfter != -1)
+					if ($skipDayAfter != -1 &&is_int($skipDayAfter))
 					{
-						if ($dayInc % $skipDayAfter == 0 && is_int($skipDayAfter))
-						{
-							$day->add(new DateInterval('P' . $gameEvery . "D")); // should this be one day and not "gameEvery" ? test probably needed
-						}
+							if ($dayInc % $skipDayAfter == 0 && is_int($skipDayAfter))
+							{
+								$day->add(new DateInterval('P' . $gameEvery . "D")); // should this be one day and not "gameEvery" ? test probably needed
+							}	
 					}
 				}
 				// if we overshoot we break, should never happen
